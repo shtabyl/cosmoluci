@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="scripts/script.js" defer></script>
+
+    <title>Светлана Осипова</title>
+</head>
+<body>
+    <header class="header">
+
+        <div class="header__container content-grid">
+            
+            <div class="header__navbar full-width">
+                
+                <div class="navbar__burger burger">
+                    <span></span><span></span><span></span>
+                </div>
+                
+                <nav class="navbar">
+                    <div class="header__logo logo">
+                        <a href="index.html" class="logo_header link link_logo">Светлана Осипова</a>
+                    </div>
+                    <div class="navbar__menu-list">
+                        <ul>
+                            <li class="navbar__menu-item link"><a href="gallery.html">Галерея</a></li>
+                            <li class="navbar__menu-item link"><a href="about.html">Обо мне</a></li>
+                            <!-- <li class="navbar__menu-item link"><a href="blog.html">Блог</a></li> -->
+                            <li class="navbar__menu-item link"><a href="contacts.html">Контакты</a></li>
+                        </ul>
+                    </div>
+                    <div class="navbar__social social">
+                        <ul class="navbar__social-item-list">
+                            <!-- <li class="social__item">
+                                <a href="#">
+                                    <img src="./static/icons/telegram.svg" alt="Telegram">
+                                </a>
+                            </li> -->
+                            <!-- <li class="social__item">
+                                <a href="#">
+                                    <img src="./static/icons/instagram.svg" alt="Instagram">
+                                </a>
+                            </li> -->
+                            <li class="social__item vkontakte">
+                                <a href="https://vk.com/sveta.cosmoluci">
+                                    <img src="static/icons/vk.svg" alt="VK">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="main__container content-grid">
+            <div class="main__wrapper">
+                <figure class="painting__wrapper">
+                    <picture class="painting__image">
+                        <source media="(min-width: 1200px)" srcset="img/landscape-2023.jpg">
+                        <img src="img/landscape-2023.jpg" alt="Landscape 2023">
+                    </picture>
+                    <figcaption class="painting__info">
+                        <h1 class="painting__title title title_serif title_painting">Landscape 2023</h1>
+                        <p class="painting__status text text_grey js-paintingStatus">Продано</p>
+                        <p class="painting__support text">Холст, масло</p>
+                        <form action="" class="painting__like-counter">
+                            <input type="image" src="static/icons/like.svg" class="painting__like-button button">
+                        </form>
+                        <p class="painting__year text">2023</p>
+                    </figcaption>
+                </figure>
+                <p class="painting__description text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Odio nam sit exercitationem omnis perferendis iusto. Ex neque consequuntur totam odit!</p>
+                <a href="gallery.html" class="link link_arrow-back">
+                    <img class="arrow-back-icon" src="static/icons/arrow-back.svg" alt="Arrow-back">
+                    <span class="text">Вернуться в галерею</span>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__container content-grid">
+
+        </div>
+    </footer>
+
+</body>
+</html>

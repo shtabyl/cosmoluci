@@ -1,0 +1,132 @@
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    position: relative;
+    border: none;
+    font: inherit;
+    font-size: 1rem;
+    background-color: transparent;
+    color: inherit;
+    width: 100%;
+    padding: 0em 0.5em 0.1em 0.5em;
+    height: auto;
+    cursor: pointer;
+    outline: none;
+    transition: .3s ease;
+    z-index: 1;
+    &:hover {
+        color: var(--clr-accent);
+        transition: .3s ease;
+    }
+}
+
+.select-native-wrapper {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    width: 6ch;
+}
+
+.select-native-wrapper::after {
+    content: "";
+    display: block;
+    position: absolute;
+    background-image: url(../../static/icons/chevron-down.svg);
+    background-size: contain;
+    width: 0.9em;
+    height: 0.9em;
+    top: 0;
+    bottom: 0;
+    right: 0.2em;
+    margin: auto;
+    transition: .3s ease;
+}
+
+/* .select-native,
+.select-custom {
+    position: relative;
+    font: inherit;
+    font-size: 1rem;
+    line-height: normal;
+    height: auto;
+} */
+
+.select-custom-wrapper {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    display: none;
+}
+
+.select-custom {
+    position: absolute;
+    top: 6px;
+    right: 0;
+    display: none;
+}
+
+.select-custom-trigger,
+.select-custom-option {
+    position: relative;
+    background-color: rgba(242, 242, 242, 1);
+        padding: 0em 1.5em 0.1em 1.2em;
+        transition: .3s ease;
+        border-bottom: 1px solid rgba(242, 242, 242, 0.9);
+        &:hover {
+            color: var(--clr-accent);
+            background-color: rgba(242, 242, 242, 1);
+            transition: .3s ease;
+        }
+}
+
+/* .select-custom-option {
+    cursor: pointer;
+}
+
+.select-custom-trigger {
+    background-color: transparent;
+}
+
+.select-arrow {
+    position: absolute;
+    top: 0.2em;
+    right: 0.03em;
+    width: 0.99em;
+    transition: all .3s ease;
+}
+
+.select-custom:hover .select-arrow {
+    transform: scaleY(-1);
+    filter: invert(68%) sepia(47%) saturate(235%) hue-rotate(341deg) brightness(80%) contrast(86%);
+    transition: all 0.3s ease;
+} */
+
+/* Show custom only when mouse hover */
+/* @media (hover: hover) {
+    .select-custom {
+        display: block;
+    }
+
+    .select-native:focus + .select-custom {
+        display: none;
+    }
+} */
+
+/* .select-custom-option.active_select::before {
+    content: "";
+    position: absolute;
+    background-image: url(../../static/icons/sun.svg);
+    background-size: contain;
+    width: 0.7em;
+    height: 0.7em;
+    top: 0;
+    bottom: 0;
+    left: 0.2em;
+    margin: auto;
+}
+
+.select-custom-options {
+    display: none;
+    overflow: auto;
+} */

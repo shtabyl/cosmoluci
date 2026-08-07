@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC&family=Gruppo&family=Nunito:wght@300&family=Playfair+Display+SC&display=swap');
+@import url(styles/components/container.css);
+@import url(styles/components/links.css);
+@import url(styles/components/burger.css);
+@import url(styles/components/navbar.css);
+@import url(styles/components/header.css);
+@import url(styles/components/footer.css);
+@import url(styles/ui/buttons.css);
+@import url(styles/ui/links.css);
+@import url(styles/ui/social-icons-list.css);
+@import url(styles/ui/titles.css);
+@import url(styles/ui/inputs.css);
+@import url(styles/ui/picture.css);
+@import url(styles/ui/texts.css);
+@import url(styles/layouts/contacts.css);
+@import url(styles/layouts/about.css);
+@import url(styles/layouts/gallery.css);
+@import url(styles/layouts/gallery-item.css);
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font: inherit;
+}
+
+img,
+picture,
+svg,
+video {
+    display: block;
+    max-width: 100%;
+}
+
+.gruppo-regular {
+    font-family: "Gruppo", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+:root {
+    --font-family: "Nunito", sans-serif;
+    --fs-300: clamp(0.94rem, calc(0.92rem + 0.08vw), 0.98rem);
+    --fs-400: clamp(1.13rem, calc(1.06rem + 0.33vw), 1.31rem);
+    --fs-500: clamp(1.35rem, calc(1.21rem + 0.69vw), 1.75rem);
+    --fs-600: clamp(1.62rem, calc(1.37rem + 1.24vw), 2.33rem);
+    --fs-700: clamp(1.94rem, calc(1.54rem + 2.03vw), 3.11rem);
+    --fs-800: clamp(2.33rem, calc(1.7rem + 3.15vw), 4.14rem);
+    --fs-900: clamp(2.8rem, calc(1.85rem + 4.74vw), 5.52rem);
+
+    --clr-text: #595959;
+    --clr-text-grey: #b3b3b3;
+    --clr-accent: #b18f78;
+}
+
+body {
+    font-family: var(--font-family);
+    font-size: var(--fs-400);
+    background-color: #fff;
+    color: var(--clr-text);
+}
+
+.logo {
+    font-family: "Amatic SC", sans-serif;
+    font-weight: 400;
+    font-size: var(--fs-600);
+    font-style: normal;
+    text-transform: uppercase;
+}
+
+.main__container {
+    padding-block: 0;
+}
+
+.hide {
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.5s ease-in;
+}
+
+@media screen and (max-width: 768px) {
+    .main__container {
+        margin-top: 2em;
+        padding-block: 1.5em;
+    }
+}

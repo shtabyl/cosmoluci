@@ -1,0 +1,8 @@
+.text {
+    color: var(--clr-text);
+    font-size: var(--fs-300);
+}
+
+.text_grey {
+    color: var(--clr-text-grey);
+}

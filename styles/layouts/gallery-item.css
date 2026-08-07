@@ -1,0 +1,33 @@
+body {
+    height: 100svh;
+}
+
+.main__wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+}
+
+.painting__wrapper {
+    width: 50%;
+    margin-bottom: 5em;
+    /* height: 100%;
+    object-fit: cover; */
+}
+
+.painting__info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    & > *:nth-child(2n) {
+        display: flex;
+        justify-content: end;
+        align-items: center;;
+    }
+}
+
+.painting__description {
+    flex: 1;
+    max-width: 75%;
+}

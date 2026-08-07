@@ -1,0 +1,23 @@
+.social ul {
+    list-style-type: none;
+    display: flex;
+    gap: 1rem;
+}
+.social a {
+    text-decoration: none;
+    font-size: 0.8rem;
+    color: inherit;
+}
+.social li {
+    flex-shrink: 0;
+}
+.social img, svg {
+    height: 2.5rem;
+    transition: .3s ease;
+}
+.social__item img:hover {
+    filter: invert(68%) sepia(47%) saturate(235%) hue-rotate(341deg) brightness(80%) contrast(86%);
+    transition: .3s ease;
+}
+
+

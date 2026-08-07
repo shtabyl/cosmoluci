@@ -1,0 +1,33 @@
+@import url(./navbar.css);
+
+.header__navbar {
+    position: relative;
+    padding-block: 1.5em;
+}
+
+.header__logo {
+    flex: 1;
+}
+
+
+
+@media screen and (max-width: 768px) {
+    .header__navbar {
+        position: fixed;
+        width: 100%;
+        justify-items: start;
+    }
+    .header__logo {
+        position: absolute;
+        inset: 0;
+        margin: 0;
+        height: 2em;
+        margin-top: 0.5rem;
+    }
+    .logo_header {
+        display: grid;
+        height: 100%;
+        place-content: center;
+    }
+
+}
