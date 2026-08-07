@@ -1,2 +1,2 @@
-# so-website
+# Cosmoluci
 Website for artist Svetlana Osipova.
