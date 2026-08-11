@@ -1,2 +1,12 @@
 # Cosmoluci
-Website for artist Svetlana Osipova.
+
+Artist digital archive.
+
+Stack:
+- HTML
+- CSS
+- JavaScript
+- Python
+- FastAPI
+- PostgreSQL
+- Nginx
