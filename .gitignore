@@ -4,4 +4,28 @@ venv/
 ENV/
 env/
 
-/backend/data.py
+# Test DB
+backend/data.py
+
+# Dev scripts and docs
+dev-notes.md
+backend/webp_generator.py
+
+# Artworks
+storage/
+
+# Database dumps
+cosmoluci_dev.dump
+database.sql
+
+/postgres_data/
+
+*.dump
+*.sql
+*.sqlite
+*.sqlite3
+*.db
+
+# Python
+__pycache__/
+*.py[cod]
