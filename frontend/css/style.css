@@ -1,21 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Amatic+SC&family=Gruppo&family=Nunito:wght@300&family=Playfair+Display+SC&display=swap');
-@import url(styles/components/container.css);
-@import url(styles/components/links.css);
-@import url(styles/components/burger.css);
-@import url(styles/components/navbar.css);
-@import url(styles/components/header.css);
-@import url(styles/components/footer.css);
-@import url(styles/ui/buttons.css);
-@import url(styles/ui/links.css);
-@import url(styles/ui/social-icons-list.css);
-@import url(styles/ui/titles.css);
-@import url(styles/ui/inputs.css);
-@import url(styles/ui/picture.css);
-@import url(styles/ui/texts.css);
-@import url(styles/layouts/contacts.css);
-@import url(styles/layouts/about.css);
-@import url(styles/layouts/gallery.css);
-@import url(styles/layouts/gallery-item.css);
+@import url(components/container.css);
+@import url(components/links.css);
+@import url(components/burger.css);
+@import url(components/navbar.css);
+@import url(components/header.css);
+@import url(components/footer.css);
+@import url(ui/buttons.css);
+@import url(ui/links.css);
+@import url(ui/social-icons-list.css);
+@import url(ui/titles.css);
+@import url(ui/inputs.css);
+@import url(ui/picture.css);
+@import url(ui/texts.css);
+@import url(layouts/contacts.css);
+@import url(layouts/about.css);
+@import url(layouts/gallery.css);
+@import url(layouts/artwork.css);
 
 *,
 *::before,

@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
-    <script src="scripts/script.js" defer></script>
-    <script src="scripts/filter.js" defer></script>
+    <script src="js/script.js" defer></script>
+    <script src="js/filter.js" defer></script>
     <script type="module" src="app.js" defer></script>
-
+    <script type="module" src="js/gallery.js" defer></script>
+    
     <title>Светлана Осипова</title>
 </head>
 <body>
@@ -42,17 +43,17 @@
                         <ul class="navbar__social-item-list">
                             <!-- <li class="social__item">
                                 <a href="#">
-                                    <img src="./static/icons/telegram.svg" alt="Telegram">
+                                    <img src="./assets/icons/telegram.svg" alt="Telegram">
                                 </a>
                             </li> -->
                             <!-- <li class="social__item">
                                 <a href="#">
-                                    <img src="./static/icons/instagram.svg" alt="Instagram">
+                                    <img src="./assets/icons/instagram.svg" alt="Instagram">
                                 </a>
                             </li> -->
                             <li class="social__item vkontakte">
                                 <a href="https://vk.com/sveta.cosmoluci">
-                                    <img src="static/icons/vk.svg" alt="VK">
+                                    <img src="assets/icons/vk.svg" alt="VK">
                                 </a>
                             </li>
                         </ul>
@@ -94,39 +95,39 @@
                                     <div class="select-custom-option" data-value="2021">2021</div>
                                     <div class="select-custom-option" data-value="2023">2023</div>
                                 </div>
-                                <img src="static/icons/chevron-down.svg" class="select-arrow">
+                                <img src="assets/icons/chevron-down.svg" class="select-arrow">
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Gallery -->
-                <div class="gallery__pictures">
-                    <a href="gallery-item.html?picture=landscape-2023" class="gallery__picture-link">
+                <div id="gallery-container" class="gallery__pictures">
+                    <a href="artwork.html?picture=landscape-2023" class="gallery__picture-link">
                         <picture class="gallery__picture picture picture_gallery" data-type="landscape" data-year="2023">
                             <source media="(min-width: 1200px)" srcset="img/landscape-2023.jpg">
                             <img src="img/landscape-2023.jpg" loading="lazy" alt="Landscape 2023">
                         </picture>
                     </a>
-                    <a href="gallery-item.html?picture=portrait-2022" class="gallery__picture-link">
+                    <a href="artwork.html?picture=portrait-2022" class="gallery__picture-link">
                         <picture class="gallery__picture picture picture_gallery" data-type="portrait" data-year="2022">
                             <source media="(min-width: 1200px)" srcset="img/portrait-2022.jpg">
                             <img src="img/portrait-2022.jpg" loading="lazy" alt="Portrait 2022">
                         </picture>
                     </a>
-                    <a href="gallery-item.html?picture=abstract-2021" class="gallery__picture-link">
+                    <a href="artwork.html?picture=abstract-2021" class="gallery__picture-link">
                         <picture class="gallery__picture picture picture_gallery" data-type="abstract" data-year="2021">
                             <source media="(min-width: 1200px)" srcset="img/abstract-2021.jpg">
                             <img src="img/abstract-2021.jpg" loading="lazy" alt="Abstract 2021">
                         </picture>
                     </a>
-                    <a href="gallery-item.html?picture=still-life-2023" class="gallery__picture-link">
+                    <a href="artwork.html?picture=still-life-2023" class="gallery__picture-link">
                         <picture class="gallery__picture picture picture_gallery" data-type="still-life" data-year="2023">
                             <source media="(min-width: 1200px)" srcset="img/still-life-2023.jpg">
                             <img src="img/naturmortes-2023.jpg" loading="lazy" alt="Still-life 2023">
                         </picture>
                     </a>
-                    <a href="gallery-item.html?picture=copies-2023" class="gallery__picture-link">
+                    <a href="artwork.html?picture=copies-2023" class="gallery__picture-link">
                         <picture class="gallery__picture picture picture_gallery" data-type="copy" data-year="2023">
                             <source media="(min-width: 1200px)" srcset="img/copies-2023.jpg">
                             <img src="img/copies-2023.jpg" loading="lazy" alt="Copies 2023">
