@@ -19,9 +19,9 @@ cosmoluci_dev.dump
 database.sql
 
 /postgres_data/
+data.sql
 
 *.dump
-*.sql
 *.sqlite
 *.sqlite3
 *.db
