@@ -14,14 +14,14 @@ async function loadGallery() {
             const picture = document.createElement("picture");
             picture.classList.add("gallery__picture", "picture", "picture_gallery");
             picture.dataset.type = artwork.type;
-            picture.dataset.year = artwork.year;
+            picture.dataset.year = artwork.creation_year;
 
             const source = document.createElement("source");
             source.media = "(min-width: 1200px)";
             source.srcset = artwork.image_large;
             
             const img = document.createElement("img");
-            img.src = artwork.image_small;
+            img.src = artwork.image_path;
             img.alt = artwork.title;
             img.loading = "lazy";
 
