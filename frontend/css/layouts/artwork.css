@@ -11,8 +11,8 @@ body {
 }
 
 .painting__wrapper {
-    width: 50%;
-    margin-bottom: 5em;
+    max-width: 50%;
+    margin-bottom: 2em;
     /* height: 100%;
     object-fit: cover; */
 }
@@ -29,5 +29,5 @@ body {
 
 .painting__description {
     flex: 1;
-    max-width: 75%;
+    max-width: 50%;
 }

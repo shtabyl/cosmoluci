@@ -39,11 +39,11 @@ VALUES
 
 INSERT INTO genres (name)
 VALUES
-    ('Портрет'),
-    ('Пейзаж'),
-    ('Натюрморт'),
-    ('Абстракция'),
-    ('Ню');
+    ('portrait'),
+    ('landscape'),
+    ('still-life'),
+    ('abstract'),
+    ('nude');
 
 INSERT INTO owners (country, owner_type)
 VALUES
