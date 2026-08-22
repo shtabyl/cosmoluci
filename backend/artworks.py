@@ -1,6 +1,9 @@
 from fastapi import HTTPException
 from database import get_connection
 from images import get_artwork_images
+from pathlib import Path
+
+STORAGE_PATH = Path("../storage/artworks")
 
 def get_artwork(artwork_id: int):
     query = """
@@ -159,3 +162,65 @@ def get_artworks():
         }
         for row in rows
     ]
+
+
+def create_artwork(data):
+    query_painting = """
+        INSERT INTO paintings (
+            title,
+            slug,
+            creation_year,
+            description,
+            height_cm,
+            width_cm,
+            medium_id,
+            surface_id,
+            status_id,
+            owner_id,
+            price,
+            currency,
+            catalog_number,
+            is_copy,
+            is_published
+        )
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, FALSE)
+        RETURNING id;
+    """
+
+    query_genres = """
+        INSERT INTO painting_genres (painting_id, genre_id)
+        VALUES (%s, %s);
+    """
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(query_painting, (
+                data.title,
+                data.slug,
+                data.creation_year,
+                data.description,
+                data.height_cm,
+                data.width_cm,
+                data.medium_id,
+                data.surface_id,
+                data.status_id,
+                data.owner_id,
+                data.price,
+                data.currency,
+                data.catalog_number,
+                data.is_copy
+            ))
+            artwork_id = cur.fetchone()[0]
+
+            if hasattr(data, 'genre_ids') and data.genre_ids:
+                genre_data = [(artwork_id, genre_id) for genre_id in data.genre_ids]
+                cur.executemany(query_genres, genre_data)
+
+            conn.commit()
+
+    artwork_path = STORAGE_PATH / str(artwork_id)
+
+    (artwork_path / "original").mkdir(parents=True, exist_ok=True)
+    (artwork_path / "web").mkdir(parents=True, exist_ok=True)
+
+    return artwork_id
