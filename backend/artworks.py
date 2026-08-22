@@ -224,3 +224,71 @@ def create_artwork(data):
     (artwork_path / "web").mkdir(parents=True, exist_ok=True)
 
     return artwork_id
+
+
+def update_artwork(artwork_id: int, data):
+    query_painting = """
+        UPDATE paintings
+        SET
+            title = %s,
+            slug = %s,
+            creation_year = %s,
+            description = %s,
+            height_cm = %s,
+            width_cm = %s,
+            medium_id = %s,
+            surface_id = %s,
+            status_id = %s,
+            owner_id = %s,
+            price = %s,
+            currency = %s,
+            catalog_number = %s,
+            is_copy = %s,
+            is_published = %s
+        WHERE id = %s
+        RETURNING id;
+    """
+
+    query_delete_genres = "DELETE FROM painting_genres WHERE painting_id = %s;"
+    query_insert_genre = "INSERT INTO painting_genres (painting_id, genre_id) VALUES (%s, %s);"
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                query_painting,
+                (
+                    data.title,
+                    data.slug,
+                    data.creation_year,
+                    data.description,
+                    data.height_cm,
+                    data.width_cm,
+                    data.medium_id,
+                    data.surface_id,
+                    data.status_id,
+                    data.owner_id,
+                    data.price,
+                    data.currency,
+                    data.catalog_number,
+                    data.is_copy,
+                    data.is_published,
+                    artwork_id,
+                )
+            )
+
+            result = cur.fetchone()
+
+            if not result:
+                return None
+
+            # Шаг 2: Удаляем старые привязки жанров
+            cur.execute(query_delete_genres, (artwork_id,))
+
+            # Шаг 3: Записываем новые жанры (если они переданы в data.genre_ids)
+            if hasattr(data, 'genre_ids') and data.genre_ids:
+                genre_data = [(artwork_id, genre_id) for genre_id in data.genre_ids]
+                cur.executemany(query_insert_genre, genre_data)
+
+        conn.commit()
+
+    return result[0]
