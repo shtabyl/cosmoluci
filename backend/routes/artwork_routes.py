@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from artworks import get_admin_artwork, get_admin_artworks, get_artworks, get_artwork, create_artwork, update_artwork
+from artworks import get_admin_artwork, get_admin_artworks, get_artworks, get_artwork, create_artwork, update_artwork, get_reference_data
 from pydantic import BaseModel, Field
 from typing import List, Optional
 
@@ -99,3 +99,7 @@ def get_admin_artwork_endpoint(artwork_id: int):
         )
 
     return artwork
+
+@router.get("/admin/reference-data")
+def get_reference_data_endpoint():
+    return get_reference_data()

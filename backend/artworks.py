@@ -356,3 +356,55 @@ def get_admin_artwork(artwork_id):
         artwork["currency"] = admin_data[3]
 
     return artwork
+
+
+def get_reference_data():
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+
+            cur.execute("""
+                SELECT id, name
+                FROM mediums
+                ORDER BY name;
+            """)
+            mediums = [
+                {"id": row[0], "name": row[1]}
+                for row in cur.fetchall()
+            ]
+
+            cur.execute("""
+                SELECT id, name
+                FROM surfaces
+                ORDER BY name;
+            """)
+            surfaces = [
+                {"id": row[0], "name": row[1]}
+                for row in cur.fetchall()
+            ]
+
+            cur.execute("""
+                SELECT id, name
+                FROM statuses
+                ORDER BY name;
+            """)
+            statuses = [
+                {"id": row[0], "name": row[1]}
+                for row in cur.fetchall()
+            ]
+
+            cur.execute("""
+                SELECT id, name
+                FROM genres
+                ORDER BY name;
+            """)
+            genres = [
+                {"id": row[0], "name": row[1]}
+                for row in cur.fetchall()
+            ]
+
+    return {
+        "mediums": mediums,
+        "surfaces": surfaces,
+        "statuses": statuses,
+        "genres": genres
+    }
