@@ -292,3 +292,67 @@ def update_artwork(artwork_id: int, data):
         conn.commit()
 
     return result[0]
+
+
+def get_admin_artworks():
+    query = """
+        SELECT
+            p.id,
+            p.title,
+            p.creation_year,
+            p.is_published,
+            p.is_copy,
+            s.name AS status
+        FROM paintings p
+        JOIN statuses s ON s.id = p.status_id
+        ORDER BY p.id DESC;
+    """
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(query)
+            rows = cur.fetchall()
+
+    return [
+        {
+            "id": row[0],
+            "title": row[1],
+            "creation_year": row[2],
+            "is_published": row[3],
+            "is_copy": row[4],
+            "status": row[5],
+        }
+        for row in rows
+    ]
+
+def get_admin_artwork(artwork_id):
+    artwork = get_artwork(artwork_id)
+
+    if artwork is None:
+        return None
+
+    # Здесь добавляем административные данные
+    # Например, можно добавить информацию о владельце, цене и валюте, номере в каталоге, slug, жанре
+    query_admin = """
+        SELECT
+            p.catalog_number,
+            p.slug,
+            p.price,
+            p.currency
+        FROM paintings p
+        LEFT JOIN painting_genres pg ON p.id = pg.painting_id
+        WHERE p.id = %s
+    """
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(query_admin, (artwork_id,))
+            admin_data = cur.fetchone()
+
+    if admin_data:
+        artwork["catalog_number"] = admin_data[0]
+        artwork["slug"] = admin_data[1]
+        artwork["price"] = admin_data[2]
+        artwork["currency"] = admin_data[3]
+
+    return artwork

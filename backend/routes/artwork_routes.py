@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from artworks import get_artworks, get_artwork, create_artwork, update_artwork
+from artworks import get_admin_artwork, get_admin_artworks, get_artworks, get_artwork, create_artwork, update_artwork
 from pydantic import BaseModel, Field
 from typing import List, Optional
 
@@ -83,3 +83,19 @@ def update_artwork_endpoint(artwork_id: int, data: ArtworkUpdate):
     return {
         "id": updated_id
     }
+
+@router.get("/admin/artworks")
+def get_admin_artworks_endpoint():
+    return get_admin_artworks()
+
+@router.get("/admin/artworks/{artwork_id}")
+def get_admin_artwork_endpoint(artwork_id: int):
+    artwork = get_admin_artwork(artwork_id)
+
+    if artwork is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Artwork not found"
+        )
+
+    return artwork
