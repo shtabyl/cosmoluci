@@ -326,36 +326,64 @@ def get_admin_artworks():
     ]
 
 def get_admin_artwork(artwork_id):
-    artwork = get_artwork(artwork_id)
-
-    if artwork is None:
-        return None
-
-    # Здесь добавляем административные данные
-    # Например, можно добавить информацию о владельце, цене и валюте, номере в каталоге, slug, жанре
-    query_admin = """
+    query = """
         SELECT
+            p.id,
+            p.title,
+            p.creation_year,
+            p.description,
+            p.height_cm,
+            p.width_cm,
+            p.is_copy,
+            p.is_published,
+            m.name AS medium,
+            s.name AS surface,
+            st.name AS status,
             p.catalog_number,
             p.slug,
             p.price,
             p.currency
         FROM paintings p
-        LEFT JOIN painting_genres pg ON p.id = pg.painting_id
-        WHERE p.id = %s
+        LEFT JOIN mediums m
+            ON p.medium_id = m.id
+        LEFT JOIN surfaces s
+            ON p.surface_id = s.id
+        JOIN statuses st
+            ON p.status_id = st.id
+        WHERE p.id = %s;
     """
 
     with get_connection() as conn:
         with conn.cursor() as cur:
-            cur.execute(query_admin, (artwork_id,))
-            admin_data = cur.fetchone()
+            cur.execute(query, (artwork_id,))
+            row = cur.fetchone()
 
-    if admin_data:
-        artwork["catalog_number"] = admin_data[0]
-        artwork["slug"] = admin_data[1]
-        artwork["price"] = admin_data[2]
-        artwork["currency"] = admin_data[3]
+    if row is None:
+        raise HTTPException(status_code=404, detail="Artwork not found")
 
-    return artwork
+    images = get_artwork_images(artwork_id)
+    genres = get_artwork_genres(artwork_id)
+
+    return {
+        "id": row[0],
+        "title": row[1],
+        "creation_year": row[2],
+        "description": row[3],
+        "height_cm": float(row[4]) if row[4] is not None else None,
+        "width_cm": float(row[5]) if row[5] is not None else None,
+        "is_copy": row[6],
+        "is_published": row[7],
+        "medium": row[8],
+        "surface": row[9],
+        "status": row[10],
+        # Новые объединенные поля:
+        "catalog_number": row[11],
+        "slug": row[12],
+        "price": float(row[13]) if row[14] is not None else None,
+        "currency": row[14],
+        "genres": genres,
+        "images": images
+    }
 
 
 def get_reference_data():

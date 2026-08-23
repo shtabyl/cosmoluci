@@ -1,4 +1,9 @@
 from database import get_connection
+from PIL import Image
+from io import BytesIO
+from fastapi import HTTPException, UploadFile
+
+ALLOWED_FORMATS = { "JPEG", "PNG" }
 
 def get_artwork_images(painting_id):
     query = """
@@ -55,3 +60,33 @@ def get_artwork_images(painting_id):
         })
 
     return list(images.values())
+
+
+async def validate_image(image: UploadFile) -> dict:
+    contents = await image.read()
+
+    try:
+        img = Image.open(BytesIO(contents))
+        img.verify()
+
+        # После verify() изображение нужно открыть заново
+        img = Image.open(BytesIO(contents))
+
+    except Exception:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid image file"
+        )
+
+    if img.format not in ALLOWED_FORMATS:
+        raise HTTPException(
+            status_code=400,
+            detail="Only JPEG and PNG images are supported"
+        )
+
+    return {
+        "filename": image.filename,
+        "format": img.format,
+        "width": img.width,
+        "height": img.height
+    }

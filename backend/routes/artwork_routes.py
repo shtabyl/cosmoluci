@@ -1,7 +1,10 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, File, UploadFile, Form
 from artworks import get_admin_artwork, get_admin_artworks, get_artworks, get_artwork, create_artwork, update_artwork, get_reference_data
 from pydantic import BaseModel, Field
 from typing import List, Optional
+from PIL import Image
+from io import BytesIO
+from images import validate_image
 
 router = APIRouter(prefix="/api", tags=["artworks"])
 
@@ -103,3 +106,25 @@ def get_admin_artwork_endpoint(artwork_id: int):
 @router.get("/admin/reference-data")
 def get_reference_data_endpoint():
     return get_reference_data()
+
+
+@router.post("/admin/artworks/{artwork_id}/images")
+async def upload_artwork_image(artwork_id: int,
+    image: UploadFile = File(...),
+    image_type: str = Form(...)
+):
+    artwork = get_admin_artwork(artwork_id)
+
+    if artwork is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Artwork not found"
+        )
+
+    image_data = await validate_image(image)()
+
+    return {
+        "artwork_id": artwork_id,
+        "image_type": image_type,
+        **image_data
+    }
