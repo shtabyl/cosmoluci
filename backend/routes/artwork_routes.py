@@ -2,9 +2,7 @@ from fastapi import APIRouter, HTTPException, File, UploadFile, Form
 from artworks import get_admin_artwork, get_admin_artworks, get_artworks, get_artwork, create_artwork, update_artwork, get_reference_data
 from pydantic import BaseModel, Field
 from typing import List, Optional
-from PIL import Image
-from io import BytesIO
-from images import validate_image
+from images import validate_image, save_artwork_image, generate_webp_variants
 
 router = APIRouter(prefix="/api", tags=["artworks"])
 
@@ -121,10 +119,27 @@ async def upload_artwork_image(artwork_id: int,
             detail="Artwork not found"
         )
 
-    image_data = await validate_image(image)()
+    image_data = await validate_image(image)
+
+    file_path = save_artwork_image(
+        image_data["contents"],
+        artwork_id,
+        image_data["filename"],
+    )
+
+    variants = generate_webp_variants(
+        image_data["contents"],
+        artwork_id,
+        image_data["filename"]
+    )
 
     return {
         "artwork_id": artwork_id,
         "image_type": image_type,
-        **image_data
+        "filename": image_data["filename"],
+        "format": image_data["format"],
+        "width": image_data["width"],
+        "height": image_data["height"],
+        "file_path": file_path,
+        "variants": variants
     }

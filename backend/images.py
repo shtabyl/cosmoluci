@@ -2,8 +2,11 @@ from database import get_connection
 from PIL import Image
 from io import BytesIO
 from fastapi import HTTPException, UploadFile
+from pathlib import Path
 
 ALLOWED_FORMATS = { "JPEG", "PNG" }
+STORAGE_PATH = Path("../storage/artworks")
+WEBP_SIZES = [400, 800, 1200]
 
 def get_artwork_images(painting_id):
     query = """
@@ -88,5 +91,69 @@ async def validate_image(image: UploadFile) -> dict:
         "filename": image.filename,
         "format": img.format,
         "width": img.width,
-        "height": img.height
+        "height": img.height,
+        "contents": contents
     }
+
+def save_artwork_image(
+        contents: bytes,
+        artwork_id: int,
+        filename: str
+) -> str:
+    artwork_path = STORAGE_PATH / str(artwork_id) / "original"
+    artwork_path.mkdir(parents=True, exist_ok=True)
+
+    file_path = artwork_path / filename
+
+    file_path.write_bytes(contents)
+
+    return str(file_path)
+
+
+def generate_webp_variants(
+        contents: bytes,
+        artwork_id: int,
+        image_name: str
+) -> list[dict]:
+
+    image_name = Path(image_name).stem
+
+    output_dir = (
+        STORAGE_PATH
+        / str(artwork_id)
+        / "web"
+        / image_name
+    )
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    img = Image.open(BytesIO(contents))
+
+    variants = []
+
+    for size in WEBP_SIZES:
+
+        # Не увеличиваем маленькое изображение
+        if img.width <= size:
+            variant = img.copy()
+        else:
+            variant = img.copy()
+            variant.thumbnail((size, size))
+
+        output_path = output_dir / f"{size}.webp"
+
+        variant.save(
+            output_path,
+            "WEBP",
+            quality=85,
+            method=6
+        )
+
+        variants.append({
+            "width": variant.width,
+            "height": variant.height,
+            "format": "webp",
+            "file_path": str(output_path)
+        })
+
+    return variants
