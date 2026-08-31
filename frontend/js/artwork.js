@@ -8,42 +8,58 @@ async function loadArtwork() {
         console.error("Artwork ID not found in URL");
         return;
     }
-    
+
     try {
         const artwork = await getArtwork(artworkId);
 
-        const paintingTitle = document.querySelector("#painting-title");
-        paintingTitle.textContent = artwork.title;
+        // Текстовые данные
+        document.querySelector("#painting-title").textContent = artwork.title;
 
-        const paintingStatus = document.querySelector("#painting-status");
-        paintingStatus.textContent = artwork.status;
+        document.querySelector("#painting-status").textContent = artwork.status;
 
-        const paintingSupport = document.querySelector("#painting-support");
-        paintingSupport.textContent = artwork.surface + ", " + artwork.medium.toLowerCase();
+        document.querySelector("#painting-support").textContent =
+            artwork.surface + ", " + artwork.medium.toLowerCase();
 
-        const paintingYear = document.querySelector("#painting-year");
-        paintingYear.textContent = artwork.creation_year;
+        document.querySelector("#painting-year").textContent =
+            artwork.creation_year;
 
-        const paintingDescription = document.querySelector("#painting-description");
-        paintingDescription.textContent = artwork.description;
-        
+        document.querySelector("#painting-description").textContent =
+            artwork.description;
+
+        // Picture
         const picture = document.querySelector("#painting-image");
+
         picture.dataset.type = artwork.genres;
         picture.dataset.year = artwork.creation_year;
 
-        const mainImage = artwork.images.find(image => image.is_main);
-        const variants = mainImage.variants;
-        const webpVariants = variants.filter(variant => variant.format === "webp");
-        const jpegVariants = variants.filter(variant => variant.format === "jpeg");
+        // Главное изображение
+        const mainImage = artwork.images?.find(image => image.is_main);
 
+        if (!mainImage) {
+            console.error("Main image not found");
+            return;
+        }
+
+        const variants = mainImage.variants ?? [];
+
+        // Только WebP для отображения
+        const webpVariants = variants
+            .filter(variant => variant.format === "webp")
+            .sort((a, b) => a.width - b.width);
+
+        if (webpVariants.length === 0) {
+            console.error("WebP variants not found");
+            return;
+        }
+
+        // srcset
         const srcset = webpVariants
-            .sort((a, b) => a.width - b.width)
             .map(variant => `${variant.file_path} ${variant.width}w`)
             .join(", ");
 
-        const fallback = jpegVariants.sort((a, b) => b.width - a.width)[0];
-
+        // <source>
         const source = document.createElement("source");
+
         source.type = "image/webp";
         source.srcset = srcset;
 
@@ -52,19 +68,29 @@ async function loadArtwork() {
             (min-width: 768px) 33vw,
             50vw
         `;
-        
+
+        // <img>
         const img = document.createElement("img");
-        img.src = fallback.file_path;
-        img.alt = mainImage.alt || artwork.title;
+
+        // Самая большая WebP как fallback внутри img
+        img.src = webpVariants[webpVariants.length - 1].file_path;
+
+        img.srcset = srcset;
+        img.sizes = source.sizes;
+
+        img.alt = mainImage.alt_text || artwork.title;
+
         img.loading = "lazy";
+
+        // Очищаем picture перед добавлением
+        picture.innerHTML = "";
 
         picture.appendChild(source);
         picture.appendChild(img);
 
     } catch (error) {
-        console.error(error);
+        console.error("Failed to load artwork:", error);
     }
-
 }
 
 loadArtwork();
