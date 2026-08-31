@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, File, UploadFile, Form
 from artworks import get_admin_artwork, get_admin_artworks, get_artworks, get_artwork, create_artwork, update_artwork, get_reference_data
 from pydantic import BaseModel, Field
 from typing import List, Optional
-from images import validate_image, save_artwork_image, generate_webp_variants
+from images import validate_image, save_artwork_image, generate_webp_variants, save_image_metadata
 
 router = APIRouter(prefix="/api", tags=["artworks"])
 
@@ -85,9 +85,11 @@ def update_artwork_endpoint(artwork_id: int, data: ArtworkUpdate):
         "id": updated_id
     }
 
+
 @router.get("/admin/artworks")
 def get_admin_artworks_endpoint():
     return get_admin_artworks()
+
 
 @router.get("/admin/artworks/{artwork_id}")
 def get_admin_artwork_endpoint(artwork_id: int):
@@ -101,16 +103,19 @@ def get_admin_artwork_endpoint(artwork_id: int):
 
     return artwork
 
+
 @router.get("/admin/reference-data")
 def get_reference_data_endpoint():
     return get_reference_data()
 
 
 @router.post("/admin/artworks/{artwork_id}/images")
-async def upload_artwork_image(artwork_id: int,
+async def upload_artwork_image(
+    artwork_id: int,
     image: UploadFile = File(...),
     image_type: str = Form(...)
 ):
+    # 1. Проверяем существование картины
     artwork = get_admin_artwork(artwork_id)
 
     if artwork is None:
@@ -119,27 +124,48 @@ async def upload_artwork_image(artwork_id: int,
             detail="Artwork not found"
         )
 
+    # 2. Проверяем изображение
     image_data = await validate_image(image)
 
-    file_path = save_artwork_image(
-        image_data["contents"],
-        artwork_id,
-        image_data["filename"],
+    # Определяем расширение оригинала
+    if image_data["format"] == "JPEG":
+        file_extension = "jpeg"
+    else:
+        file_extension = "png"
+
+    # 3. Сохраняем оригинал
+    original_path = save_artwork_image(
+        contents=image_data["contents"],
+        artwork_id=artwork_id,
+        image_type=image_type,
+        file_extension=file_extension
     )
 
+    # 4. Генерируем WebP
     variants = generate_webp_variants(
-        image_data["contents"],
-        artwork_id,
-        image_data["filename"]
+        contents=image_data["contents"],
+        artwork_id=artwork_id,
+        image_type=image_type
+    )
+
+    # 5. Записываем metadata в PostgreSQL
+    image_id = save_image_metadata(
+        artwork_id=artwork_id,
+        image_type=image_type,
+        variants=variants,
+        original_path=original_path
     )
 
     return {
         "artwork_id": artwork_id,
+        "image_id": image_id,
         "image_type": image_type,
-        "filename": image_data["filename"],
-        "format": image_data["format"],
-        "width": image_data["width"],
-        "height": image_data["height"],
-        "file_path": file_path,
+        "original": {
+            "format": image_data["format"],
+            "width": image_data["width"],
+            "height": image_data["height"],
+            "file_path": original_path,
+            "file_size": len(image_data["contents"])
+        },
         "variants": variants
     }

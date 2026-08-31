@@ -5,7 +5,7 @@ from fastapi import HTTPException, UploadFile
 from pathlib import Path
 
 ALLOWED_FORMATS = { "JPEG", "PNG" }
-STORAGE_PATH = Path("../storage/artworks")
+STORAGE_PATH = Path("/storage/artworks")
 WEBP_SIZES = [400, 800, 1200]
 
 def get_artwork_images(painting_id):
@@ -88,7 +88,6 @@ async def validate_image(image: UploadFile) -> dict:
         )
 
     return {
-        "filename": image.filename,
         "format": img.format,
         "width": img.width,
         "height": img.height,
@@ -98,10 +97,13 @@ async def validate_image(image: UploadFile) -> dict:
 def save_artwork_image(
         contents: bytes,
         artwork_id: int,
-        filename: str
+        image_type: str,
+        file_extension: str
 ) -> str:
     artwork_path = STORAGE_PATH / str(artwork_id) / "original"
     artwork_path.mkdir(parents=True, exist_ok=True)
+
+    filename = f"{image_type}.{file_extension}"
 
     file_path = artwork_path / filename
 
@@ -113,16 +115,16 @@ def save_artwork_image(
 def generate_webp_variants(
         contents: bytes,
         artwork_id: int,
-        image_name: str
+        image_type: str
 ) -> list[dict]:
 
-    image_name = Path(image_name).stem
+    # image_name = Path(image_name).stem
 
     output_dir = (
         STORAGE_PATH
         / str(artwork_id)
         / "web"
-        / image_name
+        / image_type
     )
 
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -133,11 +135,10 @@ def generate_webp_variants(
 
     for size in WEBP_SIZES:
 
+        variant = img.copy()
+
         # Не увеличиваем маленькое изображение
-        if img.width <= size:
-            variant = img.copy()
-        else:
-            variant = img.copy()
+        if variant.width > size:
             variant.thumbnail((size, size))
 
         output_path = output_dir / f"{size}.webp"
@@ -153,7 +154,78 @@ def generate_webp_variants(
             "width": variant.width,
             "height": variant.height,
             "format": "webp",
-            "file_path": str(output_path)
+            "file_path": str(output_path),
+            "file_size": output_path.stat().st_size
         })
 
     return variants
+
+
+def save_image_metadata(
+    artwork_id: int,
+    image_type: str,
+    variants: list[dict],
+    original_path: str
+) -> int:
+
+    is_main = image_type == "main"
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+
+            # Создаём painting_images
+            cur.execute(
+                """
+                INSERT INTO painting_images (
+                    painting_id,
+                    image_type,
+                    is_main
+                )
+                VALUES (%s, %s, %s)
+                RETURNING id;
+                """,
+                (
+                    artwork_id,
+                    image_type,
+                    is_main
+                )
+            )
+
+            image_id = cur.fetchone()[0]
+
+            # Создаём image_variants
+            for variant in variants:
+
+                cur.execute(
+                    """
+                    INSERT INTO image_variants (
+                        image_id,
+                        width,
+                        height,
+                        format,
+                        file_path,
+                        file_size
+                    )
+                    VALUES (%s, %s, %s, %s, %s, %s);
+                    """,
+                    (
+                        image_id,
+                        variant["width"],
+                        variant["height"],
+                        variant["format"],
+                        variant["file_path"],
+                        variant["file_size"]
+                    )
+                )
+
+        conn.commit()
+
+    return image_id
+
+
+def to_url_path(file_path: str) -> str:
+    path = Path(file_path)
+
+    relative = path.relative_to(STORAGE_PATH)
+
+    return "/images/" + relative.as_posix()
