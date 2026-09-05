@@ -73,6 +73,7 @@ class ArtworkUpdate(BaseModel):
 
     owner_id: Optional[int] = None
 
+    genres: Optional[List[int]] = None
 
 @router.get("/artworks")
 def list_artworks():

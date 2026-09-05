@@ -461,34 +461,68 @@ def update_artwork_fields(artwork_id: int, data: dict) -> Optional[dict]:
         if key in allowed_fields
     }
 
-    if not update_data:
-        return None
-
-    fields = []
-    values = []
-
-    for field, value in update_data.items():
-        fields.append(f"{field} = %s")
-        values.append(value)
-
-    values.append(artwork_id)
-
-    query = f"""
-        UPDATE paintings
-        SET {", ".join(fields)}
-        WHERE id = %s
-        RETURNING id;
-    """
+    genres_provided = "genres" in data
+    genres = data.get("genres")
 
     with get_connection() as conn:
-        with conn.cursor() as cur:
-            cur.execute(query, values)
+            with conn.cursor() as cur:
 
-            row = cur.fetchone()
+                # 1. Проверяем, существует ли картина
+                cur.execute(
+                    """
+                    SELECT id
+                    FROM paintings
+                    WHERE id = %s;
+                    """,
+                    (artwork_id,)
+                )
 
-            if row is None:
-                return None
+                if cur.fetchone() is None:
+                    return None
 
-        conn.commit()
+                # 2. Обновляем обычные поля
+                if update_data:
+
+                    fields = []
+                    values = []
+
+                    for field, value in update_data.items():
+                        fields.append(f"{field} = %s")
+                        values.append(value)
+
+                    values.append(artwork_id)
+
+                    query = f"""
+                        UPDATE paintings
+                        SET {", ".join(fields)}
+                        WHERE id = %s;
+                    """
+
+                    cur.execute(query, values)
+
+                # 3. Обновляем жанры, только если genres передан
+                if genres_provided:
+
+                    cur.execute(
+                        """
+                        DELETE FROM painting_genres
+                        WHERE painting_id = %s;
+                        """,
+                        (artwork_id,)
+                    )
+
+                    for genre_id in genres:
+                        cur.execute(
+                            """
+                            INSERT INTO painting_genres (
+                                painting_id,
+                                genre_id
+                            )
+                            VALUES (%s, %s);
+                            """,
+                            (artwork_id, genre_id)
+                        )
+
+            conn.commit()
 
     return get_admin_artwork(artwork_id)
