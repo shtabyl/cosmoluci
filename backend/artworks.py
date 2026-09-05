@@ -339,8 +339,13 @@ def get_admin_artwork(artwork_id):
             p.is_copy,
             p.is_published,
             m.name AS medium,
+            p.medium_id,
             s.name AS surface,
+            p.surface_id,
             st.name AS status,
+            p.status_id,
+            o.owner_type AS owner,
+            p.owner_id,
             p.catalog_number,
             p.slug,
             p.price,
@@ -350,6 +355,8 @@ def get_admin_artwork(artwork_id):
             ON p.medium_id = m.id
         LEFT JOIN surfaces s
             ON p.surface_id = s.id
+        LEFT JOIN owners o
+            ON p.owner_id = o.id
         JOIN statuses st
             ON p.status_id = st.id
         WHERE p.id = %s;
@@ -376,13 +383,18 @@ def get_admin_artwork(artwork_id):
         "is_copy": row[6],
         "is_published": row[7],
         "medium": row[8],
-        "surface": row[9],
-        "status": row[10],
+        "medium_id": row[9],
+        "surface": row[10],
+        "surface_id": row[11],
+        "status": row[12],
+        "status_id": row[13],
+        "owner": row[14],
+        "owner_id": row[15],
         # Новые объединенные поля:
-        "catalog_number": row[11],
-        "slug": row[12],
-        "price": float(row[13]) if row[14] is not None else None,
-        "currency": row[14],
+        "catalog_number": row[16],
+        "slug": row[17],
+        "price": float(row[18]) if row[18] is not None else None,
+        "currency": row[19],
         "genres": genres,
         "images": images
     }
