@@ -6,8 +6,9 @@ from io import BytesIO
 from fastapi import HTTPException, UploadFile
 from pathlib import Path
 
-ALLOWED_FORMATS = { "JPEG", "PNG" }
-STORAGE_PATH = Path("/storage/artworks")
+ALLOWED_FORMATS = {"JPEG", "PNG"}
+BASE_DIR = Path(__file__).resolve().parent.parent
+STORAGE_PATH = BASE_DIR / "storage" / "artworks"
 WEBP_SIZES = [400, 800, 1200]
 
 def get_artwork_images(painting_id):
@@ -96,40 +97,96 @@ async def validate_image(image: UploadFile) -> dict:
         "contents": contents
     }
 
-def save_artwork_image(
-        contents: bytes,
-        artwork_id: int,
-        image_type: str,
-        file_extension: str
-) -> str:
-    artwork_path = STORAGE_PATH / str(artwork_id) / "original"
-    artwork_path.mkdir(parents=True, exist_ok=True)
 
-    filename = f"{image_type}.{file_extension}"
+def get_next_detail_number(artwork_id: int) -> int:
+    original_dir = (
+        STORAGE_PATH
+        / str(artwork_id)
+        / "original"
+    )
+
+    original_dir.mkdir(
+        parents=True,
+        exist_ok=True
+    )
+
+    number = 1
+
+    while True:
+        jpeg_path = original_dir / f"detail-{number:02d}.jpeg"
+        png_path = original_dir / f"detail-{number:02d}.png"
+
+        if not jpeg_path.exists() and not png_path.exists():
+            return number
+
+        number += 1
+
+
+def storage_url(path: Path) -> str:
+    relative_path = path.relative_to(BASE_DIR)
+    return "/" + relative_path.as_posix()
+
+def storage_path(url_path: str) -> Path:
+    return BASE_DIR / url_path.lstrip("/")
+
+
+def save_artwork_image(
+    contents: bytes,
+    artwork_id: int,
+    image_type: str,
+    file_extension: str
+) -> tuple[str, str]:
+
+    artwork_path = (
+        STORAGE_PATH
+        / str(artwork_id)
+        / "original"
+    )
+
+    artwork_path.mkdir(
+        parents=True,
+        exist_ok=True
+    )
+
+    if image_type == "main":
+        filename = f"main.{file_extension}"
+
+    elif image_type == "detail":
+        detail_number = get_next_detail_number(artwork_id)
+        filename = f"detail-{detail_number:02d}.{file_extension}"
+
+    else:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid image_type"
+        )
 
     file_path = artwork_path / filename
 
     file_path.write_bytes(contents)
 
-    return str(file_path)
+    db_path = storage_url(file_path)
+
+    return db_path, Path(filename).stem
 
 
 def generate_webp_variants(
-        contents: bytes,
-        artwork_id: int,
-        image_type: str
+    contents: bytes,
+    artwork_id: int,
+    image_name: str
 ) -> list[dict]:
-
-    # image_name = Path(image_name).stem
 
     output_dir = (
         STORAGE_PATH
         / str(artwork_id)
         / "web"
-        / image_type
+        / image_name
     )
 
-    output_dir.mkdir(parents=True, exist_ok=True)
+    output_dir.mkdir(
+        parents=True,
+        exist_ok=True
+    )
 
     img = Image.open(BytesIO(contents))
 
@@ -139,11 +196,12 @@ def generate_webp_variants(
 
         variant = img.copy()
 
-        # Не увеличиваем маленькое изображение
         if variant.width > size:
             variant.thumbnail((size, size))
 
-        output_path = output_dir / f"{size}.webp"
+        output_path = (
+            output_dir / f"{size}.webp"
+        )
 
         variant.save(
             output_path,
@@ -152,11 +210,13 @@ def generate_webp_variants(
             method=6
         )
 
+        db_path = storage_url(output_path)
+
         variants.append({
             "width": variant.width,
             "height": variant.height,
             "format": "webp",
-            "file_path": str(output_path),
+            "file_path": db_path,
             "file_size": output_path.stat().st_size
         })
 

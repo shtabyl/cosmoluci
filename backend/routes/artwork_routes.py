@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, File, UploadFile, Form
-from artworks import get_admin_artwork, get_admin_artworks, get_artworks, get_artwork, create_artwork, update_artwork, get_reference_data
+from artworks import get_admin_artwork, get_admin_artworks, get_artworks, get_artwork, create_artwork, update_artwork_full, get_reference_data, update_artwork_fields
 from pydantic import BaseModel, Field
 from typing import List, Optional
 from database import get_connection
@@ -77,7 +77,7 @@ def create_artwork_endpoint(data: ArtworkCreate):
 
 @router.put("/admin/artworks/{artwork_id}")
 def update_artwork_endpoint(artwork_id: int, data: ArtworkUpdate):
-    updated_id = update_artwork(artwork_id, data)
+    updated_id = update_artwork_full(artwork_id, data)
 
     if updated_id is None:
         raise HTTPException(status_code=404, detail="Artwork not found")
@@ -116,7 +116,6 @@ async def upload_artwork_image(
     image: UploadFile = File(...),
     image_type: str = Form(...)
 ):
-    # 1. Проверяем существование картины
     artwork = get_admin_artwork(artwork_id)
 
     if artwork is None:
@@ -125,34 +124,32 @@ async def upload_artwork_image(
             detail="Artwork not found"
         )
 
-    # 2. Проверяем изображение
     image_data = await validate_image(image)
 
-    # Определяем расширение оригинала
     if image_data["format"] == "JPEG":
         file_extension = "jpeg"
     else:
         file_extension = "png"
 
-    # 3. Сохраняем оригинал
-    original_path = save_artwork_image(
+    # Сохраняем оригинал
+    original_path, image_name = save_artwork_image(
         contents=image_data["contents"],
         artwork_id=artwork_id,
         image_type=image_type,
         file_extension=file_extension
     )
 
-    # 4. Генерируем WebP
+    # Генерируем WebP
     variants = generate_webp_variants(
         contents=image_data["contents"],
         artwork_id=artwork_id,
-        image_type=image_type
+        image_name=image_name
     )
 
-    # 5. Записываем metadata в PostgreSQL
+    # Сохраняем metadata
     image_id = save_image_metadata(
         artwork_id=artwork_id,
-        image_type=image_type,
+        image_type=image_name,
         variants=variants,
         original_path=original_path
     )
@@ -160,7 +157,7 @@ async def upload_artwork_image(
     return {
         "artwork_id": artwork_id,
         "image_id": image_id,
-        "image_type": image_type,
+        "image_type": image_name,
         "original": {
             "format": image_data["format"],
             "width": image_data["width"],
