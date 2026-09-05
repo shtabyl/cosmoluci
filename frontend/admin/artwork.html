@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/admin.css">
+    <script type="module" src="scripts/artwork.js" defer></script>
+    <title>Admin painting</title>
+</head>
+<body>
+    
+    <main class="admin">
+
+        <header class="admin__header">
+            <h1 class="title">Редактирование картины</h1>
+
+            <button class="button">
+                <a href="index.html">К списку картин</a>
+            </button>
+        </header>
+
+        <form id="artwork-form" class="admin-form">
+
+            <label>
+                Название
+                <input
+                    type="text"
+                    id="title"
+                    name="title"
+                >
+            </label>
+
+            <label>
+                Год
+                <input
+                    type="number"
+                    id="creation-year"
+                    name="creation_year"
+                >
+            </label>
+
+            <label>
+                Описание
+                <textarea
+                    id="description"
+                    name="description"
+                ></textarea>
+            </label>
+
+            <label>
+                Высота, см
+                <input
+                    type="number"
+                    step="0.1"
+                    id="height"
+                    name="height_cm"
+                >
+            </label>
+
+            <label>
+                Ширина, см
+                <input
+                    type="number"
+                    step="0.1"
+                    id="width"
+                    name="width_cm"
+                >
+            </label>
+
+            <button type="submit" class="button">
+                Сохранить
+            </button>
+
+        </form>
+
+    </main>
+</body>
+</html>
