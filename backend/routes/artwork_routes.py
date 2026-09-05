@@ -31,7 +31,7 @@ class ArtworkCreate(BaseModel):
     is_copy: bool = False
     is_published: bool = False
 
-class ArtworkUpdate(BaseModel):
+class ArtworkUpdateFull(BaseModel):
     title: str
     slug: str
     creation_year: int
@@ -56,6 +56,23 @@ class ArtworkUpdate(BaseModel):
     is_published: bool = False
 
 
+class ArtworkUpdate(BaseModel):
+    title: Optional[str] = None
+    creation_year: Optional[int] = None
+    description: Optional[str] = None
+
+    height_cm: Optional[float] = None
+    width_cm: Optional[float] = None
+
+    medium_id: Optional[int] = None
+    surface_id: Optional[int] = None
+    status_id: Optional[int] = None
+
+    is_copy: Optional[bool] = None
+    is_published: Optional[bool] = None
+
+    owner_id: Optional[int] = None
+
 
 @router.get("/artworks")
 def list_artworks():
@@ -76,7 +93,7 @@ def create_artwork_endpoint(data: ArtworkCreate):
 
 
 @router.put("/admin/artworks/{artwork_id}")
-def update_artwork_endpoint(artwork_id: int, data: ArtworkUpdate):
+def update_artwork_endpoint(artwork_id: int, data: ArtworkUpdateFull):
     updated_id = update_artwork_full(artwork_id, data)
 
     if updated_id is None:
@@ -212,3 +229,22 @@ def delete_artwork_image(image_id: int):
         "success": True,
         "image_id": image_id
     }
+
+
+@router.patch("/admin/artworks/{artwork_id}")
+def patch_artwork(
+    artwork_id: int,
+    artwork: ArtworkUpdate
+):
+    updated_artwork = update_artwork_fields(
+        artwork_id,
+        artwork.model_dump(exclude_unset=True)
+    )
+
+    if updated_artwork is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Artwork not found"
+        )
+
+    return updated_artwork

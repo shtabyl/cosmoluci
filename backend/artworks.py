@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import HTTPException
 from database import get_connection
 from images import get_artwork_images
@@ -226,7 +228,7 @@ def create_artwork(data):
     return artwork_id
 
 
-def update_artwork(artwork_id: int, data):
+def update_artwork_full(artwork_id: int, data):
     query_painting = """
         UPDATE paintings
         SET
@@ -436,3 +438,57 @@ def get_reference_data():
         "statuses": statuses,
         "genres": genres
     }
+
+
+def update_artwork_fields(artwork_id: int, data: dict) -> Optional[dict]:
+    allowed_fields = {
+        "title",
+        "creation_year",
+        "description",
+        "height_cm",
+        "width_cm",
+        "medium_id",
+        "surface_id",
+        "status_id",
+        "owner_id",
+        "is_copy",
+        "is_published",
+    }
+
+    update_data = {
+        key: value
+        for key, value in data.items()
+        if key in allowed_fields
+    }
+
+    if not update_data:
+        return None
+
+    fields = []
+    values = []
+
+    for field, value in update_data.items():
+        fields.append(f"{field} = %s")
+        values.append(value)
+
+    values.append(artwork_id)
+
+    query = f"""
+        UPDATE paintings
+        SET {", ".join(fields)}
+        WHERE id = %s
+        RETURNING id;
+    """
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(query, values)
+
+            row = cur.fetchone()
+
+            if row is None:
+                return None
+
+        conn.commit()
+
+    return get_admin_artwork(artwork_id)
