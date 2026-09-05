@@ -2,7 +2,8 @@ from fastapi import APIRouter, HTTPException, File, UploadFile, Form
 from artworks import get_admin_artwork, get_admin_artworks, get_artworks, get_artwork, create_artwork, update_artwork, get_reference_data
 from pydantic import BaseModel, Field
 from typing import List, Optional
-from images import validate_image, save_artwork_image, generate_webp_variants, save_image_metadata
+from database import get_connection
+from images import validate_image, save_artwork_image, generate_webp_variants, save_image_metadata, get_image_for_delete, delete_image_files
 
 router = APIRouter(prefix="/api", tags=["artworks"])
 
@@ -168,4 +169,49 @@ async def upload_artwork_image(
             "file_size": len(image_data["contents"])
         },
         "variants": variants
+    }
+
+@router.delete("/admin/images/{image_id}")
+def delete_artwork_image(image_id: int):
+
+    image = get_image_for_delete(image_id)
+
+    if image is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Image not found"
+        )
+
+    # Нельзя удалить main,
+    # если это единственное главное изображение.
+    # Пока просто запрещаем.
+    if image["image_type"] == "main":
+
+        raise HTTPException(
+            status_code=400,
+            detail="Main image cannot be deleted"
+        )
+
+    delete_image_files(
+        painting_id=image["painting_id"],
+        image_type=image["image_type"],
+        variant_paths=image["files"]
+    )
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+
+            cur.execute(
+                """
+                DELETE FROM painting_images
+                WHERE id = %s;
+                """,
+                (image_id,)
+            )
+
+        conn.commit()
+
+    return {
+        "success": True,
+        "image_id": image_id
     }

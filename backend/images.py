@@ -1,3 +1,5 @@
+from typing import Optional
+
 from database import get_connection
 from PIL import Image
 from io import BytesIO
@@ -229,3 +231,83 @@ def to_url_path(file_path: str) -> str:
     relative = path.relative_to(STORAGE_PATH)
 
     return "/images/" + relative.as_posix()
+
+
+def get_image_for_delete(image_id: int) -> Optional[dict]:
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+
+            cur.execute(
+                """
+                SELECT
+                    pi.id,
+                    pi.painting_id,
+                    pi.image_type,
+                    iv.file_path
+                FROM painting_images pi
+                LEFT JOIN image_variants iv
+                    ON iv.image_id = pi.id
+                WHERE pi.id = %s;
+                """,
+                (image_id,)
+            )
+
+            rows = cur.fetchall()
+
+    if not rows:
+        return None
+
+    return {
+        "image_id": rows[0][0],
+        "painting_id": rows[0][1],
+        "image_type": rows[0][2],
+        "files": [
+            row[3]
+            for row in rows
+            if row[3]
+        ]
+    }
+
+
+def delete_image_files(
+    painting_id: int,
+    image_type: str,
+    variant_paths: list[str]
+) -> None:
+
+    # Удаляем original
+    original_dir = (
+        STORAGE_PATH
+        / str(painting_id)
+        / "original"
+    )
+
+    for extension in ("jpeg", "jpg", "png"):
+
+        original_path = (
+            original_dir
+            / f"{image_type}.{extension}"
+        )
+
+        if original_path.exists():
+            original_path.unlink()
+
+    # Удаляем WebP
+    for file_path in variant_paths:
+
+        path = storage_path(file_path)
+
+        if path.exists():
+            path.unlink()
+
+    # Удаляем пустую директорию WebP
+    web_dir = (
+        STORAGE_PATH
+        / str(painting_id)
+        / "web"
+        / image_type
+    )
+
+    if web_dir.exists() and not any(web_dir.iterdir()):
+        web_dir.rmdir()
