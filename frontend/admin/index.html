@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin — Catalog</title>
+
+    <link rel="stylesheet" href="styles/admin.css">
+    <script type="module" src="scripts/admin.js" defer></script>
+</head>
+
+<body>
+
+    <main class="admin container">
+
+        <header class="admin__header">
+            <h1 class="title">Картины</h1>
+
+            <button id="create-artwork" class="button">
+                Добавить картину
+            </button>
+        </header>
+
+        <div class="admin-list admin-row artwork-list-titles">
+            <div class="artwork-list-title">ID</div>
+            <div class="artwork-list-title">Название</div>
+            <div class="artwork-list-title">Год создания</div>
+            <div class="artwork-list-title">Статус</div>
+            <div class="artwork-list-title">Перейти</div>
+        </div>
+        <section id="artworks-list" class="admin-list">
+            <!-- картины будут добавлены через JS -->
+        </section>
+
+    </main>
+
+
+</body>
+</html>

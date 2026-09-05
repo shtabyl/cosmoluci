@@ -1,0 +1,80 @@
+@layer reset {
+    *,
+    *::before,
+    *::after {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    * {
+        margin: 0;
+        padding: 0;
+        font: inherit;
+    }
+    html {
+        color-scheme: dark light;
+    }
+    body {
+        min-height: 100svh;
+    }
+
+    img,
+    picture,
+    svg,
+    video {
+        display: block;
+        max-width: 100%;
+    }
+}
+
+@layer components {
+    .button {
+        width:fit-content;
+        background-color: #e6e6e6;
+        border: 1px solid #aaa;
+        text-transform: uppercase;
+        padding: .5em .5em;
+        border-radius: 3px;
+        transition: all .2s ease-out;
+        cursor: pointer;
+        letter-spacing: 2px;
+        font-size: 0.8rem;
+        &:hover:enabled {
+            box-shadow: 0 0 .3em rgba(0, 0, 0, 0.25);
+            color: rgb(139, 139, 139);
+        }
+        &:active {
+            transform: translateY(-1px);
+        }
+    }
+    .title {
+        font-size: clamp(16px, (1rem + 5vw), 50px);
+    }
+    
+}
+
+@layer layout {
+    .container {
+        /* width: min(calc(1230px + 15px * 2), 90%); */
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+}
+
+.admin-list {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.artwork-list-titles {
+    margin-bottom: 1rem;
+    padding-top: 1rem;
+}
+
+.admin-row {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(250px, 1fr));
+    gap: 1rem;
+    border-bottom: 1px solid grey;
+}
