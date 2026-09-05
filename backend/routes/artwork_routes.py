@@ -3,7 +3,7 @@ from artworks import get_admin_artwork, get_admin_artworks, get_artworks, get_ar
 from pydantic import BaseModel, Field
 from typing import List, Optional
 from database import get_connection
-from images import validate_image, save_artwork_image, generate_webp_variants, save_image_metadata, get_image_for_delete, delete_image_files
+from images import validate_image, save_artwork_image, generate_webp_variants, save_image_metadata, get_image_for_delete, delete_image_files, update_image
 
 router = APIRouter(prefix="/api", tags=["artworks"])
 
@@ -74,6 +74,12 @@ class ArtworkUpdate(BaseModel):
     owner_id: Optional[int] = None
 
     genres: Optional[List[int]] = None
+
+
+class ImageUpdate(BaseModel):
+    alt_text: Optional[str] = None
+    sort_order: Optional[int] = None
+
 
 @router.get("/artworks")
 def list_artworks():
@@ -249,3 +255,22 @@ def patch_artwork(
         )
 
     return updated_artwork
+
+
+@router.patch("/admin/images/{image_id}")
+def update_image_metadata(
+    image_id: int,
+    image: ImageUpdate
+):
+    updated_image = update_image(
+        image_id,
+        image.model_dump(exclude_unset=True)
+    )
+
+    if updated_image is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Image not found"
+        )
+
+    return updated_image

@@ -293,6 +293,39 @@ def to_url_path(file_path: str) -> str:
     return "/images/" + relative.as_posix()
 
 
+def get_image(image_id: int) -> Optional[dict]:
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT
+                    id,
+                    painting_id,
+                    image_type,
+                    is_main,
+                    alt_text,
+                    sort_order
+                FROM painting_images
+                WHERE id = %s;
+                """,
+                (image_id,)
+            )
+
+            row = cur.fetchone()
+
+    if row is None:
+        return None
+
+    return {
+        "id": row[0],
+        "painting_id": row[1],
+        "image_type": row[2],
+        "is_main": row[3],
+        "alt_text": row[4],
+        "sort_order": row[5],
+    }
+
 def get_image_for_delete(image_id: int) -> Optional[dict]:
 
     with get_connection() as conn:
@@ -371,3 +404,53 @@ def delete_image_files(
 
     if web_dir.exists() and not any(web_dir.iterdir()):
         web_dir.rmdir()
+
+def update_image(
+        image_id: int,
+        data: dict
+) -> Optional[dict]:
+
+    allowed_fields = {
+        "alt_text",
+        "sort_order",
+    }
+
+    update_data = {
+        key: value
+        for key, value in data.items()
+        if key in allowed_fields
+    }
+
+    if not update_data:
+        return None
+
+    fields = []
+    values = []
+
+    for field, value in update_data.items():
+        fields.append(f"{field} = %s")
+        values.append(value)
+
+    values.append(image_id)
+
+    query = f"""
+        UPDATE painting_images
+        SET {", ".join(fields)}
+        WHERE id = %s
+        RETURNING id;
+    """
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(query, values)
+
+            row = cur.fetchone()
+
+            if row is None:
+                return None
+
+        conn.commit()
+
+    return get_image(image_id)
+
+    
