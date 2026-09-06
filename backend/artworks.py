@@ -64,6 +64,7 @@ def get_artwork(artwork_id: int):
 def get_artwork_genres(painting_id):
     query = """
         SELECT
+            g.id,
             g.name
         FROM genres g
         JOIN painting_genres pg
@@ -76,7 +77,7 @@ def get_artwork_genres(painting_id):
         with conn.cursor() as cur:
             cur.execute(query, (painting_id,))
             rows = cur.fetchall()
-    return [row[0] for row in rows]
+    return [{"id": row[0], "name": row[1]} for row in rows]
 
 
 def get_artworks():
@@ -444,11 +445,26 @@ def get_reference_data():
                 for row in cur.fetchall()
             ]
 
+            cur.execute("""
+                SELECT id, country, owner_type
+                FROM owners
+                ORDER BY id;
+            """)
+            owners = [
+                {
+                    "id": row[0],
+                    "country": row[1],
+                    "owner_type": row[2]
+                }
+                for row in cur.fetchall()
+            ]
+
     return {
         "mediums": mediums,
         "surfaces": surfaces,
         "statuses": statuses,
-        "genres": genres
+        "genres": genres,
+        "owners": owners
     }
 
 

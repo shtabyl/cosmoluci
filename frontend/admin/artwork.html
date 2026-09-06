@@ -9,7 +9,7 @@
 </head>
 <body>
     
-    <main class="admin">
+    <main class="container">
 
         <header class="admin__header">
             <h1 class="title">Редактирование картины</h1>
@@ -19,7 +19,13 @@
             </button>
         </header>
 
+        <p>
+            ID
+            <span id="id"></span>
+        </p>
+
         <form id="artwork-form" class="admin-form">
+
 
             <label>
                 Название
@@ -66,6 +72,39 @@
                     name="width_cm"
                 >
             </label>
+
+            <label>
+                Материал
+                <select id="medium" name="medium_id">
+                    <option value="">Выберите материал</option>
+                </select>
+            </label>
+
+            <label>
+                Основа
+                <select id="surface" name="surface_id">
+                    <option value="">Выберите основу</option>
+                </select>
+            </label>
+
+            <label>
+                Статус
+                <select id="status" name="status_id">
+                    <option value="">Выберите статус</option>
+                </select>
+            </label>
+
+            <label>
+                Владелец
+                <select id="owner" name="owner_id">
+                    <option value="">Выберите владельца</option>
+                </select>
+            </label>
+
+            <fieldset class="genres">
+                <legend>Жанры</legend>
+                <div id="genres" class="genres-list"></div>
+            </fieldset>
 
             <button type="submit" class="button">
                 Сохранить
