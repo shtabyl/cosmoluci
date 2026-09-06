@@ -282,9 +282,9 @@ function createImageCard(image) {
 
     const altLabel = document.createElement("label");
     altLabel.textContent = "Alt text";
-    const altInput = document.createElement("input");
-    altInput.type = "text";
-    altInput.value = image.alt_text ?? "";
+    const altInput = document.createElement("textarea");
+    // altInput.type = "text";
+    altInput.value = image.alt ?? "";
     altInput.maxLength = 500;
     altLabel.appendChild(altInput);
 
@@ -323,4 +323,45 @@ function createImageCard(image) {
     card.appendChild(deleteButton);
 
     return card;
+}
+
+
+async function updateImage(
+    imageId,
+    altText,
+    sortOrder
+) {
+
+    try {
+
+        const response = await fetch(`${API_URL}/api/admin/images/${imageId}`,
+            {
+                method: "PATCH",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    alt_text: altText,
+                    sort_order: sortOrder
+                })
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                `Failed to update image: ${response.status}`
+            );
+        }
+
+        await loadPage();
+
+    } catch (error) {
+
+        console.error(
+            "Failed to update image:",
+            error
+        );
+    }
 }
