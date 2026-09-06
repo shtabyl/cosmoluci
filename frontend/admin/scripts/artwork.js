@@ -29,6 +29,7 @@ async function loadPage() {
 
         fillReferenceSelects(referenceData);
         fillForm(artwork, referenceData);
+        renderImages(artwork.images ?? []);
 
     } catch (error) {
         console.error(
@@ -225,4 +226,101 @@ function getSelectedGenreIds() {
     return Array.from(checkboxes).map(
         checkbox => Number(checkbox.value)
     );
+}
+
+
+function getPreviewVariant(image) {
+
+    const webpVariants = image.variants
+        .filter(variant => variant.format === "webp")
+        .sort((a, b) => a.width - b.width);
+
+    if (webpVariants.length === 0) {
+        return null;
+    }
+
+    return (
+        webpVariants.find(
+            variant => variant.width >= 400
+        )
+        ?? webpVariants[webpVariants.length - 1]
+    );
+}
+
+function renderImages(images) {
+
+    const container =
+        document.querySelector("#images-container");
+
+    container.innerHTML = "";
+
+    images.forEach(image => {
+        const imageCard = createImageCard(image);
+
+        container.appendChild(imageCard);
+    });
+}
+
+
+function createImageCard(image) {
+
+    const card = document.createElement("article");
+    card.classList.add("admin-image-card");
+    card.dataset.imageId = image.id;
+
+    const preview = getPreviewVariant(image);
+    const img = document.createElement("img");
+    if (preview) {
+        img.src = preview.file_path;
+    }
+    img.alt = image.alt_text || "";
+    img.loading = "lazy";
+
+    const type = document.createElement("div");
+    type.classList.add("admin-image-card__type");
+    type.textContent = image.type;
+
+    const altLabel = document.createElement("label");
+    altLabel.textContent = "Alt text";
+    const altInput = document.createElement("input");
+    altInput.type = "text";
+    altInput.value = image.alt_text ?? "";
+    altInput.maxLength = 500;
+    altLabel.appendChild(altInput);
+
+    const orderLabel = document.createElement("label");
+    orderLabel.textContent = "Порядок";
+    const orderInput = document.createElement("input");
+    orderInput.type = "number";
+    orderInput.value = image.sort_order ?? 0;
+    orderLabel.appendChild(orderInput);
+
+    const saveButton = document.createElement("button");
+    saveButton.type = "button";
+    saveButton.textContent = "Сохранить картинку";
+    saveButton.addEventListener("click", () => {
+
+        updateImage(
+            image.id,
+            altInput.value,
+            Number(orderInput.value)
+        );
+
+    });
+
+    const deleteButton = document.createElement("button");
+    deleteButton.type = "button";
+    deleteButton.textContent = "Удалить картинку";
+    deleteButton.addEventListener("click", () => {
+        deleteImage(image.id);
+    });
+
+    card.appendChild(img);
+    card.appendChild(type);
+    card.appendChild(altLabel);
+    card.appendChild(orderLabel);
+    card.appendChild(saveButton);
+    card.appendChild(deleteButton);
+
+    return card;
 }
