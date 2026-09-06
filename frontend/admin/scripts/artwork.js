@@ -312,7 +312,9 @@ function createImageCard(image) {
     deleteButton.type = "button";
     deleteButton.textContent = "Удалить картинку";
     deleteButton.addEventListener("click", () => {
+        
         deleteImage(image.id);
+
     });
 
     card.appendChild(img);
@@ -363,5 +365,34 @@ async function updateImage(
             "Failed to update image:",
             error
         );
+    }
+}
+
+
+async function deleteImage(imageId) {
+
+    const confirmed = confirm("Удалить изображение?");
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/api/admin/images/${imageId}`,
+            {
+                method: "DELETE"
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(`Failed to delete image: ${response.status}`);
+        }
+
+        await loadPage();
+    
+    } catch (error) {
+
+        console.error("Failed to delete image:", error);
+
     }
 }
