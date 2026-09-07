@@ -122,6 +122,45 @@
 
         </section>
 
+        <section class="admin-image-upload">
+
+            <h3>Добавить изображение</h3>
+
+            <form id="image-upload-form">
+
+                <label>
+                    Файл
+
+                    <input
+                        type="file"
+                        id="image-file"
+                        accept="image/jpeg,image/png"
+                        required
+                    >
+                </label>
+
+                <label>
+                    Тип изображения
+
+                    <select id="image-type">
+                        <option value="main">
+                            Главное изображение
+                        </option>
+
+                        <option value="detail">
+                            Деталь
+                        </option>
+                    </select>
+                </label>
+
+                <button type="submit">
+                    Загрузить
+                </button>
+
+            </form>
+
+        </section>
+
     </main>
 </body>
 </html>

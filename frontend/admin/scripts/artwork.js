@@ -10,6 +10,9 @@ if (!artworkId) {
 const form = document.querySelector("#artwork-form");
 form.addEventListener("submit", saveArtwork);
 
+const imageUploadForm = document.querySelector('#image-upload-form');
+imageUploadForm.addEventListener('submit', uploadImage);
+
 
 async function loadPage() {
     try {
@@ -394,5 +397,55 @@ async function deleteImage(imageId) {
 
         console.error("Failed to delete image:", error);
 
+    }
+}
+
+
+async function uploadImage(event) {
+
+    event.preventDefault();
+
+    const fileInput = document.querySelector("#image-file");
+    const imageType = document.querySelector("#image-type").value;
+    const file = fileInput.files[0];
+
+    if (!file) {
+        return;
+    }
+
+    const formData = new FormData();
+
+    formData.append("image", file);
+
+    formData.append("image_type", imageType);
+
+    try {
+
+        const response = await fetch(
+            `/api/admin/artworks/${artworkId}/images`,
+            {
+                method: "POST",
+                body: formData
+            }
+        );
+
+        if (!response.ok) {
+
+            const error =
+                await response.text();
+
+            throw new Error(error);
+        }
+
+        fileInput.value = "";
+
+        await loadPage();
+
+    } catch (error) {
+
+        console.error(
+            "Failed to upload image:",
+            error
+        );
     }
 }

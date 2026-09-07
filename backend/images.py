@@ -323,7 +323,7 @@ def get_image(image_id: int) -> Optional[dict]:
         "image_type": row[2],
         "is_main": row[3],
         "alt_text": row[4],
-        "sort_order": row[5],
+        "sort_order": row[5]
     }
 
 def get_image_for_delete(image_id: int) -> Optional[dict]:
