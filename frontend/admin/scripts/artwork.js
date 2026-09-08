@@ -422,7 +422,7 @@ async function uploadImage(event) {
     try {
 
         const response = await fetch(
-            `/api/admin/artworks/${artworkId}/images`,
+            `${API_URL}/api/admin/artworks/${artworkId}/images`,
             {
                 method: "POST",
                 body: formData
