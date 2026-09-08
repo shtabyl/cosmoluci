@@ -233,8 +233,8 @@ def generate_webp_variants(
 def save_image_metadata(
     artwork_id: int,
     image_type: str,
-    variants: list[dict],
-    original_path: str
+    original: dict,
+    variants: list[dict]
 ) -> int:
 
     is_main = image_type == "main"
@@ -242,7 +242,8 @@ def save_image_metadata(
     with get_connection() as conn:
         with conn.cursor() as cur:
 
-            # Создаём painting_images
+            # 1. Создаём логическое изображение
+
             cur.execute(
                 """
                 INSERT INTO painting_images (
@@ -262,8 +263,16 @@ def save_image_metadata(
 
             image_id = cur.fetchone()[0]
 
-            # Создаём image_variants
-            for variant in variants:
+            # 2. Собираем все физические файлы
+
+            all_variants = [
+                original,
+                *variants
+            ]
+
+            # 3. Сохраняем original + WebP
+
+            for variant in all_variants:
 
                 cur.execute(
                     """
@@ -362,7 +371,7 @@ def get_image_for_delete(image_id: int) -> Optional[dict]:
         "image_id": rows[0][0],
         "painting_id": rows[0][1],
         "image_type": rows[0][2],
-        "files": [
+        "file_paths": [
             row[3]
             for row in rows
             if row[3]
@@ -371,37 +380,39 @@ def get_image_for_delete(image_id: int) -> Optional[dict]:
 
 
 def delete_image_files(
-    painting_id: int,
-    image_type: str,
-    variant_paths: list[str]
+    file_paths: list[str]
 ) -> None:
 
-    # Удаляем original
-    original_dir = (
-        STORAGE_PATH
-        / str(painting_id)
-        / "original"
-    )
+    failed_paths = []
 
-    for extension in ("jpeg", "jpg", "png"):
-
-        original_path = (
-            original_dir
-            / f"{image_type}.{extension}"
-        )
-
-        if original_path.exists():
-            original_path.unlink()
-
-    # Удаляем WebP
-    for file_path in variant_paths:
+    for file_path in file_paths:
 
         path = storage_path(file_path)
 
-        if path.exists():
-            path.unlink()
+        try:
 
-    # Удаляем пустую директорию WebP
+            if path.exists() and path.is_file():
+                path.unlink()
+
+        except OSError as error:
+
+            failed_paths.append(
+                f"{path}: {error}"
+            )
+
+    if failed_paths:
+
+        raise RuntimeError(
+            "Failed to delete image files: "
+            + "; ".join(failed_paths)
+        )
+
+
+def cleanup_image_directories(
+    painting_id: int,
+    image_type: str
+) -> None:
+
     web_dir = (
         STORAGE_PATH
         / str(painting_id)
@@ -411,6 +422,23 @@ def delete_image_files(
 
     if web_dir.exists() and not any(web_dir.iterdir()):
         web_dir.rmdir()
+
+
+def delete_image_record(image_id: int) -> None:
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+
+            cur.execute(
+                """
+                DELETE FROM painting_images
+                WHERE id = %s;
+                """,
+                (image_id,)
+            )
+
+        conn.commit()
+
 
 def update_image(
         image_id: int,

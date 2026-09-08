@@ -3,7 +3,7 @@ from artworks import get_admin_artwork, get_admin_artworks, get_artworks, get_ar
 from pydantic import BaseModel, Field
 from typing import List, Optional
 from database import get_connection
-from images import validate_image, save_artwork_image, generate_webp_variants, save_image_metadata, get_image_for_delete, delete_image_files, update_image
+from images import validate_image, save_artwork_image, generate_webp_variants, save_image_metadata, get_image_for_delete, delete_image_files, update_image, cleanup_image_directories, delete_image_record
 
 router = APIRouter(prefix="/api", tags=["artworks"])
 
@@ -152,10 +152,14 @@ async def upload_artwork_image(
 
     if image_data["format"] == "JPEG":
         file_extension = "jpeg"
+        db_format = "jpeg"
+
     else:
         file_extension = "png"
+        db_format = "png"
 
-    # Сохраняем оригинал
+    # 1. Сохраняем original
+
     original_path, image_name = save_artwork_image(
         contents=image_data["contents"],
         artwork_id=artwork_id,
@@ -163,34 +167,41 @@ async def upload_artwork_image(
         file_extension=file_extension
     )
 
-    # Генерируем WebP
+    # Формируем metadata original
+
+    original = {
+        "width": image_data["width"],
+        "height": image_data["height"],
+        "format": db_format,
+        "file_path": original_path,
+        "file_size": len(image_data["contents"])
+    }
+
+    # 2. Генерируем WebP variants
+
     variants = generate_webp_variants(
         contents=image_data["contents"],
         artwork_id=artwork_id,
         image_name=image_name
     )
 
-    # Сохраняем metadata
+    # 3. Сохраняем metadata ВСЕХ файлов
+
     image_id = save_image_metadata(
         artwork_id=artwork_id,
         image_type=image_name,
-        variants=variants,
-        original_path=original_path
+        original=original,
+        variants=variants
     )
 
     return {
         "artwork_id": artwork_id,
         "image_id": image_id,
         "image_type": image_name,
-        "original": {
-            "format": image_data["format"],
-            "width": image_data["width"],
-            "height": image_data["height"],
-            "file_path": original_path,
-            "file_size": len(image_data["contents"])
-        },
+        "original": original,
         "variants": variants
     }
+
 
 @router.delete("/admin/images/{image_id}")
 def delete_artwork_image(image_id: int):
@@ -198,43 +209,40 @@ def delete_artwork_image(image_id: int):
     image = get_image_for_delete(image_id)
 
     if image is None:
+
         raise HTTPException(
             status_code=404,
             detail="Image not found"
         )
 
-    # Нельзя удалить main,
-    # если это единственное главное изображение.
-    # Пока просто запрещаем.
-    if image["image_type"] == "main":
+    try:
 
-        raise HTTPException(
-            status_code=400,
-            detail="Main image cannot be deleted"
+        # 1. Удаляем все физические файлы
+
+        delete_image_files(
+            image["file_paths"]
         )
 
-    delete_image_files(
-        painting_id=image["painting_id"],
-        image_type=image["image_type"],
-        variant_paths=image["files"]
-    )
+        # 2. Удаляем пустую папку WebP
 
-    with get_connection() as conn:
-        with conn.cursor() as cur:
+        cleanup_image_directories(
+            painting_id=image["painting_id"],
+            image_type=image["image_type"]
+        )
 
-            cur.execute(
-                """
-                DELETE FROM painting_images
-                WHERE id = %s;
-                """,
-                (image_id,)
-            )
+        # 3. Только после этого удаляем DB record
 
-        conn.commit()
+        delete_image_record(image_id)
+
+    except RuntimeError as error:
+
+        raise HTTPException(
+            status_code=500,
+            detail=str(error)
+        )
 
     return {
-        "success": True,
-        "image_id": image_id
+        "success": True
     }
 
 
