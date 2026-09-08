@@ -190,9 +190,20 @@ def generate_webp_variants(
 
     img = Image.open(BytesIO(contents))
 
-    variants = []
+    original_width = img.width
+
+    actual_sizes = []
 
     for size in WEBP_SIZES:
+
+        actual_size = min(size, original_width)
+
+        if actual_size not in actual_sizes:
+            actual_sizes.append(actual_size)
+
+    variants = []
+
+    for size in actual_sizes:
 
         variant = img.copy()
 
@@ -200,7 +211,7 @@ def generate_webp_variants(
             variant.thumbnail((size, size))
 
         output_path = (
-            output_dir / f"{size}.webp"
+            output_dir / f"{variant.width}.webp"
         )
 
         variant.save(
@@ -210,19 +221,15 @@ def generate_webp_variants(
             method=6
         )
 
-        db_path = storage_url(output_path)
-
         variants.append({
             "width": variant.width,
             "height": variant.height,
             "format": "webp",
-            "file_path": db_path,
+            "file_path": storage_url(output_path),
             "file_size": output_path.stat().st_size
         })
 
     return variants
-
-
 def save_image_metadata(
     artwork_id: int,
     image_type: str,
