@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <script type="module" src="./scripts/reference-data.js" defer></script>
+    <title>Справочники</title>
+</head>
+
+<body>
+
+    <main class="admin">
+
+        <h1>Управление справочниками</h1>
+
+        <section class="reference-section">
+
+            <h2>Материалы</h2>
+
+            <form
+                class="reference-form"
+                data-reference-type="mediums"
+            >
+
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Название материала"
+                    required
+                >
+
+                <button type="submit">
+                    Добавить
+                </button>
+
+            </form>
+
+            <div
+                class="reference-list"
+                id="mediums-list"
+            ></div>
+
+        </section>
+
+
+        <section class="reference-section">
+
+            <h2>Основы</h2>
+
+            <form
+                class="reference-form"
+                data-reference-type="surfaces"
+            >
+
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Название основы"
+                    required
+                >
+
+                <button type="submit">
+                    Добавить
+                </button>
+
+            </form>
+
+            <div
+                class="reference-list"
+                id="surfaces-list"
+            ></div>
+
+        </section>
+
+
+        <section class="reference-section">
+
+            <h2>Статусы</h2>
+
+            <form
+                class="reference-form"
+                data-reference-type="statuses"
+            >
+
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Название статуса"
+                    required
+                >
+
+                <button type="submit">
+                    Добавить
+                </button>
+
+            </form>
+
+            <div
+                class="reference-list"
+                id="statuses-list"
+            ></div>
+
+        </section>
+
+
+        <section class="reference-section">
+
+            <h2>Жанры</h2>
+
+            <form
+                class="reference-form"
+                data-reference-type="genres"
+            >
+
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Название жанра"
+                    required
+                >
+
+                <button type="submit">
+                    Добавить
+                </button>
+
+            </form>
+
+            <div
+                class="reference-list"
+                id="genres-list"
+            ></div>
+
+        </section>
+
+
+        <section class="reference-section">
+
+            <h2>Владельцы</h2>
+
+            <form id="owner-form">
+
+                <input
+                    type="text"
+                    name="country"
+                    placeholder="Страна"
+                    required
+                >
+
+                <input
+                    type="text"
+                    name="owner_type"
+                    placeholder="Тип владельца"
+                    value="Частная коллекция"
+                    required
+                >
+
+                <button type="submit">
+                    Добавить
+                </button>
+
+            </form>
+
+            <div
+                class="reference-list"
+                id="owners-list"
+            ></div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>
