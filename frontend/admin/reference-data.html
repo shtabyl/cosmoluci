@@ -4,18 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <script type="module" src="./scripts/reference-data.js" defer></script>
+    <link rel="stylesheet" href="./styles/admin.css">
     <title>Справочники</title>
 </head>
 
 <body>
+    <header class="container">
+        <nav class="admin-nav">
 
-    <main class="admin">
+            <a class="admin-nav__item" href="index.html">
+                Картины
+            </a>
 
-        <h1>Управление справочниками</h1>
+            <a class="admin-nav__item" href="reference-data.html">
+                Справочники
+            </a>
+
+        </nav>
+    </header>
+    <main class="admin container">
+
+        <h1 class="title">Управление справочниками</h1>
 
         <section class="reference-section">
 
-            <h2>Материалы</h2>
+            <h2 class="subtitle">Материалы</h2>
 
             <form
                 class="reference-form"
@@ -45,7 +58,7 @@
 
         <section class="reference-section">
 
-            <h2>Основы</h2>
+            <h2 class="subtitle">Основы</h2>
 
             <form
                 class="reference-form"
@@ -75,7 +88,7 @@
 
         <section class="reference-section">
 
-            <h2>Статусы</h2>
+            <h2 class="subtitle">Статусы</h2>
 
             <form
                 class="reference-form"
@@ -105,7 +118,7 @@
 
         <section class="reference-section">
 
-            <h2>Жанры</h2>
+            <h2 class="subtitle">Жанры</h2>
 
             <form
                 class="reference-form"
@@ -135,7 +148,7 @@
 
         <section class="reference-section">
 
-            <h2>Владельцы</h2>
+            <h2 class="subtitle">Владельцы</h2>
 
             <form id="owner-form">
 

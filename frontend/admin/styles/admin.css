@@ -53,7 +53,10 @@
         }
     }
     .title {
-        font-size: clamp(16px, (1rem + 5vw), 50px);
+        font-size: clamp(16px, (1rem + 5vw), 40px);
+    }
+    .subtitle {
+        font-size: clamp(12px, (1rem + 5vw), 30px);
     }
     
 }
@@ -130,4 +133,26 @@
 
 .admin-image-card__type {
     font-weight: bold;
+}
+
+.admin-nav {
+    display: flex;
+    gap: 1rem;
+}
+
+.admin-nav__item {
+    text-decoration: none;
+    text-transform: uppercase;
+    color: inherit;
+    padding: .5rem .5rem;
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    transition: all .2s ease-out;
+    cursor: pointer;
+    letter-spacing: 2px;
+    font-size: 0.8rem;
+    &:hover {
+        color: darkgoldenrod;
+        border-color: darkgoldenrod;
+    }
 }
