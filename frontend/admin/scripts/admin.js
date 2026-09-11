@@ -8,7 +8,8 @@ async function load_artworks() {
             throw new Error(`HTTP error: ${response.status}`);
         }
 
-        const artworks = await response.json();
+        const artworks = await response.json()
+        artworks.sort((a, b) => a.id - b.id);
 
         renderArtworks(artworks);
     } catch (error) {
@@ -43,6 +44,10 @@ function renderArtworks(artworks) {
 
             <div class="admin-artwork__status">
                 ${artwork.status ?? ""}
+            </div>
+            
+            <div class="admin-artwork__publish">
+                ${artwork.is_published ? "✅" : "🟡"}
             </div>
 
             <button class="js-edit-artwork button">

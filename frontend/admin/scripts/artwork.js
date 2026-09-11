@@ -300,6 +300,7 @@ function createImageCard(image) {
 
     const saveButton = document.createElement("button");
     saveButton.type = "button";
+    saveButton.classList.add('button');
     saveButton.textContent = "Сохранить картинку";
     saveButton.addEventListener("click", () => {
 
@@ -313,6 +314,7 @@ function createImageCard(image) {
 
     const deleteButton = document.createElement("button");
     deleteButton.type = "button";
+    deleteButton.classList.add('button');
     deleteButton.textContent = "Удалить картинку";
     deleteButton.addEventListener("click", () => {
         

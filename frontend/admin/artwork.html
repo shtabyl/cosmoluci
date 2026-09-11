@@ -25,10 +25,6 @@
 
         <header class="admin__header">
             <h1 class="title">Редактирование картины</h1>
-
-            <button class="button">
-                <a href="index.html">К списку картин</a>
-            </button>
         </header>
 
         <p>
@@ -126,7 +122,7 @@
 
         <section class="admin-images">
 
-            <h2>Изображения</h2>
+            <h2 class="subtitle">Изображения</h2>
 
             <div id="images-container" class="images-container">
                 <!-- изображения будут добавляться через JS -->
@@ -136,9 +132,9 @@
 
         <section class="admin-image-upload">
 
-            <h3>Добавить изображение</h3>
+            <h2 class="subtitle">Добавить изображение</h2>
 
-            <form id="image-upload-form">
+            <form id="image-upload-form" class="img-upload-form">
 
                 <label>
                     Файл
@@ -165,7 +161,7 @@
                     </select>
                 </label>
 
-                <button type="submit">
+                <button class="button" type="submit">
                     Загрузить
                 </button>
 
