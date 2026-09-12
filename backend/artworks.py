@@ -26,7 +26,7 @@ def get_artwork(artwork_id: int):
             ON p.medium_id = m.id
         LEFT JOIN surfaces s
             ON p.surface_id = s.id
-        JOIN statuses st
+        LEFT JOIN statuses st
             ON p.status_id = st.id
         WHERE p.id = %s
             AND p.is_published = TRUE;
@@ -110,7 +110,7 @@ def get_artworks():
     LEFT JOIN surfaces s
         ON p.surface_id = s.id
 
-    JOIN statuses st
+    LEFT JOIN statuses st
         ON p.status_id = st.id
 
     LEFT JOIN painting_genres pg
@@ -168,10 +168,10 @@ def get_artworks():
 
 
 def create_artwork(data):
+    
     query_painting = """
         INSERT INTO paintings (
             title,
-            slug,
             creation_year,
             description,
             height_cm,
@@ -186,7 +186,10 @@ def create_artwork(data):
             is_copy,
             is_published
         )
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, FALSE)
+        VALUES (
+            %s, %s, %s, %s, %s, 
+            %s, %s, %s, %s, %s, 
+            %s, %s, %s, FALSE)
         RETURNING id;
     """
 
@@ -199,7 +202,6 @@ def create_artwork(data):
         with conn.cursor() as cur:
             cur.execute(query_painting, (
                 data.title,
-                data.slug,
                 data.creation_year,
                 data.description,
                 data.height_cm,
@@ -307,7 +309,7 @@ def get_admin_artworks():
             p.is_copy,
             s.name AS status
         FROM paintings p
-        JOIN statuses s ON s.id = p.status_id
+        LEFT JOIN statuses s ON s.id = p.status_id
         ORDER BY p.id DESC;
     """
 
@@ -358,7 +360,7 @@ def get_admin_artwork(artwork_id):
             ON p.surface_id = s.id
         LEFT JOIN owners o
             ON p.owner_id = o.id
-        JOIN statuses st
+        LEFT JOIN statuses st
             ON p.status_id = st.id
         WHERE p.id = %s;
     """

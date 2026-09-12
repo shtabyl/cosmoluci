@@ -3,8 +3,33 @@ const API_URL = "http://127.0.0.1:8000";
 const params = new URLSearchParams(window.location.search);
 const artworkId = params.get("id");
 
-if (!artworkId) {
-    console.error("Artwork ID not found in URL");
+const isEditMode = Boolean(artworkId);
+
+function setupPageMode() {
+
+    const pageTitle = document.querySelector(".admin__header .title");
+    const idElement = document.querySelector("#id");
+    const imagesSection = document.querySelector(".admin-images");
+    const uploadSection = document.querySelector(".admin-image-upload");
+    const submitButton = document.querySelector('#artwork-form button[type="submit"]');
+
+    if (isEditMode) {
+
+        pageTitle.textContent = "Редактирование картины";
+        submitButton.textContent = "Сохранить";
+        imagesSection.hidden = false;
+        uploadSection.hidden = false;
+
+    } else {
+
+        pageTitle.textContent = "Добавление картины";
+        idElement.textContent = "";
+        submitButton.textContent = "Создать картину";
+        imagesSection.hidden = true;
+        uploadSection.hidden = true;
+
+    }
+
 }
 
 const form = document.querySelector("#artwork-form");
@@ -15,31 +40,65 @@ imageUploadForm.addEventListener('submit', uploadImage);
 
 
 async function loadPage() {
+
     try {
-        const [artworkResponse, referenceData] =
-            await Promise.all([
-                fetch(`${API_URL}/api/admin/artworks/${artworkId}`),
-                loadReferenceData()
-            ]);
 
-        if (!artworkResponse.ok) {
-            throw new Error(
-                `Failed to load artwork: ${artworkResponse.status}`
-            );
-        }
+        const referenceData =
+            await loadReferenceData();
 
-        const artwork = await artworkResponse.json();
 
         fillReferenceSelects(referenceData);
-        fillForm(artwork, referenceData);
-        renderImages(artwork.images ?? []);
+
+
+        if (isEditMode) {
+
+            const artworkResponse = await fetch(
+                `${API_URL}/api/admin/artworks/${artworkId}`
+            );
+
+            if (!artworkResponse.ok) {
+
+                throw new Error(
+                    `Failed to load artwork: ${artworkResponse.status}`
+                );
+
+            }
+
+            const artwork =
+                await artworkResponse.json();
+
+
+            fillForm(
+                artwork,
+                referenceData
+            );
+
+
+            renderImages(
+                artwork.images ?? []
+            );
+
+        } else {
+
+            // CREATE MODE:
+            // форма пустая
+
+            fillGenres(
+                referenceData.genres,
+                []
+            );
+
+        }
 
     } catch (error) {
+
         console.error(
             "Failed to load admin page:",
             error
         );
+
     }
+
 }
 
 function fillForm(artwork, referenceData) {
@@ -82,6 +141,7 @@ function fillForm(artwork, referenceData) {
     );
 }
 
+setupPageMode();
 loadPage();
 
 
@@ -91,35 +151,124 @@ function getSelectValue(id) {
 }
 
 
+function getOptionalNumber(selector) {
+
+    const value =
+        document.querySelector(selector).value;
+
+    if (value === "") {
+        return null;
+    }
+
+    return Number(value);
+}
+
+
+function collectArtworkData() {
+
+    return {
+
+        title:
+            document.querySelector("#title").value.trim(),
+
+        creation_year:
+            Number(
+                document.querySelector(
+                    "#creation-year"
+                ).value
+            ),
+
+        description:
+            document.querySelector(
+                "#description"
+            ).value.trim() || null,
+
+        height_cm: getOptionalNumber("#height"),
+
+        width_cm: getOptionalNumber("#width"),
+
+        medium_id:
+            getSelectValue("medium"),
+
+        surface_id:
+            getSelectValue("surface"),
+
+        status_id:
+            getSelectValue("status"),
+
+        owner_id:
+            getSelectValue("owner"),
+
+        genre_ids:
+            getSelectedGenreIds(),
+
+        is_copy: false
+
+    };
+
+}
+
 async function saveArtwork(event) {
 
     event.preventDefault();
 
-    const data = {
-        title: document.querySelector("#title").value,
-        creation_year:
-            Number(document.querySelector("#creation-year").value),
-        description:
-            document.querySelector("#description").value,
-        height_cm:
-            Number(document.querySelector("#height").value),
-        width_cm:
-            Number(document.querySelector("#width").value),
-        medium_id:
-            getSelectValue("medium"),
-        surface_id:
-            getSelectValue("surface"),
-        status_id:
-            getSelectValue("status"),
-        owner_id:
-            getSelectValue("owner"),
-        genres:
-            getSelectedGenreIds()
-    };
+    const data =
+        collectArtworkData();
+
 
     try {
 
-        const response = await fetch(`${API_URL}/api/admin/artworks/${artworkId}`,
+        // =========================
+        // CREATE MODE
+        // =========================
+
+        if (!isEditMode) {
+
+            const response = await fetch(
+                `${API_URL}/api/admin/artworks`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify(data)
+                }
+            );
+
+
+            if (!response.ok) {
+
+                const errorText =
+                    await response.text();
+
+                throw new Error(errorText);
+
+            }
+
+
+            const newArtwork =
+                await response.json();
+
+
+            // Переходим в EDIT MODE
+
+            window.location.href =
+                `artwork.html?id=${newArtwork.id}`;
+
+
+            return;
+
+        }
+
+
+        // =========================
+        // EDIT MODE
+        // =========================
+
+        const response = await fetch(
+            `${API_URL}/api/admin/artworks/${artworkId}`,
             {
                 method: "PATCH",
 
@@ -131,26 +280,42 @@ async function saveArtwork(event) {
             }
         );
 
+
         if (!response.ok) {
-            throw new Error(`HTTP error: ${response.status}`);
+
+            throw new Error(
+                `HTTP error: ${response.status}`
+            );
+
         }
 
-        const updatedArtwork = await response.json();
+
+        const updatedArtwork =
+            await response.json();
+
 
         console.log(
             "Artwork updated:",
             updatedArtwork
         );
 
+
         alert("Artwork updated");
+
 
     } catch (error) {
 
         console.error(
-            "Failed to update artwork:",
+            "Failed to save artwork:",
             error
         );
+
+        alert(
+            `Ошибка сохранения: ${error.message}`
+        );
+
     }
+
 }
 
 async function loadReferenceData() {

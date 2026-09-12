@@ -49,6 +49,8 @@ body.dark-mode {
         transition: all .2s ease-out;
         cursor: pointer;
         letter-spacing: 2px;
+        text-decoration: none;
+        color: var(--btn-text);
         font-size: 0.8rem;
         &:hover:enabled {
             box-shadow: 0 0 .3em rgba(0, 0, 0, 0.25);

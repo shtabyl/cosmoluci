@@ -9,16 +9,16 @@ router = APIRouter(prefix="/api", tags=["artworks"])
 
 class ArtworkCreate(BaseModel):
     title: str
-    slug: str
     creation_year: int
+    
     description: Optional[str] = None
 
-    height_cm: float
-    width_cm: float
+    height_cm: Optional[float] = None
+    width_cm: Optional[float] = None
 
-    medium_id: int
-    surface_id: int
-    status_id: int
+    medium_id: Optional[int] = None
+    surface_id: Optional[int] = None
+    status_id: Optional[int] = None
 
     owner_id: Optional[int] = None
     price: Optional[float] = None
