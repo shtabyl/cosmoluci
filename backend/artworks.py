@@ -1,5 +1,8 @@
 from typing import Optional
 
+from transliterate import translit
+import re
+
 from fastapi import HTTPException
 from database import get_connection
 from images import get_artwork_images
@@ -166,12 +169,67 @@ def get_artworks():
         for row in rows
     ]
 
+def generate_slug(title: str) -> str:
+
+    slug = translit(
+        title,
+        "ru",
+        reversed=True
+    )
+
+    slug = slug.lower()
+
+    slug = re.sub(
+        r"[^a-z0-9]+",
+        "-",
+        slug
+    )
+
+    slug = slug.strip("-")
+
+    return slug
+
+
+def generate_unique_slug(
+    title: str,
+    cur
+) -> str:
+
+    base_slug = generate_slug(title)
+
+    slug = base_slug
+
+    number = 2
+
+    while True:
+
+        cur.execute(
+            """
+            SELECT 1
+            FROM paintings
+            WHERE slug = %s;
+            """,
+            (slug,)
+        )
+
+        exists = cur.fetchone()
+
+        if not exists:
+            return slug
+
+        slug = f"{base_slug}-{number}"
+
+        number += 1
+
+
+
 
 def create_artwork(data):
     
     query_painting = """
         INSERT INTO paintings (
             title,
+            slug,
             creation_year,
             description,
             height_cm,
@@ -189,7 +247,7 @@ def create_artwork(data):
         VALUES (
             %s, %s, %s, %s, %s, 
             %s, %s, %s, %s, %s, 
-            %s, %s, %s, FALSE)
+            %s, %s, %s, %s, FALSE)
         RETURNING id;
     """
 
@@ -200,8 +258,11 @@ def create_artwork(data):
 
     with get_connection() as conn:
         with conn.cursor() as cur:
+
+            slug = generate_unique_slug(data.title, cur)
             cur.execute(query_painting, (
                 data.title,
+                slug,
                 data.creation_year,
                 data.description,
                 data.height_cm,
