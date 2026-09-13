@@ -263,6 +263,8 @@ async function saveArtwork(event) {
 
     event.preventDefault();
 
+    hideMessage();
+
     const data =
         collectArtworkData();
 
@@ -275,32 +277,19 @@ async function saveArtwork(event) {
 
         if (!isEditMode) {
 
-            const response = await fetch(
-                `${API_URL}/api/admin/artworks`,
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-
-                    body: JSON.stringify(data)
-                }
-            );
-
-
-            if (!response.ok) {
-
-                const errorText =
-                    await response.text();
-
-                throw new Error(errorText);
-
-            }
-
-
             const newArtwork =
-                await response.json();
+                await apiRequest(
+                    `${API_URL}/api/admin/artworks`,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify(data)
+                    }
+                );
 
 
             // Переходим в EDIT MODE
@@ -318,31 +307,19 @@ async function saveArtwork(event) {
         // EDIT MODE
         // =========================
 
-        const response = await fetch(
-            `${API_URL}/api/admin/artworks/${artworkId}`,
-            {
-                method: "PATCH",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify(data)
-            }
-        );
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                `HTTP error: ${response.status}`
-            );
-
-        }
-
-
         const updatedArtwork =
-            await response.json();
+            await apiRequest(
+                `${API_URL}/api/admin/artworks/${artworkId}`,
+                {
+                    method: "PATCH",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify(data)
+                }
+            );
 
 
         console.log(
@@ -351,7 +328,10 @@ async function saveArtwork(event) {
         );
 
 
-        alert("Artwork updated");
+        showMessage(
+            "Изменения сохранены.",
+            "success"
+        );
 
 
     } catch (error) {
@@ -361,13 +341,16 @@ async function saveArtwork(event) {
             error
         );
 
-        alert(
-            `Ошибка сохранения: ${error.message}`
+
+        showMessage(
+            `Ошибка сохранения: ${error.message}`,
+            "error"
         );
 
     }
 
 }
+
 
 async function loadReferenceData() {
     const response = await fetch(`${API_URL}/api/admin/reference-data`);
@@ -674,6 +657,7 @@ async function togglePublication() {
         return;
     }
 
+    hideMessage();
 
     const newPublicationState =
         !isPublished;
@@ -681,7 +665,7 @@ async function togglePublication() {
 
     try {
 
-        const response = await fetch(
+        const result = await apiRequest(
 
             `${API_URL}/api/admin/artworks/${artworkId}/publication`,
 
@@ -704,30 +688,19 @@ async function togglePublication() {
 
         );
 
-
-        if (!response.ok) {
-
-            const error =
-                await response.json();
-
-            throw new Error(
-                error.detail ||
-                "Failed to update publication"
-            );
-
-        }
-
-
-        const result =
-            await response.json();
-
-
         isPublished =
             result.is_published;
 
 
         updatePublicationUI(
             isPublished
+        );
+
+        showMessage(
+            isPublished
+                ? "Картина опубликована."
+                : "Картина снята с публикации.",
+            "success"
         );
 
 
@@ -738,8 +711,109 @@ async function togglePublication() {
             error
         );
 
-        alert(error.message);
+        showMessage(
+            error.message,
+            "error"
+        );
 
     }
 
+}
+
+
+function showMessage(message, type = "error") {
+    const element =
+        document.querySelector("#form-message");
+    element.textContent = message;
+    element.className =
+        `form-message ${type}`;
+    element.hidden = false;
+}
+
+function hideMessage() {
+    const element =
+        document.querySelector("#form-message");
+    element.hidden = true;
+    element.textContent = "";
+}
+
+function getApiErrorMessage(data) {
+
+    if (!data) {
+        return "Неизвестная ошибка сервера.";
+    }
+
+
+    if (typeof data.detail === "string") {
+        return data.detail;
+    }
+
+
+    if (Array.isArray(data.detail)) {
+
+        return data.detail
+            .map(error => {
+
+                const field =
+                    error.loc?.[error.loc.length - 1]
+
+                const message =
+                    error.msg;
+
+                return field ? `${field}: ${message}` : message;
+
+            })
+            .join("\n");
+    }
+
+
+    return "Произошла ошибка сервера.";
+}
+
+
+async function apiRequest(
+    url,
+    options = {}
+) {
+
+    let response;
+
+    try {
+
+        response = await fetch(
+            url,
+            options
+        );
+
+    } catch (error) {
+
+        throw new Error(
+            "Не удалось соединиться с сервером. " +
+            "Проверьте подключение и попробуйте снова."
+        );
+    }
+
+
+    let data = null;
+
+    try {
+
+        data = await response.json();
+
+    } catch {
+
+        data = null;
+    }
+
+
+    if (!response.ok) {
+
+        const message =
+            getApiErrorMessage(data);
+
+        throw new Error(message);
+    }
+
+
+    return data;
 }
