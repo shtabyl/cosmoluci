@@ -40,6 +40,7 @@ body.dark-mode {
 
 @layer components {
     .button {
+        display: block;
         width:fit-content;
         background-color: transparent;
         border: 1px solid #aaa;
@@ -50,11 +51,10 @@ body.dark-mode {
         cursor: pointer;
         letter-spacing: 2px;
         text-decoration: none;
-        color: var(--btn-text);
+        color: inherit;
         font-size: 0.8rem;
         &:hover:enabled {
-            box-shadow: 0 0 .3em rgba(0, 0, 0, 0.25);
-            color: beige;
+            color: darkgoldenrod;
         }
         &:active {
             border-color: darkgoldenrod;
