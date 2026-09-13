@@ -552,8 +552,8 @@ def update_artwork_fields(artwork_id: int, data: dict) -> Optional[dict]:
         if key in allowed_fields
     }
 
-    genres_provided = "genres" in data
-    genres = data.get("genres")
+    genres_provided = "genre_ids" in data
+    genres = data.get("genre_ids")
 
     with get_connection() as conn:
             with conn.cursor() as cur:
