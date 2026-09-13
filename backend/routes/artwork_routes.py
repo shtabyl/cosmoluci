@@ -1,87 +1,11 @@
 from fastapi import APIRouter, HTTPException, File, UploadFile, Form
 from artworks import get_admin_artwork, get_admin_artworks, get_artworks, get_artwork, create_artwork, update_artwork_full, get_reference_data, update_artwork_fields, set_artwork_publication, can_publish_artwork
-from pydantic import BaseModel, Field, field_validator
-from typing import List, Optional
 from database import get_connection
 from images import validate_image, save_artwork_image, generate_webp_variants, save_image_metadata, get_image_for_delete, delete_image_files, update_image, cleanup_image_directories, delete_image_record
+from routes.schemes import ArtworkCreate, ArtworkUpdateFull, ArtworkUpdate, ArtworkPublicationUpdate, ImageUpdate
+from psycopg.errors import ForeignKeyViolation
 
 router = APIRouter(prefix="/api", tags=["artworks"])
-
-class ArtworkCreate(BaseModel):
-    title: str
-    creation_year: int
-    
-    description: Optional[str] = None
-
-    height_cm: Optional[float] = None
-    width_cm: Optional[float] = None
-
-    medium_id: Optional[int] = None
-    surface_id: Optional[int] = None
-    status_id: Optional[int] = None
-
-    owner_id: Optional[int] = None
-    price: Optional[float] = None
-    currency: Optional[str] = None
-
-    catalog_number: Optional[str] = None
-
-    genre_ids: List[int] = Field(default_factory=list, description="Список ID жанров")
-
-    is_copy: bool = False
-    is_published: bool = False
-
-class ArtworkUpdateFull(BaseModel):
-    title: str
-    slug: str
-    creation_year: int
-    description: Optional[str] = None
-
-    height_cm: float
-    width_cm: float
-
-    medium_id: int
-    surface_id: int
-    status_id: int
-
-    owner_id: Optional[int] = None
-    price: Optional[float] = None
-    currency: Optional[str] = None
-
-    catalog_number: Optional[str] = None
-
-    genre_ids: List[int] = Field(default_factory=list, description="Список ID жанров")
-
-    is_copy: bool = False
-    is_published: bool = False
-
-
-class ArtworkUpdate(BaseModel):
-    title: Optional[str] = None
-    creation_year: Optional[int] = None
-    description: Optional[str] = None
-
-    height_cm: Optional[float] = None
-    width_cm: Optional[float] = None
-
-    medium_id: Optional[int] = None
-    surface_id: Optional[int] = None
-    status_id: Optional[int] = None
-
-    is_copy: Optional[bool] = None
-    is_published: Optional[bool] = None
-
-    owner_id: Optional[int] = None
-
-    genres: Optional[List[int]] = None
-
-
-class ImageUpdate(BaseModel):
-    alt_text: Optional[str] = None
-    sort_order: Optional[int] = None
-
-class ArtworkPublicationUpdate(BaseModel):
-    is_published: bool
 
 
 @router.get("/artworks")
@@ -92,9 +16,33 @@ def list_artworks():
 def retrieve_artwork(artwork_id: int):
     return get_artwork(artwork_id)
 
+# @router.post("/admin/artworks")
+# def create_artwork_endpoint(data: ArtworkCreate):
+#     artwork_id = create_artwork(data)
+
+#     return {
+#         "id": artwork_id,
+#         "is_published": False
+#     }
+
+
 @router.post("/admin/artworks")
 def create_artwork_endpoint(data: ArtworkCreate):
-    artwork_id = create_artwork(data)
+
+    try:
+
+        artwork_id = create_artwork(data)
+
+    except ForeignKeyViolation:
+
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "One or more referenced objects "
+                "do not exist"
+            )
+        )
+
 
     return {
         "id": artwork_id,
@@ -103,7 +51,7 @@ def create_artwork_endpoint(data: ArtworkCreate):
 
 
 @router.put("/admin/artworks/{artwork_id}")
-def update_artwork_endpoint(artwork_id: int, data: ArtworkUpdateFull):
+def update_artwork_full(artwork_id: int, data: ArtworkUpdateFull):
     updated_id = update_artwork_full(artwork_id, data)
 
     if updated_id is None:
@@ -249,21 +197,56 @@ def delete_artwork_image(image_id: int):
     }
 
 
+# @router.patch("/admin/artworks/{artwork_id}")
+# def patch_artwork(
+#     artwork_id: int,
+#     artwork: ArtworkUpdate
+# ):
+#     updated_artwork = update_artwork_fields(
+#         artwork_id,
+#         artwork.model_dump(exclude_unset=True)
+#     )
+
+#     if updated_artwork is None:
+#         raise HTTPException(
+#             status_code=404,
+#             detail="Artwork not found"
+#         )
+
+#     return updated_artwork
+
+
 @router.patch("/admin/artworks/{artwork_id}")
 def patch_artwork(
     artwork_id: int,
     artwork: ArtworkUpdate
 ):
-    updated_artwork = update_artwork_fields(
-        artwork_id,
-        artwork.model_dump(exclude_unset=True)
-    )
+
+    try:
+
+        updated_artwork = update_artwork_fields(
+            artwork_id,
+            artwork.model_dump(exclude_unset=True)
+        )
+
+    except ForeignKeyViolation:
+
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "One or more referenced objects "
+                "do not exist"
+            )
+        )
+
 
     if updated_artwork is None:
+
         raise HTTPException(
             status_code=404,
             detail="Artwork not found"
         )
+
 
     return updated_artwork
 
