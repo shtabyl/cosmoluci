@@ -48,7 +48,8 @@ function setupPageMode() {
     const imagesSection = document.querySelector(".admin-images");
     const uploadSection = document.querySelector(".admin-image-upload");
     const submitButton = document.querySelector('#artwork-form button[type="submit"]');
-    const publicationSection = document.querySelector("#publication-status");
+    const publicationStatus = document.querySelector("#publication-status");
+    const publicationButton = document.querySelector("#publication-button");
 
     if (isEditMode) {
 
@@ -56,7 +57,8 @@ function setupPageMode() {
         submitButton.textContent = "Сохранить";
         imagesSection.hidden = false;
         uploadSection.hidden = false;
-        publicationSection.hidden = false;
+        publicationStatus.hidden = false;
+        publicationButton.hidden = false;
 
     } else {
 
@@ -65,7 +67,8 @@ function setupPageMode() {
         submitButton.textContent = "Создать картину";
         imagesSection.hidden = true;
         uploadSection.hidden = true;
-        publicationSection.hidden = true;
+        publicationStatus.hidden = true;
+        publicationButton.hidden = true;
     }
 
 }
@@ -78,10 +81,7 @@ imageUploadForm.addEventListener('submit', uploadImage);
 
 document
     .querySelector("#publication-button")
-    .addEventListener(
-        "click", () =>
-        togglePublication()
-    );
+    .addEventListener("click", togglePublication);
 
 
 async function loadPage() {

@@ -40,7 +40,6 @@ body.dark-mode {
 
 @layer components {
     .button {
-        display: block;
         width:fit-content;
         background-color: transparent;
         border: 1px solid #aaa;
@@ -69,6 +68,12 @@ body.dark-mode {
     }
     .subtitle {
         font-size: clamp(12px, (1rem + 5vw), 30px);
+    }
+    .button-link {
+        display: block;
+        &:hover {
+            color: darkgoldenrod;
+        }
     }
     
 }
