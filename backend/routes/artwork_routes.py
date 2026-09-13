@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, File, UploadFile, Form
-from artworks import get_admin_artwork, get_admin_artworks, get_artworks, get_artwork, create_artwork, update_artwork_full, get_reference_data, update_artwork_fields
-from pydantic import BaseModel, Field
+from artworks import get_admin_artwork, get_admin_artworks, get_artworks, get_artwork, create_artwork, update_artwork_full, get_reference_data, update_artwork_fields, set_artwork_publication, can_publish_artwork
+from pydantic import BaseModel, Field, field_validator
 from typing import List, Optional
 from database import get_connection
 from images import validate_image, save_artwork_image, generate_webp_variants, save_image_metadata, get_image_for_delete, delete_image_files, update_image, cleanup_image_directories, delete_image_record
@@ -79,6 +79,9 @@ class ArtworkUpdate(BaseModel):
 class ImageUpdate(BaseModel):
     alt_text: Optional[str] = None
     sort_order: Optional[int] = None
+
+class ArtworkPublicationUpdate(BaseModel):
+    is_published: bool
 
 
 @router.get("/artworks")
@@ -282,3 +285,44 @@ def update_image_metadata(
         )
 
     return updated_image
+
+
+@router.patch(
+    "/admin/artworks/{artwork_id}/publication"
+)
+def update_artwork_publication(
+    artwork_id: int,
+    data: ArtworkPublicationUpdate
+):
+
+    if data.is_published:
+
+        if not can_publish_artwork(artwork_id):
+
+            raise HTTPException(
+                status_code=400,
+                detail=(
+                    "Artwork must have "
+                    "a main image before publication"
+                )
+            )
+
+
+    updated = set_artwork_publication(
+        artwork_id,
+        data.is_published
+    )
+
+
+    if not updated:
+
+        raise HTTPException(
+            status_code=404,
+            detail="Artwork not found"
+        )
+
+
+    return {
+        "id": artwork_id,
+        "is_published": data.is_published
+    }

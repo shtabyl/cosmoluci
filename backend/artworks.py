@@ -617,3 +617,57 @@ def update_artwork_fields(artwork_id: int, data: dict) -> Optional[dict]:
             conn.commit()
 
     return get_admin_artwork(artwork_id)
+
+
+def set_artwork_publication(
+    artwork_id: int,
+    is_published: bool
+) -> bool:
+
+    with get_connection() as conn:
+
+        with conn.cursor() as cur:
+
+            cur.execute(
+                """
+                UPDATE paintings
+                SET is_published = %s
+                WHERE id = %s
+                RETURNING id;
+                """,
+                (
+                    is_published,
+                    artwork_id
+                )
+            )
+
+            result = cur.fetchone()
+
+        conn.commit()
+
+    return result is not None
+
+
+def can_publish_artwork(
+    artwork_id: int
+) -> bool:
+
+    with get_connection() as conn:
+
+        with conn.cursor() as cur:
+
+            cur.execute(
+                """
+                SELECT EXISTS (
+                    SELECT 1
+                    FROM painting_images
+                    WHERE painting_id = %s
+                    AND is_main = TRUE
+                );
+                """,
+                (artwork_id,)
+            )
+
+            has_main_image = cur.fetchone()[0]
+
+    return has_main_image

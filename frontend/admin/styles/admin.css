@@ -41,7 +41,7 @@ body.dark-mode {
 @layer components {
     .button {
         width:fit-content;
-        background-color: var(--btn-bg);
+        background-color: transparent;
         border: 1px solid #aaa;
         text-transform: uppercase;
         padding: .5em .5em;

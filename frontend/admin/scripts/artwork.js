@@ -5,6 +5,42 @@ const artworkId = params.get("id");
 
 const isEditMode = Boolean(artworkId);
 
+let isPublished = false;
+
+function updatePublicationUI(isPublished) {
+
+    const statusElement =
+        document.querySelector(
+            "#publication-status"
+        );
+
+    const button =
+        document.querySelector(
+            "#publication-button"
+        );
+
+
+    if (isPublished) {
+
+        statusElement.textContent =
+            "✅ Опубликована";
+
+        button.textContent =
+            "Снять с публикации";
+
+    } else {
+
+        statusElement.textContent =
+            "🟡 Не опубликована";
+
+        button.textContent =
+            "Опубликовать";
+
+    }
+
+}
+
+
 function setupPageMode() {
 
     const pageTitle = document.querySelector(".admin__header .title");
@@ -12,6 +48,7 @@ function setupPageMode() {
     const imagesSection = document.querySelector(".admin-images");
     const uploadSection = document.querySelector(".admin-image-upload");
     const submitButton = document.querySelector('#artwork-form button[type="submit"]');
+    const publicationSection = document.querySelector("#publication-status");
 
     if (isEditMode) {
 
@@ -19,6 +56,7 @@ function setupPageMode() {
         submitButton.textContent = "Сохранить";
         imagesSection.hidden = false;
         uploadSection.hidden = false;
+        publicationSection.hidden = false;
 
     } else {
 
@@ -27,7 +65,7 @@ function setupPageMode() {
         submitButton.textContent = "Создать картину";
         imagesSection.hidden = true;
         uploadSection.hidden = true;
-
+        publicationSection.hidden = true;
     }
 
 }
@@ -37,6 +75,13 @@ form.addEventListener("submit", saveArtwork);
 
 const imageUploadForm = document.querySelector('#image-upload-form');
 imageUploadForm.addEventListener('submit', uploadImage);
+
+document
+    .querySelector("#publication-button")
+    .addEventListener(
+        "click", () =>
+        togglePublication()
+    );
 
 
 async function loadPage() {
@@ -67,6 +112,8 @@ async function loadPage() {
             const artwork =
                 await artworkResponse.json();
 
+            isPublished = artwork.is_published;
+
 
             fillForm(
                 artwork,
@@ -76,6 +123,10 @@ async function loadPage() {
 
             renderImages(
                 artwork.images ?? []
+            );
+
+            updatePublicationUI(
+                isPublished
             );
 
         } else {
@@ -615,4 +666,80 @@ async function uploadImage(event) {
             error
         );
     }
+}
+
+async function togglePublication() {
+
+    if (!isEditMode) {
+        return;
+    }
+
+
+    const newPublicationState =
+        !isPublished;
+
+
+    try {
+
+        const response = await fetch(
+
+            `${API_URL}/api/admin/artworks/${artworkId}/publication`,
+
+            {
+                method: "PATCH",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    is_published:
+                        newPublicationState
+
+                })
+
+            }
+
+        );
+
+
+        if (!response.ok) {
+
+            const error =
+                await response.json();
+
+            throw new Error(
+                error.detail ||
+                "Failed to update publication"
+            );
+
+        }
+
+
+        const result =
+            await response.json();
+
+
+        isPublished =
+            result.is_published;
+
+
+        updatePublicationUI(
+            isPublished
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Publication error:",
+            error
+        );
+
+        alert(error.message);
+
+    }
+
 }
