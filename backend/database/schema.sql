@@ -75,3 +75,9 @@ CREATE UNIQUE INDEX one_main_image_per_painting
 ON painting_images (painting_id)
 WHERE is_main = TRUE;
 
+CREATE TABLE admin_users (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
