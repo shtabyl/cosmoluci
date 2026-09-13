@@ -147,3 +147,7 @@ class ImageUpdate(BaseModel):
 
 class ArtworkPublicationUpdate(BaseModel):
     is_published: bool
+
+class AdminLogin(BaseModel):
+    username: str
+    password: str
