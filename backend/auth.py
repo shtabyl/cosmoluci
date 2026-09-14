@@ -117,3 +117,67 @@ def hash_session_token(
     ).hexdigest()
 
 
+def get_session_by_token(
+    session_token: str
+) -> Optional[dict]:
+
+    session_token_hash = hash_session_token(
+        session_token
+    )
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+
+            cur.execute(
+                """
+                SELECT
+                    admin_sessions.id,
+                    admin_sessions.admin_id,
+                    admin_sessions.expires_at,
+                    admin_users.username
+                FROM admin_sessions
+                JOIN admin_users
+                    ON admin_users.id = admin_sessions.admin_id
+                WHERE admin_sessions.session_token_hash = %s;
+                """,
+                (session_token_hash,)
+            )
+
+            row = cur.fetchone()
+
+
+    if row is None:
+        return None
+
+
+    return {
+        "session_id": row[0],
+        "admin_id": row[1],
+        "expires_at": row[2],
+        "username": row[3]
+    }
+
+
+def is_session_expired(
+    expires_at
+) -> bool:
+
+    return expires_at <= datetime.now()
+
+
+def delete_session(
+    session_id: int
+) -> None:
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+
+            cur.execute(
+                """
+                DELETE FROM admin_sessions
+                WHERE id = %s;
+                """,
+                (session_id,)
+            )
+
+        conn.commit()

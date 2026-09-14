@@ -1,9 +1,10 @@
-from fastapi import APIRouter, HTTPException, File, UploadFile, Form
+from fastapi import APIRouter, HTTPException, File, UploadFile, Form, Depends
 from artworks import get_admin_artwork, get_admin_artworks, get_artworks, get_artwork, create_artwork, update_artwork_full, get_reference_data, update_artwork_fields, set_artwork_publication, can_publish_artwork
 from database import get_connection
 from images import validate_image, save_artwork_image, generate_webp_variants, save_image_metadata, get_image_for_delete, delete_image_files, update_image, cleanup_image_directories, delete_image_record
 from routes.schemes import ArtworkCreate, ArtworkUpdateFull, ArtworkUpdate, ArtworkPublicationUpdate, ImageUpdate
 from psycopg.errors import ForeignKeyViolation
+from routes.auth_routes import get_current_admin
 
 router = APIRouter(prefix="/api", tags=["artworks"])
 
@@ -63,7 +64,9 @@ def update_artwork_full(artwork_id: int, data: ArtworkUpdateFull):
 
 
 @router.get("/admin/artworks")
-def get_admin_artworks_endpoint():
+def get_admin_artworks_endpoint(
+    current_admin: dict = Depends(get_current_admin)
+):
     return get_admin_artworks()
 
 

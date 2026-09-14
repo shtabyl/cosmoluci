@@ -1,10 +1,13 @@
-from fastapi import APIRouter, HTTPException, Response
+from fastapi import APIRouter, HTTPException, Request, Response, status
 from routes.schemes import AdminLogin
 
 from auth import (
     get_admin_by_username,
     verify_password,
-    create_session
+    create_session,
+    get_session_by_token,
+    is_session_expired,
+    delete_session
 )
 
 router = APIRouter(
@@ -71,4 +74,65 @@ def login(
             "id": admin["id"],
             "username": admin["username"]
         }
+    }
+
+
+def get_current_admin(
+    request: Request
+):
+
+    session_token = request.cookies.get(
+        "admin_session"
+    )
+
+
+    # =========================
+    # COOKIE НЕ НАЙДЕНА
+    # =========================
+
+    if not session_token:
+
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Not authenticated"
+        )
+
+
+    # =========================
+    # ИЩЕМ SESSION
+    # =========================
+
+    session = get_session_by_token(
+        session_token
+    )
+
+
+    if session is None:
+
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid session"
+        )
+
+
+    # =========================
+    # ПРОВЕРЯЕМ СРОК
+    # =========================
+
+    if is_session_expired(
+        session["expires_at"]
+    ):
+        delete_session(
+            session["session_id"]
+        )
+
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Session expired"
+        )
+
+
+    return {
+        "id": session["admin_id"],
+        "username": session["username"]
     }
