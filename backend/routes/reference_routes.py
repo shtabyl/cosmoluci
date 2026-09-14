@@ -1,7 +1,8 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from reference_data import (get_reference_items, create_reference_item, update_reference_item)
 from reference_data_delete import delete_reference_item
+from routes.auth_routes import get_current_admin
 
 class ReferenceItemCreate(BaseModel):
     name: str
@@ -11,15 +12,18 @@ router = APIRouter(
     tags=["reference-data"]
 )
 
-@router.get("/{reference_type}")
+@router.get("/{reference_type}",
+    dependencies=[Depends(get_current_admin)])
 def get_reference_data(reference_type: str):
     return get_reference_items(reference_type)
 
-@router.post("/{reference_type}")
+@router.post("/{reference_type}",
+    dependencies=[Depends(get_current_admin)])
 def create_reference_data(reference_type: str, data: ReferenceItemCreate):
     return create_reference_item(reference_type=reference_type, name=data.name)
 
-@router.put("/{reference_type}/{item_id}")
+@router.put("/{reference_type}/{item_id}",
+    dependencies=[Depends(get_current_admin)])
 def update_reference_date(
     reference_type: str,
     item_id: int,
@@ -31,7 +35,8 @@ def update_reference_date(
         name=data.name
     )
 
-@router.delete("/{reference_type}/{item_id}")
+@router.delete("/{reference_type}/{item_id}",
+    dependencies=[Depends(get_current_admin)])
 def delete_reference_data(
     reference_type: str,
     item_id: int

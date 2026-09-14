@@ -27,7 +27,8 @@ def retrieve_artwork(artwork_id: int):
 #     }
 
 
-@router.post("/admin/artworks")
+@router.post("/admin/artworks",
+    dependencies=[Depends(get_current_admin)])
 def create_artwork_endpoint(data: ArtworkCreate):
 
     try:
@@ -63,14 +64,16 @@ def update_artwork_full(artwork_id: int, data: ArtworkUpdateFull):
     }
 
 
-@router.get("/admin/artworks")
+@router.get("/admin/artworks",
+    dependencies=[Depends(get_current_admin)])
 def get_admin_artworks_endpoint(
     current_admin: dict = Depends(get_current_admin)
 ):
     return get_admin_artworks()
 
 
-@router.get("/admin/artworks/{artwork_id}")
+@router.get("/admin/artworks/{artwork_id}",
+    dependencies=[Depends(get_current_admin)])
 def get_admin_artwork_endpoint(artwork_id: int):
     artwork = get_admin_artwork(artwork_id)
 
@@ -83,12 +86,14 @@ def get_admin_artwork_endpoint(artwork_id: int):
     return artwork
 
 
-@router.get("/admin/reference-data")
+@router.get("/admin/reference-data",
+    dependencies=[Depends(get_current_admin)])
 def get_reference_data_endpoint():
     return get_reference_data()
 
 
-@router.post("/admin/artworks/{artwork_id}/images")
+@router.post("/admin/artworks/{artwork_id}/images",
+    dependencies=[Depends(get_current_admin)])
 async def upload_artwork_image(
     artwork_id: int,
     image: UploadFile = File(...),
@@ -157,7 +162,8 @@ async def upload_artwork_image(
     }
 
 
-@router.delete("/admin/images/{image_id}")
+@router.delete("/admin/images/{image_id}",
+    dependencies=[Depends(get_current_admin)])
 def delete_artwork_image(image_id: int):
 
     image = get_image_for_delete(image_id)
@@ -219,7 +225,8 @@ def delete_artwork_image(image_id: int):
 #     return updated_artwork
 
 
-@router.patch("/admin/artworks/{artwork_id}")
+@router.patch("/admin/artworks/{artwork_id}",
+    dependencies=[Depends(get_current_admin)])
 def patch_artwork(
     artwork_id: int,
     artwork: ArtworkUpdate
@@ -274,7 +281,8 @@ def update_image_metadata(
 
 
 @router.patch(
-    "/admin/artworks/{artwork_id}/publication"
+    "/admin/artworks/{artwork_id}/publication",
+    dependencies=[Depends(get_current_admin)]
 )
 def update_artwork_publication(
     artwork_id: int,

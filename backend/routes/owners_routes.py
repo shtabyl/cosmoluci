@@ -1,6 +1,7 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from owners import (get_owners, create_owner, update_owner, delete_owner)
+from routes.auth_routes import get_current_admin
 
 class OwnerCreate(BaseModel):
     country: str
@@ -11,11 +12,13 @@ router = APIRouter(
     tags=["owners"]
 )
 
-@router.get("")
+@router.get("",
+    dependencies=[Depends(get_current_admin)])
 def get_all_owners():
     return get_owners()
 
-@router.post("")
+@router.post("",
+    dependencies=[Depends(get_current_admin)])
 def create_new_owner(data: OwnerCreate):
     return create_owner(country=data.country, owner_type=data.owner_type)
 
