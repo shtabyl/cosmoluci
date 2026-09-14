@@ -168,6 +168,10 @@ body.dark-mode {
     }
 }
 
+.admin-nav__item:last-child {
+    margin-left: auto;
+}
+
 section {
     padding-bottom: 2rem;
 }
