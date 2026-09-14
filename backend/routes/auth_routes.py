@@ -1,9 +1,10 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Response
 from routes.schemes import AdminLogin
 
 from auth import (
     get_admin_by_username,
-    verify_password
+    verify_password,
+    create_session
 )
 
 router = APIRouter(
@@ -14,7 +15,8 @@ router = APIRouter(
 
 @router.post("/login")
 def login(
-    data: AdminLogin
+    data: AdminLogin,
+    response: Response
 ):
 
     admin = get_admin_by_username(
@@ -42,6 +44,25 @@ def login(
             status_code=401,
             detail="Invalid username or password"
         )
+
+
+    session_token = create_session(
+        admin["id"]
+    )
+
+
+    response.set_cookie(
+        key="admin_session",
+        value=session_token,
+
+        httponly=True,
+
+        secure=False,
+
+        samesite="lax",
+
+        max_age=60 * 60 * 24 * 7
+    )
 
 
     return {
