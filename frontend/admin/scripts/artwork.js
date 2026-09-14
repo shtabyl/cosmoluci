@@ -1,3 +1,5 @@
+import { requireAdmin } from "./auth.js";
+
 const API_URL = "http://127.0.0.1:8000";
 
 const params = new URLSearchParams(window.location.search);
@@ -192,9 +194,27 @@ function fillForm(artwork, referenceData) {
     );
 }
 
-setupPageMode();
-loadPage();
+async function initArtworkPage() {
 
+    const admin =
+        await requireAdmin();
+
+
+    if (!admin) {
+
+        return;
+
+    }
+
+
+    // Здесь существующая
+    // логика загрузки artwork
+    setupPageMode();
+    loadPage();
+    
+}
+
+initArtworkPage();
 
 function getSelectValue(id) {
     const value = document.querySelector(`#${id}`).value;

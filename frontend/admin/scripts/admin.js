@@ -1,3 +1,5 @@
+import { requireAdmin } from "./auth.js";
+
 const API_URL = "http://127.0.0.1:8000";
 
 async function load_artworks() {
@@ -17,7 +19,34 @@ async function load_artworks() {
     }
 }
 
-load_artworks();
+async function initAdmin() {
+
+    const admin =
+        await requireAdmin();
+
+
+    if (!admin) {
+
+        return;
+
+    }
+
+
+    console.log(
+        "Authenticated admin:",
+        admin
+    );
+
+
+    // загрузка списка картин
+    load_artworks();
+
+}
+
+document.addEventListener(
+    "DOMContentLoaded",
+    initAdmin
+);
 
 
 function renderArtworks(artworks) {

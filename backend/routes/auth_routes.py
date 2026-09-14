@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Request, Response, status
+from fastapi import APIRouter, HTTPException, Request, Response, status, Depends
 from routes.schemes import AdminLogin
 
 from auth import (
@@ -135,4 +135,14 @@ def get_current_admin(
     return {
         "id": session["admin_id"],
         "username": session["username"]
+    }
+
+@router.get("/admin/auth/me")
+def get_current_admin_info(
+    current_admin: dict = Depends(get_current_admin)
+):
+
+    return {
+        "id": current_admin["id"],
+        "username": current_admin["username"]
     }
