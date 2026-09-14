@@ -4,7 +4,12 @@ const API_URL = "http://127.0.0.1:8000";
 
 async function load_artworks() {
     try {
-        const response = await fetch(`${API_URL}/api/admin/artworks`);
+        const response = await fetch(`${API_URL}/api/admin/artworks`,
+            {
+                method: "GET",
+                credentials: "include"
+            }
+        );
 
         if (!response.ok) {
             throw new Error(`HTTP error: ${response.status}`);

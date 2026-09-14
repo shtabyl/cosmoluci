@@ -4,7 +4,11 @@ const API_URL = "http://127.0.0.1:8000/api/admin";
 export async function getReferenceItems(referenceType) {
 
     const response = await fetch(
-        `${API_URL}/reference-data/${referenceType}`
+        `${API_URL}/reference-data/${referenceType}`,
+        {
+            method: "GET",
+            credentials: "include"
+        }
     );
 
     if (!response.ok) {
@@ -24,7 +28,7 @@ export async function createReferenceItem(
         `${API_URL}/reference-data/${referenceType}`,
         {
             method: "POST",
-
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json"
             },
@@ -58,7 +62,7 @@ export async function updateReferenceItem(
         `${API_URL}/reference-data/${referenceType}/${itemId}`,
         {
             method: "PUT",
-
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json"
             },
@@ -90,7 +94,8 @@ export async function deleteReferenceItem(
     const response = await fetch(
         `${API_URL}/reference-data/${referenceType}/${itemId}`,
         {
-            method: "DELETE"
+            method: "DELETE",
+            credentials: "include"
         }
     );
 
@@ -110,7 +115,11 @@ export async function deleteReferenceItem(
 export async function getOwners() {
 
     const response = await fetch(
-        `${API_URL}/owners`
+        `${API_URL}/owners`,
+        {
+            method: "GET",
+            credentials: "include"
+        }
     );
 
     if (!response.ok) {
@@ -130,7 +139,7 @@ export async function createOwner(
         `${API_URL}/owners`,
         {
             method: "POST",
-
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json"
             },
@@ -165,7 +174,7 @@ export async function updateOwner(
         `${API_URL}/owners/${ownerId}`,
         {
             method: "PUT",
-
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json"
             },
@@ -195,7 +204,8 @@ export async function deleteOwner(ownerId) {
     const response = await fetch(
         `${API_URL}/owners/${ownerId}`,
         {
-            method: "DELETE"
+            method: "DELETE",
+            credentials: "include"
         }
     );
 

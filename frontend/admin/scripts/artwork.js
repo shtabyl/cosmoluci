@@ -100,7 +100,11 @@ async function loadPage() {
         if (isEditMode) {
 
             const artworkResponse = await fetch(
-                `${API_URL}/api/admin/artworks/${artworkId}`
+                `${API_URL}/api/admin/artworks/${artworkId}`,
+                {
+                    method: "GET",
+                    credentials: "include"
+                }
             );
 
             if (!artworkResponse.ok) {
@@ -373,7 +377,12 @@ async function saveArtwork(event) {
 
 
 async function loadReferenceData() {
-    const response = await fetch(`${API_URL}/api/admin/reference-data`);
+    const response = await fetch(`${API_URL}/api/admin/reference-data`,
+        {
+            method: "GET",
+            credentials: "include"
+        }
+    );
 
     if (!response.ok) {
         throw new Error(
@@ -568,6 +577,8 @@ async function updateImage(
                     "Content-Type": "application/json"
                 },
 
+                credentials: "include",
+
                 body: JSON.stringify({
                     alt_text: altText,
                     sort_order: sortOrder
@@ -604,7 +615,8 @@ async function deleteImage(imageId) {
     try {
         const response = await fetch(`${API_URL}/api/admin/images/${imageId}`,
             {
-                method: "DELETE"
+                method: "DELETE",
+                credentials: "include"
             }
         );
 
@@ -646,6 +658,7 @@ async function uploadImage(event) {
             `${API_URL}/api/admin/artworks/${artworkId}/images`,
             {
                 method: "POST",
+                credentials: "include",
                 body: formData
             }
         );

@@ -137,7 +137,7 @@ def get_current_admin(
         "username": session["username"]
     }
 
-@router.get("/admin/auth/me")
+@router.get("/auth/me")
 def get_current_admin_info(
     current_admin: dict = Depends(get_current_admin)
 ):
