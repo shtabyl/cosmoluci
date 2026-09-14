@@ -146,3 +146,23 @@ def get_current_admin_info(
         "id": current_admin["id"],
         "username": current_admin["username"]
     }
+
+
+@router.post("/logout")
+def admin_logout(request: Request, response: Response):
+    session_token = request.cookies.get("admin_session")
+
+    if session_token:
+        session = get_session_by_token(session_token)
+
+        if session:
+            delete_session(session["session_id"])
+
+    response.delete_cookie(
+        key="admin_session",
+        httponly=True,
+        secure=False,
+        samesite="lax"
+    )
+
+    return {"message": "Logout successful"}

@@ -172,3 +172,46 @@ document.addEventListener(
 
     }
 );
+
+
+async function logoutAdmin() {
+
+    const response = await fetch(`${API_URL}/api/admin/logout`, {
+        method: "POST",
+        credentials: "include"
+    });
+
+    if (!response.ok) {
+        throw new Error("Не удалось выполнить выход");
+    }
+
+    return await response.json();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const logoutButton = document.querySelector("#logout-button");
+
+    if (!logoutButton) {
+        return;
+    }
+
+    logoutButton.addEventListener("click", async () => {
+
+        try {
+
+            await logoutAdmin();
+
+            window.location.href = "login.html";
+
+        } catch (error) {
+
+            console.error("Logout failed:", error);
+
+            alert("Не удалось выполнить выход");
+
+        }
+
+    });
+
+});
