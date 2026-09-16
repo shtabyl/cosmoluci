@@ -32,8 +32,3 @@ with get_connection() as conn:
         admin_id = cur.fetchone()[0]
 
         conn.commit()
-
-
-print(
-    f"Admin created with ID: {admin_id}"
-)

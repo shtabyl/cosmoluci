@@ -38,8 +38,7 @@ async function initAdmin() {
 
 
     console.log(
-        "Authenticated admin:",
-        admin
+        "Authenticated admin"
     );
 
 
