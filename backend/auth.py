@@ -1,3 +1,4 @@
+from fastapi import HTTPException, Request
 from pwdlib import PasswordHash
 from database import get_connection
 from typing import Optional
@@ -65,47 +66,49 @@ def generate_session_token() -> str:
     return secrets.token_urlsafe(32)
 
 
-def create_session(
-    admin_id: int
-) -> str:
+def generate_csrf_token() -> str:
+    return secrets.token_urlsafe(32)
 
+
+def create_session(admin_id: int) -> dict:
     session_token = generate_session_token()
+    session_token_hash = hash_session_token(session_token)
 
-    session_token_hash = hash_session_token(
-        session_token
-    )
+    csrf_token = generate_csrf_token()
 
-    expires_at = (
-        datetime.now()
-        + timedelta(days=SESSION_DURATION_DAYS)
-    )
+    expires_at = datetime.now() + timedelta(days=SESSION_DURATION_DAYS)
 
+    conn = get_connection()
 
-    with get_connection() as conn:
-        with conn.cursor() as cur:
-
-            cur.execute(
+    try:
+        with conn.cursor() as cursor:
+            cursor.execute(
                 """
                 INSERT INTO admin_sessions (
                     admin_id,
                     session_token_hash,
+                    csrf_token,
                     expires_at
                 )
-                VALUES (%s, %s, %s);
+                VALUES (%s, %s, %s, %s)
                 """,
                 (
                     admin_id,
                     session_token_hash,
+                    csrf_token,
                     expires_at
                 )
             )
 
         conn.commit()
 
+    finally:
+        conn.close()
 
-    # Возвращаем RAW TOKEN браузеру.
-    # В БД он никогда не сохраняется.
-    return session_token
+    return {
+        "session_token": session_token,
+        "csrf_token": csrf_token
+    }
 
 
 def hash_session_token(
@@ -134,7 +137,8 @@ def get_session_by_token(
                     admin_sessions.id,
                     admin_sessions.admin_id,
                     admin_sessions.expires_at,
-                    admin_users.username
+                    admin_users.username,
+                    admin_sessions.csrf_token
                 FROM admin_sessions
                 JOIN admin_users
                     ON admin_users.id = admin_sessions.admin_id
@@ -154,7 +158,8 @@ def get_session_by_token(
         "session_id": row[0],
         "admin_id": row[1],
         "expires_at": row[2],
-        "username": row[3]
+        "username": row[3],
+        "csrf_token": row[4]
     }
 
 
@@ -181,3 +186,33 @@ def delete_session(
             )
 
         conn.commit()
+
+
+def verify_csrf_token(
+    session: dict,
+    csrf_token: str
+) -> bool:
+
+    if not csrf_token:
+        return False
+
+    token_hash = hash_session_token(csrf_token)
+
+    return secrets.compare_digest(
+        token_hash,
+        session["csrf_token_hash"]
+    )
+
+
+def verify_csrf_token(
+    session: dict,
+    csrf_token: str
+) -> bool:
+
+    if not csrf_token:
+        return False
+
+    return secrets.compare_digest(
+        csrf_token,
+        session["csrf_token"]
+    )

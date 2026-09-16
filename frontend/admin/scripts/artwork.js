@@ -1,4 +1,5 @@
 import { requireAdmin } from "./auth.js";
+import { getCsrfToken } from "./auth.js";
 
 const API_URL = "http://127.0.0.1:8000";
 
@@ -809,13 +810,37 @@ async function apiRequest(
     options = {}
 ) {
 
+    const method =
+        (options.method || "GET").toUpperCase();
+
+    const headers = {
+        ...(options.headers || {})
+    };
+
+    if (
+        method === "POST" ||
+        method === "PATCH" ||
+        method === "DELETE"
+    ) {
+        const csrfToken = getCsrfToken();
+        if (csrfToken) {
+            headers["X-CSRF-Token"] = csrfToken;
+        }
+    }
+
+    const requestOptions = {
+        ...options,
+        headers,
+        credentials: "include"
+    };
+
     let response;
 
     try {
 
         response = await fetch(
             url,
-            options
+            requestOptions
         );
 
     } catch (error) {
@@ -824,8 +849,8 @@ async function apiRequest(
             "Не удалось соединиться с сервером. " +
             "Проверьте подключение и попробуйте снова."
         );
-    }
 
+    }
 
     let data = null;
 
@@ -836,8 +861,8 @@ async function apiRequest(
     } catch {
 
         data = null;
-    }
 
+    }
 
     if (!response.ok) {
 
@@ -845,8 +870,8 @@ async function apiRequest(
             getApiErrorMessage(data);
 
         throw new Error(message);
-    }
 
+    }
 
     return data;
 }

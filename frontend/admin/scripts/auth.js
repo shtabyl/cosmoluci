@@ -1,21 +1,27 @@
 const API_URL = "http://127.0.0.1:8000";
 
+let csrfToken = null;
+
+export function getCsrfToken() {
+    return csrfToken;
+}
+
 async function getCurrentAdmin() {
 
     const response = await fetch(`${API_URL}/api/admin/auth/me`, {
         method: "GET",
         credentials: "include"
     });
-
-    console.log("auth/me status:", response.status);
-
-    const data = await response.json();
-
-    console.log("auth/me response:", data);
-
+    
     if (!response.ok) {
+        csrfToken = null;
         return null;
     }
+    
+    const data = await response.json();
+
+    csrfToken = data.csrf_token;
+
 
     return data;
 }
@@ -25,9 +31,6 @@ export async function requireAdmin() {
 
     const admin =
         await getCurrentAdmin();
-
-
-    console.log("requireAdmin result:", admin);
 
     if (!admin) {
         console.log("No authenticated admin, redirecting to login");

@@ -88,6 +88,7 @@ CREATE TABLE admin_sessions (
         REFERENCES admin_users(id)
         ON DELETE CASCADE,
     session_token_hash VARCHAR(64) NOT NULL UNIQUE,
+    csrf_token VARCHAR(64) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     expires_at TIMESTAMP NOT NULL
 );

@@ -4,7 +4,7 @@ from database import get_connection
 from images import validate_image, save_artwork_image, generate_webp_variants, save_image_metadata, get_image_for_delete, delete_image_files, update_image, cleanup_image_directories, delete_image_record
 from routes.schemes import ArtworkCreate, ArtworkUpdateFull, ArtworkUpdate, ArtworkPublicationUpdate, ImageUpdate
 from psycopg.errors import ForeignKeyViolation
-from routes.auth_routes import get_current_admin
+from routes.auth_routes import get_current_admin, require_csrf
 
 router = APIRouter(prefix="/api", tags=["artworks"])
 
@@ -28,7 +28,7 @@ def retrieve_artwork(artwork_id: int):
 
 
 @router.post("/admin/artworks",
-    dependencies=[Depends(get_current_admin)])
+    dependencies=[Depends(require_csrf)])
 def create_artwork_endpoint(data: ArtworkCreate):
 
     try:
