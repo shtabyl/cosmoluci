@@ -143,3 +143,19 @@ def update_reference_item(
         "id": row[0],
         "name": row[1]
     }
+
+
+def get_years():
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT DISTINCT creation_year
+                FROM paintings
+                WHERE is_published
+                ORDER BY creation_year DESC;
+                """
+            )
+            rows = cur.fetchall()
+            print(rows)
+    return [row[0] for row in rows]

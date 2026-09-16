@@ -19,3 +19,17 @@ export async function getArtwork(id) {
 
     return await response.json();
 }
+
+export async function getYears() {
+    const response = await fetch(`${API_URL}/api/admin/reference-data/years/years`);
+
+    if (!response.ok) {
+        throw new Error(
+            `Failed to load reference data: ${response.status}`
+        );
+    }
+
+    const data = await response.json();
+
+    return data;
+}

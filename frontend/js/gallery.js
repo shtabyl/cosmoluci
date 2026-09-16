@@ -1,4 +1,5 @@
 import { getArtworks } from "./api.js";
+import { getYears } from "./api.js";
 
 async function loadGallery() {
 
@@ -103,3 +104,38 @@ async function loadGallery() {
 }
 
 loadGallery();
+
+async function loadYearOptions() {
+
+    try {
+
+        const years = await getYears();
+
+        const yearFilterContainer =
+            document.querySelector("#year-filter-options");
+        const yearFilterNativeWrapper = document.querySelector("#year-filter");
+
+        years.forEach(year => {
+
+            const option = document.createElement("div");
+
+            option.classList.add("select-custom-option");
+            option.dataset.value = year;
+            option.textContent = year;
+
+            yearFilterContainer.appendChild(option);
+
+            const optionNative = document.createElement("option");
+            optionNative.value = year;
+            optionNative.textContent = year;
+            yearFilterNativeWrapper.appendChild(optionNative);
+        });
+
+    } catch (error) {
+
+        console.error("Failed to load reference data:", error);
+
+    }
+}
+
+loadYearOptions();

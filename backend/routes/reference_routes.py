@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
-from reference_data import (get_reference_items, create_reference_item, update_reference_item)
+from reference_data import (get_reference_items, create_reference_item, update_reference_item, get_years)
 from reference_data_delete import delete_reference_item
 from routes.auth_routes import get_current_admin
 
@@ -12,8 +12,7 @@ router = APIRouter(
     tags=["reference-data"]
 )
 
-@router.get("/{reference_type}",
-    dependencies=[Depends(get_current_admin)])
+@router.get("/{reference_type}")
 def get_reference_data(reference_type: str):
     return get_reference_items(reference_type)
 
@@ -50,3 +49,7 @@ def delete_reference_data(
     return {
         "success": True
     }
+
+@router.get("/years/years")
+def get_years_endpoint():
+    return get_years()
