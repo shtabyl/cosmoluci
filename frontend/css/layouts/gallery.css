@@ -52,7 +52,7 @@
 
 .gallery__picture-link {
     opacity: 1;
-    transition: opacity 180ms ease;
+    transition: opacity 280ms ease;
 }
 
 .gallery__picture-link.is-fading {
