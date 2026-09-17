@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException, Request, Response, status, Depends, Header
 from routes.schemes import AdminLogin
 from typing import Optional
+import os
 
 from auth import (
     get_admin_by_username,
@@ -11,6 +12,10 @@ from auth import (
     delete_session,
     verify_csrf_token
 )
+
+ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
+
+SECURE_COOKIES = ENVIRONMENT == "production"
 
 router = APIRouter(
     prefix="/api/admin",
@@ -61,7 +66,7 @@ def login(
         key="admin_session",
         value=session_token,
         httponly=True,
-        secure=False,
+        secure=SECURE_COOKIES,
         samesite="lax",
         max_age=60 * 60 * 24 * 7
     )
