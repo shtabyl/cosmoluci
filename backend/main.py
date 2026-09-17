@@ -14,12 +14,31 @@ app.include_router(auth_router)
 
 app.mount("/images", StaticFiles(directory="../storage"), name="images")
 
+allowed_origins = [
+    # Production
+    "https://cosmoluci.art",
+    "https://www.cosmoluci.art",
+
+    # Local development
+    "http://localhost:5500",
+    "http://127.0.0.1:5500",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=[
+        "GET",
+        "POST",
+        "PATCH",
+        "DELETE",
+        "OPTIONS",
+    ],
+    allow_headers=[
+        "Content-Type",
+        "X-CSRF-Token",
+    ],
 )
 
 
