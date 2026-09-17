@@ -1,57 +1,97 @@
 const filterBtns = document.querySelectorAll('.filter-button');
 const yearFilter = document.querySelector('#year-filter');
 
-const showFilteredImages = (type, year) => {
-    const images = document.querySelectorAll('.gallery__picture');
-    images.forEach(image => {
-        const imageType = image.getAttribute('data-type');
-        const imageYear = image.getAttribute('data-year');
-        if (
-        (type === 'all' || type === imageType)
-        && (year === 'all' || year === imageYear)
-        ) {
-            image.style.display = 'block';
-            setTimeout(() => {
-                image.classList.remove('hide');
-            }, 100);
-        }
-    });
-}
+// const showFilteredImages = (type, year) => {
+//     const cards = document.querySelectorAll('.gallery__picture-link');
 
-const hideImages = () => {
-    const images = document.querySelectorAll('.gallery__picture');
-    images.forEach(image => {
-        image.classList.add('hide');
-        setTimeout(() => {
-            image.style.display = 'none';
-        }, 600);
+//     cards.forEach(card => {
+//         const imageType = card.dataset.type;
+//         const imageYear = card.dataset.year;
+
+//         const isMatch =
+//             (type === 'all' || type === imageType) &&
+//             (year === 'all' || year === imageYear);
+
+//         card.style.display = isMatch ? '' : 'none';
+//     });
+// };
+
+
+const showFilteredImages = (type, year) => {
+    const cards = [...document.querySelectorAll('.gallery__picture-link')];
+
+    // Определяем, какие карточки должны быть видны
+    const matchingCards = cards.filter(card => {
+        const isTypeMatch =
+            type === 'all' || type === card.dataset.type;
+
+        const isYearMatch =
+            year === 'all' || year === card.dataset.year;
+
+        return isTypeMatch && isYearMatch;
     });
-}
+
+    const visibleCards = cards.filter(
+        card => card.style.display !== 'none'
+    );
+
+    // Фаза A: плавно скрываем текущие карточки
+    visibleCards.forEach(card => {
+        card.classList.add('is-fading');
+    });
+
+    setTimeout(() => {
+
+        // Убираем старые карточки из Grid
+        cards.forEach(card => {
+            card.style.display = matchingCards.includes(card)
+                ? ''
+                : 'none';
+
+            card.classList.remove('is-fading');
+        });
+
+        // Фаза B: плавно показываем подходящие карточки
+        matchingCards.forEach(card => {
+            card.style.opacity = '0';
+        });
+
+        requestAnimationFrame(() => {
+            matchingCards.forEach(card => {
+                card.style.transition = 'opacity 400ms ease';
+                card.style.opacity = '1';
+            });
+        });
+
+    }, 180);
+};
+
 
 filterBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        filterBtns.forEach(btn => btn.classList.remove('button-active'));
+    btn.addEventListener('click', () => {
+
+        filterBtns.forEach(btn => {
+            btn.classList.remove('button-active');
+        });
+
         btn.classList.add('button-active');
-        hideImages();
-        setTimeout(() => {
-            const type = btn.getAttribute('data-type');
-            const year = yearFilter.value;
-            showFilteredImages(type, year);
-        }, 600);
+
+        const type = btn.dataset.type;
+        const year = yearFilter.value;
+
+        showFilteredImages(type, year);
     });
 });
 
+
 yearFilter.addEventListener('change', () => {
-    const activeFilterBtn = document.querySelector('.filter-button.button-active');
-    hideImages();
-    setTimeout(() => {
-        const type = activeFilterBtn.getAttribute('data-type');
-        const year = yearFilter.value;
-        showFilteredImages(type, year);
-    }, 600);
+
+    const activeFilterBtn = document.querySelector(
+        '.filter-button.button-active'
+    );
+
+    const type = activeFilterBtn.dataset.type;
+    const year = yearFilter.value;
+
+    showFilteredImages(type, year);
 });
-
-// Select filter
-
-
-

@@ -78,13 +78,6 @@ body {
     padding-block: 0;
 }
 
-.hide {
-    height: 0;
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.5s ease-in;
-}
-
 @media screen and (max-width: 768px) {
     .main__container {
         margin-top: 2em;

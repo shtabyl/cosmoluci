@@ -28,8 +28,8 @@ async function loadGallery() {
                 "picture_gallery"
             );
 
-            picture.dataset.type = artwork.genres;
-            picture.dataset.year = artwork.creation_year;
+            pictureLink.dataset.type = artwork.genres;
+            pictureLink.dataset.year = artwork.creation_year;
 
 
             // Находим главное изображение

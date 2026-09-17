@@ -23,6 +23,16 @@
     margin-bottom: 3rem;
 }
 
+.gallery__picture-link {
+    opacity: 1;
+    transition: opacity 180ms ease;
+}
+
+.gallery__picture-link.is-fading {
+    opacity: 0;
+    pointer-events: none;
+}
+
 @media screen and (max-width: 768px) {
     .gallery__filters {
         justify-content: flex-start;
