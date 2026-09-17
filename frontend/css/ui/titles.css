@@ -10,5 +10,6 @@
     font-size: var(--fs-400);
 }
 .title_about {
-    font-weight: 400;
+    font-weight: 300;
+    font-size: var(--fs-400);
 }

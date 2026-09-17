@@ -3,7 +3,7 @@
     width: 100%;
     gap: 1rem;
 }
-.about-main__left-wrapper {
+.about-main__right-wrapper {
     width: 50vw;
 }
 
@@ -61,22 +61,22 @@
 
 .list-icon-closed {
     position: absolute;
-    width: 0.8em;
-    height: 0.8em;
+    width: 0.6em;
+    height: 0.6em;
     top: 0;
     bottom: 0;
     left: 0;
     margin: auto;
     background: url(../../assets/icons/moon.svg) center no-repeat;
     background-size: contain;
-    margin-left: 5px;
+    margin-left: 4px;
     opacity: 1;
     transition: .7s ease;
 }
 .list-icon-opened {
     position: absolute;
-    width: 1.3em;
-    height: 1.3em;
+    width: 1em;
+    height: 1em;
     top: 0;
     bottom: 0;
     left: 0;

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +13,7 @@
     <script src="js/filter.js" defer></script>
     <script type="module" src="js/gallery.js" defer></script>
     
-    <title>Svetlana Osipova</title>
+    <title>Светлана Осипова</title>
 </head>
 <body>
     <header class="header">
@@ -28,14 +28,14 @@
                 
                 <nav class="navbar">
                     <div class="header__logo logo">
-                        <a href="index.html" class="logo_header link link_logo">Svetlana Osipova</a>
+                        <a href="index.html" class="logo_header link link_logo">Светлана Осипова</a>
                     </div>
                     <div class="navbar__menu-list">
                         <ul>
-                            <li class="navbar__menu-item link link_header link-active"><a href="gallery.html">Artworks</a></li>
-                            <li class="navbar__menu-item link link_header"><a href="about.html">About</a></li>
-                            <!-- <li class="navbar__menu-item link link_header"><a href="blog.html">Blog</a></li> -->
-                            <li class="navbar__menu-item link link_header"><a href="contacts.html">Contacts</a></li>
+                            <li class="navbar__menu-item link link_header link-active"><a href="gallery.html">Галерея</a></li>
+                            <li class="navbar__menu-item link link_header"><a href="about.html">Обо мне</a></li>
+                            <!-- <li class="navbar__menu-item link link_header"><a href="blog.html">Блог</a></li> -->
+                            <li class="navbar__menu-item link link_header"><a href="contacts.html">Контакты</a></li>
                         </ul>
                     </div>
                     <div class="navbar__social social">
@@ -45,16 +45,16 @@
                                     <img src="./assets/icons/telegram.svg" alt="Telegram">
                                 </a>
                             </li> -->
-                            <li class="social__item">
+                            <!-- <li class="social__item">
                                 <a href="#">
                                     <img src="./assets/icons/instagram.svg" alt="Instagram">
                                 </a>
-                            </li>
-                            <!-- <li class="social__item vkontakte">
+                            </li> -->
+                            <li class="social__item vkontakte">
                                 <a href="https://vk.com/sveta.cosmoluci" target="_blank" rel="noopener noreferrer">
                                     <img src="assets/icons/vk.svg" alt="VK">
                                 </a>
-                            </li> -->
+                            </li>
                         </ul>
                     </div>
                 </nav>
@@ -70,24 +70,24 @@
         <div class="main__container content-grid">
             <section class="gallery">
                 <div class="gallery__filters filter">
-                    <button class="filter-button button button-active" data-type="all">All</button>
-                    <button class="filter-button button" data-type="portrait">Portraits</button>
-                    <button class="filter-button button" data-type="landscape">Lanscapes</button>
-                    <button class="filter-button button" data-type="still-life">Still-life</button>
-                    <button class="filter-button button" data-type="abstract">Abstract</button>
-                    <button class="filter-button button" data-type="copies">Copies</button>
+                    <button class="filter-button button button-active" data-type="all">Все работы</button>
+                    <button class="filter-button button" data-type="portrait">Портреты</button>
+                    <button class="filter-button button" data-type="landscape">Пейзажи</button>
+                    <button class="filter-button button" data-type="still-life">Натюрморты</button>
+                    <button class="filter-button button" data-type="abstract">Абстракция</button>
+                    <button class="filter-button button" data-type="copies">Копии</button>
                     <div class="select-container">
                         <div class="select-native-wrapper">
                             <select class="select-native js-selectNativefilter-select" name="year" id="year-filter">
-                                <option value="all" selected>Year</option>
+                                <option value="all" selected>Год</option>
 
                             </select>
                         </div>
                         <div class="select-custom-wrapper">
                             <div class="select-custom" aria-hidden="true">
-                                <div class="select-custom-trigger">Year</div>
+                                <div class="select-custom-trigger">Год</div>
                                 <div id="year-filter-options" class="select-custom-options">
-                                    <div class="select-custom-option active_select" data-value="all">All years</div>
+                                    <div class="select-custom-option active_select" data-value="all">Все</div>
 
                                 </div>
                                 <img src="assets/icons/chevron-down.svg" class="select-arrow">
