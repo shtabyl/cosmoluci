@@ -33,3 +33,13 @@ export async function getYears() {
 
     return data;
 }
+
+export async function getFeaturedArtworks() {
+    const response = await fetch(`${API_URL}/api/artworks/main/featured`);
+
+    if (!response.ok) {
+        throw new Error("Failed to load featured artworks");
+    }
+
+    return await response.json();
+}

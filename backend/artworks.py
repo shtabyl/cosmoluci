@@ -684,3 +684,93 @@ def can_publish_artwork(
             has_main_image = cur.fetchone()[0]
 
     return has_main_image
+
+
+def get_featured_artworks():
+    query = """
+        SELECT
+    p.id,
+    p.title,
+    p.creation_year,
+    p.description,
+    p.height_cm,
+    p.width_cm,
+    p.is_copy,
+    p.is_featured,
+    p.is_published,
+
+    m.name AS medium,
+    s.name AS surface,
+    st.name AS status,
+
+    COALESCE(
+        ARRAY_AGG(DISTINCT g.name ORDER BY g.name)
+        FILTER (WHERE g.name IS NOT NULL),
+        '{}'
+    ) AS genres
+
+    FROM paintings p
+
+    LEFT JOIN mediums m
+        ON p.medium_id = m.id
+
+    LEFT JOIN surfaces s
+        ON p.surface_id = s.id
+
+    LEFT JOIN statuses st
+        ON p.status_id = st.id
+
+    LEFT JOIN painting_genres pg
+        ON pg.painting_id = p.id
+
+    LEFT JOIN genres g
+        ON g.id = pg.genre_id
+
+    LEFT JOIN painting_images pi
+        ON pi.painting_id = p.id
+
+    WHERE p.is_published = TRUE AND pi.is_main = TRUE AND p.is_featured = TRUE
+
+    GROUP BY
+        p.id,
+        p.title,
+        p.creation_year,
+        p.description,
+        p.height_cm,
+        p.width_cm,
+        p.is_copy,
+        p.is_featured,
+        p.is_published,
+        m.name,
+        s.name,
+        st.name
+
+    ORDER BY
+        p.creation_year DESC,
+        p.id DESC;
+    """
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(query)
+            rows = cur.fetchall()
+
+    return [
+        {
+            "id": row[0],
+            "title": row[1],
+            "creation_year": row[2],
+            "description": row[3],
+            "height_cm": float(row[4]) if row[4] is not None else None,
+            "width_cm": float(row[5]) if row[5] is not None else None,
+            "is_copy": row[6],
+            "is_featured": row[7],
+            "is_published": row[8],
+            "medium": row[9],
+            "surface": row[10],
+            "status": row[11],
+            "genres": row[12],
+            "images": get_artwork_images(row[0])
+        }
+        for row in rows
+    ]

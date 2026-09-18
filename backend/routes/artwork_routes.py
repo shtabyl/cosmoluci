@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, File, UploadFile, Form, Depends
-from artworks import get_admin_artwork, get_admin_artworks, get_artworks, get_artwork, create_artwork, update_artwork_full, get_reference_data, update_artwork_fields, set_artwork_publication, can_publish_artwork
+from artworks import get_admin_artwork, get_admin_artworks, get_artworks, get_artwork, create_artwork, update_artwork_full, get_reference_data, update_artwork_fields, set_artwork_publication, can_publish_artwork, get_featured_artworks
 from database import get_connection
 from images import validate_image, save_artwork_image, generate_webp_variants, save_image_metadata, get_image_for_delete, delete_image_files, update_image, cleanup_image_directories, delete_image_record
 from routes.schemes import ArtworkCreate, ArtworkUpdateFull, ArtworkUpdate, ArtworkPublicationUpdate, ImageUpdate
@@ -320,3 +320,8 @@ def update_artwork_publication(
         "id": artwork_id,
         "is_published": data.is_published
     }
+
+
+@router.get("/artworks/main/featured")
+def list_featured_artworks():
+    return get_featured_artworks()
