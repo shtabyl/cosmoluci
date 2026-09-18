@@ -50,15 +50,8 @@
     -webkit-column-break-inside: avoid;
 }
 
-.gallery__picture-link {
-    opacity: 1;
-    transition: opacity 280ms ease;
-}
-
-.gallery__picture-link.is-fading {
-    opacity: 0;
-    pointer-events: none;
-}
+.gallery__picture-link { transition: opacity 400ms ease-in-out; }
+.gallery__picture-link.is-fading { opacity: 0; pointer-events: none; }
 
 @media screen and (max-width: 768px) {
     .gallery__filters {

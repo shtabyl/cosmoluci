@@ -1,97 +1,41 @@
 const filterBtns = document.querySelectorAll('.filter-button');
 const yearFilter = document.querySelector('#year-filter');
 
-// const showFilteredImages = (type, year) => {
-//     const cards = document.querySelectorAll('.gallery__picture-link');
-
-//     cards.forEach(card => {
-//         const imageType = card.dataset.type;
-//         const imageYear = card.dataset.year;
-
-//         const isMatch =
-//             (type === 'all' || type === imageType) &&
-//             (year === 'all' || year === imageYear);
-
-//         card.style.display = isMatch ? '' : 'none';
-//     });
-// };
-
+let fadeTimer = null;
 
 const showFilteredImages = (type, year) => {
     const cards = [...document.querySelectorAll('.gallery__picture-link')];
 
-    // Определяем, какие карточки должны быть видны
     const matchingCards = cards.filter(card => {
-        const isTypeMatch =
-            type === 'all' || type === card.dataset.type;
-
-        const isYearMatch =
-            year === 'all' || year === card.dataset.year;
-
+        const isTypeMatch = type === 'all' || type === card.dataset.type;
+        const isYearMatch = year === 'all' || year === card.dataset.year;
         return isTypeMatch && isYearMatch;
     });
 
-    const visibleCards = cards.filter(
-        card => card.style.display !== 'none'
-    );
+    clearTimeout(fadeTimer);
+    cards.forEach(card => card.classList.add('is-fading'));
 
-    // Фаза A: плавно скрываем текущие карточки
-    visibleCards.forEach(card => {
-        card.classList.add('is-fading');
-    });
-
-    setTimeout(() => {
-
-        // Убираем старые карточки из Grid
+    fadeTimer = setTimeout(() => {
         cards.forEach(card => {
-            card.style.display = matchingCards.includes(card)
-                ? ''
-                : 'none';
-
-            card.classList.remove('is-fading');
+            card.style.display = matchingCards.includes(card) ? '' : 'none';
         });
 
-        // Фаза B: плавно показываем подходящие карточки
-        matchingCards.forEach(card => {
-            card.style.opacity = '0';
-        });
+        void document.body.offsetWidth; // фиксируем opacity: 0 перед появлением
 
-        requestAnimationFrame(() => {
-            matchingCards.forEach(card => {
-                card.style.transition = 'opacity 400ms ease';
-                card.style.opacity = '1';
-            });
-        });
-
+        cards.forEach(card => card.classList.remove('is-fading'));
     }, 180);
 };
 
-
 filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-
-        filterBtns.forEach(btn => {
-            btn.classList.remove('button-active');
-        });
-
+        filterBtns.forEach(b => b.classList.remove('button-active'));
         btn.classList.add('button-active');
 
-        const type = btn.dataset.type;
-        const year = yearFilter.value;
-
-        showFilteredImages(type, year);
+        showFilteredImages(btn.dataset.type, yearFilter.value);
     });
 });
 
-
 yearFilter.addEventListener('change', () => {
-
-    const activeFilterBtn = document.querySelector(
-        '.filter-button.button-active'
-    );
-
-    const type = activeFilterBtn.dataset.type;
-    const year = yearFilter.value;
-
-    showFilteredImages(type, year);
+    const activeBtn = document.querySelector('.filter-button.button-active');
+    showFilteredImages(activeBtn?.dataset.type ?? 'all', yearFilter.value);
 });

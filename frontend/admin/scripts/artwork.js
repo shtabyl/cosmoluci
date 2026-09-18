@@ -190,6 +190,9 @@ function fillForm(artwork, referenceData) {
 
     document.querySelector("#owner").value =
         artwork.owner_id ?? "";
+    
+    document.querySelector("#is-copy").checked =
+        artwork.is_copy ?? false;
 
     const selectedGenreIds = (artwork.genres ?? []).map(genre => genre.id);
 
@@ -239,6 +242,12 @@ function getOptionalNumber(selector) {
     return Number(value);
 }
 
+function getCopyStatus() {
+    const copyStatus = document.querySelector("#is-copy");
+
+    return copyStatus.checked;
+}
+
 
 function collectArtworkData() {
 
@@ -278,7 +287,8 @@ function collectArtworkData() {
         genre_ids:
             getSelectedGenreIds(),
 
-        is_copy: false
+        is_copy:
+            getCopyStatus()
 
     };
 

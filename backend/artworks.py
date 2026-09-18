@@ -454,7 +454,6 @@ def get_admin_artwork(artwork_id):
         "status_id": row[13],
         "owner": row[14],
         "owner_id": row[15],
-        # Новые объединенные поля:
         "catalog_number": row[16],
         "slug": row[17],
         "price": float(row[18]) if row[18] is not None else None,
