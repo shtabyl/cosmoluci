@@ -20,6 +20,7 @@ def get_artwork(artwork_id: int):
             p.height_cm,
             p.width_cm,
             p.is_copy,
+            p.is_featured,
             p.is_published,
             m.name AS medium,
             s.name AS surface,
@@ -54,10 +55,11 @@ def get_artwork(artwork_id: int):
         "height_cm": float(row[4]) if row[4] is not None else None,
         "width_cm": float(row[5]) if row[5] is not None else None,
         "is_copy": row[6],
-        "is_published": row[7],
-        "medium": row[8],
-        "surface": row[9],
-        "status": row[10],
+        "is_featured": row[7],
+        "is_published": row[8],
+        "medium": row[9],
+        "surface": row[10],
+        "status": row[11],
         "genres": genres,
         "images": images
     }
@@ -93,6 +95,7 @@ def get_artworks():
     p.height_cm,
     p.width_cm,
     p.is_copy,
+    p.is_featured,
     p.is_published,
 
     m.name AS medium,
@@ -135,6 +138,7 @@ def get_artworks():
         p.height_cm,
         p.width_cm,
         p.is_copy,
+        p.is_featured,
         p.is_published,
         m.name,
         s.name,
@@ -159,11 +163,12 @@ def get_artworks():
             "height_cm": float(row[4]) if row[4] is not None else None,
             "width_cm": float(row[5]) if row[5] is not None else None,
             "is_copy": row[6],
-            "is_published": row[7],
-            "medium": row[8],
-            "surface": row[9],
-            "status": row[10],
-            "genres": row[11],
+            "is_featured": row[7],
+            "is_published": row[8],
+            "medium": row[9],
+            "surface": row[10],
+            "status": row[11],
+            "genres": row[12],
             "images": get_artwork_images(row[0])
         }
         for row in rows
@@ -242,12 +247,13 @@ def create_artwork(data):
             currency,
             catalog_number,
             is_copy,
+            is_featured,
             is_published
         )
         VALUES (
             %s, %s, %s, %s, %s, 
             %s, %s, %s, %s, %s, 
-            %s, %s, %s, %s, FALSE)
+            %s, %s, %s, %s, %s, FALSE)
         RETURNING id;
     """
 
@@ -274,7 +280,8 @@ def create_artwork(data):
                 data.price,
                 data.currency,
                 data.catalog_number,
-                data.is_copy
+                data.is_copy,
+                data.is_featured
             ))
             artwork_id = cur.fetchone()[0]
 
@@ -310,6 +317,7 @@ def update_artwork_full(artwork_id: int, data):
             currency = %s,
             catalog_number = %s,
             is_copy = %s,
+            is_featured = %s,
             is_published = %s
         WHERE id = %s
         RETURNING id;
@@ -337,6 +345,7 @@ def update_artwork_full(artwork_id: int, data):
                     data.currency,
                     data.catalog_number,
                     data.is_copy,
+                    data.is_featured,
                     data.is_published,
                     artwork_id,
                 )
@@ -367,6 +376,7 @@ def get_admin_artworks():
             p.title,
             p.creation_year,
             p.is_published,
+            p.is_featured,
             p.is_copy,
             s.name AS status
         FROM paintings p
@@ -386,7 +396,8 @@ def get_admin_artworks():
             "creation_year": row[2],
             "is_published": row[3],
             "is_copy": row[4],
-            "status": row[5],
+            "is_featured": row[5],
+            "status": row[6],
         }
         for row in rows
     ]
@@ -413,7 +424,8 @@ def get_admin_artwork(artwork_id):
             p.catalog_number,
             p.slug,
             p.price,
-            p.currency
+            p.currency,
+            p.is_featured
         FROM paintings p
         LEFT JOIN mediums m
             ON p.medium_id = m.id
@@ -458,6 +470,7 @@ def get_admin_artwork(artwork_id):
         "slug": row[17],
         "price": float(row[18]) if row[18] is not None else None,
         "currency": row[19],
+        "is_featured": row[20],
         "genres": genres,
         "images": images
     }
@@ -542,6 +555,7 @@ def update_artwork_fields(artwork_id: int, data: dict) -> Optional[dict]:
         "status_id",
         "owner_id",
         "is_copy",
+        "is_featured",
         "is_published",
     }
 

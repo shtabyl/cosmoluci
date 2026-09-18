@@ -194,6 +194,9 @@ function fillForm(artwork, referenceData) {
     document.querySelector("#is-copy").checked =
         artwork.is_copy ?? false;
 
+    document.querySelector("#is-featured").checked =
+        artwork.is_featured ?? false;
+
     const selectedGenreIds = (artwork.genres ?? []).map(genre => genre.id);
 
     fillGenres(
@@ -288,7 +291,10 @@ function collectArtworkData() {
             getSelectedGenreIds(),
 
         is_copy:
-            getCopyStatus()
+            getCopyStatus(),
+
+        is_featured:
+            document.querySelector("#is-featured").checked
 
     };
 

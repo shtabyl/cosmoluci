@@ -112,6 +112,8 @@ class ArtworkCreate(ArtworkBase):
 
     is_published: bool = False
 
+    is_featured: bool = False
+
 class ArtworkUpdateFull(ArtworkBase):
 
     title: str = Field(
@@ -133,12 +135,16 @@ class ArtworkUpdateFull(ArtworkBase):
 
     is_published: bool = False
 
+    is_featured: bool = False
+
 
 class ArtworkUpdate(ArtworkBase):
 
     genre_ids: Optional[List[int]] = None
 
     is_copy: Optional[bool] = None
+
+    is_featured: Optional[bool] = None
 
 
 class ImageUpdate(BaseModel):
