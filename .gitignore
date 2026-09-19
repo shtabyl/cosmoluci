@@ -4,12 +4,8 @@ venv/
 ENV/
 env/
 
-# Test DB
-backend/data.py
-
 # Dev scripts and docs
 dev-notes.md
-backend/webp_generator.py
 
 # Artworks
 storage/
@@ -26,16 +22,15 @@ data.sql
 *.sqlite3
 *.db
 
-# Python
-__pycache__/
-*.py[cod]
-
 .DS_Store
 **/.DS_Store
 
+# Secrets
 .env
 .env.*
 !.env.example
 
+# Python
 __pycache__/
 *.py[cod]
+*.pyc
