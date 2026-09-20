@@ -88,3 +88,18 @@
     transition: .7s ease;
 }
 
+@media screen and (max-width: 480px) {
+    .about__content-container {
+        flex-direction: column;
+    }
+    .about-main__right-wrapper {
+        width: 100%;
+    }
+    .about__accordion-item {
+        max-width: 100%;
+    }
+
+    .about-main__right-wrapper {
+        order: -1;
+    }
+}
