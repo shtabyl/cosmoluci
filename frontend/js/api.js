@@ -1,4 +1,5 @@
-const API_URL = "http://127.0.0.1:8000";
+import { API_URL } from "./config.js";
+
 
 export async function getArtworks() {
     const response = await fetch(`${API_URL}/api/artworks`);

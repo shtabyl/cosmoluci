@@ -1,10 +1,9 @@
-const API_URL = "http://127.0.0.1:8000/api/admin";
-
+import { API_URL } from "../../js/config.js";
 
 export async function getReferenceItems(referenceType) {
 
     const response = await fetch(
-        `${API_URL}/reference-data/${referenceType}`,
+        `${API_URL}/api/admin/reference-data/${referenceType}`,
         {
             method: "GET",
             credentials: "include"
@@ -25,7 +24,7 @@ export async function createReferenceItem(
 ) {
 
     const response = await fetch(
-        `${API_URL}/reference-data/${referenceType}`,
+        `${API_URL}/api/admin/reference-data/${referenceType}`,
         {
             method: "POST",
             credentials: "include",
@@ -59,7 +58,7 @@ export async function updateReferenceItem(
 ) {
 
     const response = await fetch(
-        `${API_URL}/reference-data/${referenceType}/${itemId}`,
+        `${API_URL}/api/admin/reference-data/${referenceType}/${itemId}`,
         {
             method: "PUT",
             credentials: "include",
@@ -92,7 +91,7 @@ export async function deleteReferenceItem(
 ) {
 
     const response = await fetch(
-        `${API_URL}/reference-data/${referenceType}/${itemId}`,
+        `${API_URL}/api/admin/reference-data/${referenceType}/${itemId}`,
         {
             method: "DELETE",
             credentials: "include"
@@ -115,7 +114,7 @@ export async function deleteReferenceItem(
 export async function getOwners() {
 
     const response = await fetch(
-        `${API_URL}/owners`,
+        `${API_URL}/api/admin/owners`,
         {
             method: "GET",
             credentials: "include"
@@ -136,7 +135,7 @@ export async function createOwner(
 ) {
 
     const response = await fetch(
-        `${API_URL}/owners`,
+        `${API_URL}/api/admin/owners`,
         {
             method: "POST",
             credentials: "include",
@@ -171,7 +170,7 @@ export async function updateOwner(
 ) {
 
     const response = await fetch(
-        `${API_URL}/owners/${ownerId}`,
+        `${API_URL}/api/admin/owners/${ownerId}`,
         {
             method: "PUT",
             credentials: "include",
@@ -202,7 +201,7 @@ export async function updateOwner(
 export async function deleteOwner(ownerId) {
 
     const response = await fetch(
-        `${API_URL}/owners/${ownerId}`,
+        `${API_URL}/api/admin/owners/${ownerId}`,
         {
             method: "DELETE",
             credentials: "include"
