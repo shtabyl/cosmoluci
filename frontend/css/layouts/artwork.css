@@ -31,3 +31,17 @@ body {
     flex: 1;
     max-width: 50%;
 }
+
+@media screen and (max-width: 480px) {
+    .painting__wrapper {
+        max-width: 100%;
+    }
+
+    .painting__wrapper img {
+        width: 100%;            /* Растягивает на всю ширину контейнера */
+        max-width: 100%;        /* Гарантирует, что картинка не выйдет за пределы */
+        height: auto;           /* Сохраняет пропорции изображения */
+        display: block;         /* Убирает лишние нижние отступы у инлайновых картинок */
+
+    }
+}
