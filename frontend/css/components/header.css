@@ -3,6 +3,8 @@
 .header__navbar {
     position: relative;
     padding-block: 1.5em;
+    background-color: white;
+    z-index: 100;
 }
 
 .header__logo {
@@ -23,11 +25,9 @@
         margin: 0;
         height: 2em;
         margin-top: 0.5rem;
-    }
-    .logo_header {
-        display: grid;
-        height: 100%;
-        place-content: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
 }
