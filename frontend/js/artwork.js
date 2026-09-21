@@ -88,8 +88,93 @@ async function loadArtwork() {
         picture.appendChild(source);
         picture.appendChild(img);
 
+        loadDetails(artwork);
     } catch (error) {
         console.error("Failed to load artwork:", error);
+    }
+}
+
+function loadDetails(artwork) {
+
+    try {
+
+        const detailsContainer =
+            document.querySelector("#painting-details");
+
+
+            
+            
+            
+            
+            // Find details
+            const paintingDetails =
+            artwork.images?.filter(image => !image.is_main);
+            
+            if (!paintingDetails) {
+                console.error(
+                    `Details not found for artwork ${artwork.id}`
+                );
+                return;
+            }
+            
+            // Loop through details            
+            paintingDetails.forEach(detail => {
+                
+                // Создаём <picture>
+                const picture = document.createElement("picture");
+                
+                picture.classList.add("detail", "js-detail");
+                
+                // Только WebP
+                const webpVariants = detail.variants
+                    .filter(variant => variant.format === "webp")
+                    .sort((a, b) => a.width - b.width);
+
+                if (webpVariants.length === 0) {
+                    console.error(
+                        `WebP variants not found for detail ${detail.id}`
+                    );
+                    return;
+                }
+
+                // Создаём srcset
+                const srcset = webpVariants
+                    .map(
+                        variant =>
+                            `${variant.file_path} ${variant.width}w`
+                    )
+                    .join(", ");
+
+
+                // Создаём <img>
+                const img = document.createElement("img");
+
+                // Самая большая версия — базовый src
+                img.src =
+                    webpVariants[webpVariants.length - 1].file_path;
+
+                img.srcset = srcset;
+
+                img.sizes = `
+                    (min-width: 1200px) 25vw,
+                    (min-width: 768px) 33vw,
+                    50vw
+                `;
+
+                img.alt =
+                    detail.alt_text || artwork.title;
+
+                img.loading = "lazy";
+
+                // Собираем DOM
+                picture.appendChild(img);
+                detailsContainer.appendChild(picture);
+        });
+
+    } catch (error) {
+
+        console.error("Failed to load artwork:", error);
+
     }
 }
 

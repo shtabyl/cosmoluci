@@ -4,17 +4,17 @@ body {
 
 .main__wrapper {
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
 
 }
 
-.painting__wrapper {
-    max-width: 50%;
-    margin-bottom: 2em;
-    /* height: 100%;
-    object-fit: cover; */
+.painting__figure img {
+    display: block;
+    height: auto;
+    width: 100%;
+    max-width: 100%;
 }
 
 .painting__info {
@@ -32,16 +32,35 @@ body {
     max-width: 50%;
 }
 
+.details__wrapper {
+    /* display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem; */
+    column-count: 2;
+    column-gap: 1rem;
+
+}
+
+.detail {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
 @media screen and (max-width: 480px) {
     .painting__wrapper {
         max-width: 100%;
     }
-
-    .painting__wrapper img {
+    .painting__figure img {
         width: 100%;            /* Растягивает на всю ширину контейнера */
         max-width: 100%;        /* Гарантирует, что картинка не выйдет за пределы */
         height: auto;           /* Сохраняет пропорции изображения */
         display: block;         /* Убирает лишние нижние отступы у инлайновых картинок */
-
     }
+    .main__wrapper {
+        grid-template-columns: 1fr;
+    }
+
 }

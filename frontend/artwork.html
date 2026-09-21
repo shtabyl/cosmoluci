@@ -63,28 +63,31 @@
     <main class="main">
         <div class="main__container content-grid">
             <div class="main__wrapper">
-                <figure class="painting__wrapper">
-                    <picture id="painting-image" class="painting__image">
-                        <!-- <source media="(min-width: 1200px)" srcset="img/landscape-2023.jpg">
-                        <img src="img/landscape-2023.jpg" alt="Landscape 2023"> -->
-                    </picture>
-                    <figcaption class="painting__info">
-                        <h1 id="painting-title" class="painting__title title title_serif title_painting"></h1>
-                        <p id="painting-status" class="painting__status text text_grey js-paintingStatus"></p>
-                        <p id="painting-support" class="painting__support text"></p>
-                        <!-- Likes
-                        <form action="" class="painting__like-counter">
-                            <input type="image" src="assets/icons/like.svg" class="painting__like-button button">
-                        </form>
-                        -->
-                        <p id="painting-year" class="painting__year text"></p>
-                    </figcaption>
-                </figure>
-                <p id="painting-description" class="painting__description text"></p>
-                <!-- <a href="gallery.html" class="link link_arrow-back">
-                    <img class="arrow-back-icon" src="assets/icons/arrow-back.svg" alt="Arrow-back">
-                    <span class="text">Вернуться в галерею</span>
-                </a> -->
+                <div class="painting__wrapper">
+                    <figure class="painting__figure">
+                        <picture id="painting-image" class="painting__image">
+                            <!-- <source media="(min-width: 1200px)" srcset="img/landscape-2023.jpg">
+                            <img src="img/landscape-2023.jpg" alt="Landscape 2023"> -->
+                        </picture>
+                        <figcaption class="painting__info">
+                            <h1 id="painting-title" class="painting__title title title_serif title_painting"></h1>
+                            <p id="painting-status" class="painting__status text text_grey js-paintingStatus"></p>
+                            <p id="painting-support" class="painting__support text"></p>
+                            <!-- Likes
+                            <form action="" class="painting__like-counter">
+                                <input type="image" src="assets/icons/like.svg" class="painting__like-button button">
+                            </form>
+                            -->
+                            <p id="painting-year" class="painting__year text"></p>
+                        </figcaption>
+                    </figure>
+                    <p id="painting-description" class="painting__description text"></p>
+                    <!-- <a href="gallery.html" class="link link_arrow-back">
+                        <img class="arrow-back-icon" src="assets/icons/arrow-back.svg" alt="Arrow-back">
+                        <span class="text">Вернуться в галерею</span>
+                    </a> -->
+                </div>
+                <div id="painting-details" class="details__wrapper"></div>
             </div>
         </div>
     </main>
