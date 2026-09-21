@@ -1,0 +1,37 @@
+dialog.artwork-dialog {
+    padding: 0;
+    border: none;
+    background: transparent;
+    overflow: visible;
+    margin: auto;
+}
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.9);
+
+}
+dialog.artwork-dialog img {
+    max-width: 90vw;
+    max-height: 90vh;
+}
+.lightbox-close-btn {
+    position: absolute;
+    top: 0;
+    right: -2rem;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    color: grey;
+    &:hover {
+        color: white;
+        transition: .3s ease;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .lightbox-close-btn {
+        right: 0;
+        top: -1.5rem;
+        font-size: 0.7rem;
+    }
+}

@@ -8,6 +8,7 @@
 
     <script src="js/script.js" defer></script>
     <script type="module" src="js/artwork.js" defer></script>
+    <script type="module" src="js/components/dialog.js" defer></script>
 
     <title>Svetlana Osipova</title>
 </head>
@@ -88,6 +89,10 @@
                     </a> -->
                 </div>
                 <div id="painting-details" class="details__wrapper"></div>
+                <dialog id="lightbox" class="artwork-dialog">
+                    <button id="lightbox-close-button" class="lightbox-close-btn">X</button>
+                    <img id="lightbox-image">
+                </dialog>
             </div>
         </div>
     </main>

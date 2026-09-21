@@ -123,7 +123,7 @@ function loadDetails(artwork) {
                 // Создаём <picture>
                 const picture = document.createElement("picture");
                 
-                picture.classList.add("detail", "js-detail");
+                picture.classList.add("detail");
                 
                 // Только WebP
                 const webpVariants = detail.variants
@@ -150,6 +150,7 @@ function loadDetails(artwork) {
                 const img = document.createElement("img");
 
                 // Самая большая версия — базовый src
+                img.classList.add("detail-image");
                 img.src =
                     webpVariants[webpVariants.length - 1].file_path;
 

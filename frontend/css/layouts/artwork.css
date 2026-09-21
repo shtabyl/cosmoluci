@@ -47,6 +47,7 @@ body {
     max-width: 100%;
     height: auto;
     margin-bottom: 1rem;
+    cursor: pointer;
 }
 
 @media screen and (max-width: 480px) {
