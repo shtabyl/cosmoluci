@@ -1,5 +1,5 @@
 body {
-    height: 100svh;
+    /* height: 100svh; */
 }
 
 .main__wrapper {
@@ -8,6 +8,14 @@ body {
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
 
+}
+
+.painting__image {
+    cursor: pointer;
+}
+
+.painting__figure {
+    margin-bottom: 1rem;
 }
 
 .painting__figure img {
@@ -19,7 +27,7 @@ body {
 
 .painting__info {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 4fr 1fr;
     & > *:nth-child(2n) {
         display: flex;
         justify-content: end;
@@ -28,8 +36,8 @@ body {
 }
 
 .painting__description {
+    max-width: 80%;
     flex: 1;
-    max-width: 50%;
 }
 
 .details__wrapper {

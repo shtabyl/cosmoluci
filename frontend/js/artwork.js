@@ -82,6 +82,8 @@ async function loadArtwork() {
 
         img.loading = "lazy";
 
+        img.classList.add("main-image");
+
         // Очищаем picture перед добавлением
         picture.innerHTML = "";
 

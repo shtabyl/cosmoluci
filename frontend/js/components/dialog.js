@@ -3,8 +3,8 @@ const dialog = document.querySelector('#lightbox');
 const closeDialogBtn = document.querySelector('#lightbox-close-button');
 const lightboxImage = document.querySelector('#lightbox-image');
 
-imageContainer.addEventListener('click', (e) => {
-    const targetImage = e.target.closest('.detail-image');
+document.addEventListener('click', (e) => {
+    const targetImage = e.target.closest('.detail-image, .main-image');
 
     if (!targetImage) {
         return;
