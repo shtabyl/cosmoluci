@@ -387,7 +387,7 @@ def get_admin_artworks():
             AND pi.image_type = 'main'
         LEFT JOIN image_variants iv 
             ON iv.image_id = pi.id 
-            AND iv.width = 400 
+            AND (iv.height = 400 OR iv.width = 400)
             AND iv.format = 'webp'
         ORDER BY p.id DESC;
     """
