@@ -84,10 +84,10 @@ function renderArtworks(artworks) {
             </div>
 
             <div class="admin-artwork__featured row-item">
-                ${artwork.is_featured ? "⭐" : ""}
+                ${artwork.is_featured ? "🧡" : ""}
             </div>
 
-            <button class="js-edit-artwork button row-item">
+            <button class="js-edit-artwork button button_edit row-item">
                 &#9998;
             </button>
         `;

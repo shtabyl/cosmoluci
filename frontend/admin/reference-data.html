@@ -4,35 +4,35 @@
 <head>
     <meta charset="UTF-8">
     <script type="module" src="./scripts/reference-data.js" defer></script>
-    <link rel="stylesheet" href="./styles/admin.css">
+    <link rel="stylesheet" href="./styles/admin1.css">
     <title>Справочники</title>
 </head>
 
 <body>
     <header class="container">
-        <nav class="admin-nav">
+    <nav class="admin-nav">
 
-            <a class="admin-nav__item" href="index.html">
-                Картины
-            </a>
+        <a class="admin-nav__item" href="index.html">
+            Картины
+        </a>
 
-            <a id="create-artwork" class="button button-link" href="artwork.html">
-                Добавить картину
-            </a>
+        <a id="create-artwork" class="admin-nav__item" href="artwork.html">
+            Добавить картину
+        </a>
 
-            <a class="admin-nav__item" href="reference-data.html">
-                Справочники
-            </a>
+        <a class="admin-nav__item" href="reference-data.html">
+            Справочники
+        </a>
 
-            <button id="logout-button" type="button" class="admin-nav__item button">
-                Выйти
-            </button>
+        <button id="logout-button" type="button" class="admin-nav__item button">
+            Выйти
+        </button>
 
         </nav>
     </header>
-    <main class="admin container">
+    <main class="admin container reference">
 
-        <h1 class="title">Управление справочниками</h1>
+        <h1 class="title admin__header">Управление справочниками</h1>
 
         <section class="reference-section">
 
@@ -50,7 +50,7 @@
                     required
                 >
 
-                <button type="submit">
+                <button type="submit" class="button">
                     Добавить
                 </button>
 
@@ -80,7 +80,7 @@
                     required
                 >
 
-                <button type="submit">
+                <button type="submit" class="button">
                     Добавить
                 </button>
 
@@ -110,7 +110,7 @@
                     required
                 >
 
-                <button type="submit">
+                <button type="submit" class="button">
                     Добавить
                 </button>
 
@@ -140,7 +140,7 @@
                     required
                 >
 
-                <button type="submit">
+                <button type="submit" class="button">
                     Добавить
                 </button>
 
@@ -158,7 +158,7 @@
 
             <h2 class="subtitle">Владельцы</h2>
 
-            <form id="owner-form">
+            <form id="owner-form" class="owner-form">
 
                 <input
                     type="text"
@@ -175,7 +175,7 @@
                     required
                 >
 
-                <button type="submit">
+                <button type="submit" class="button">
                     Добавить
                 </button>
 

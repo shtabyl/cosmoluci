@@ -43,6 +43,7 @@ async function loadReferenceItems(referenceType) {
 
             const saveButton = document.createElement("button");
             saveButton.textContent = "Сохранить";
+            saveButton.classList.add('button');
             let currentName = item.name;
 
             saveButton.addEventListener(
@@ -113,6 +114,7 @@ async function loadReferenceItems(referenceType) {
 
             const deleteButton = document.createElement("button");
             deleteButton.textContent = "Удалить";
+            deleteButton.classList.add('button');
 
             deleteButton.addEventListener(
                 "click",
@@ -325,6 +327,7 @@ async function loadOwners() {
 
             saveButton.textContent =
                 "Сохранить";
+            saveButton.classList.add('button');
 
             let currentCountry = owner.country || "";
 
@@ -442,6 +445,7 @@ async function loadOwners() {
 
             deleteButton.textContent =
                 "Удалить";
+            deleteButton.classList.add('button');
 
             deleteButton.addEventListener(
                 "click",
