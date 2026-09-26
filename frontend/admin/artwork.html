@@ -36,13 +36,13 @@
             <h1 class="title">Редактирование картины</h1>
         </header>
 
-        <p>
-            ID
-            <span id="id"></span>
-        </p>
-
-        <div id="publication-status" class="admin-artwork__publish"></div>
-        <button id="publication-button" type="button" class="button"></button>
+        <div class="admin-artwork__start-block" id="id-section">
+            <div class="artwork__status">
+                <p class="admin-artwork__solid">ID: <span id="id"></span></p>
+                <div id="publication-status" class="admin-artwork__publish admin-artwork__solid"></div>
+            </div>
+            <button id="publication-button" type="button" class="button"></button>
+        </div>
 
         <form id="artwork-form" class="admin-form">
 
@@ -103,16 +103,16 @@
             </label>
 
             <label>
-                Основа
-                <select id="surface" name="surface_id">
-                    <option value="">Выберите основу</option>
+                Статус
+                <select id="status" name="status_id">
+                    <option value="">Выберите статус</option>
                 </select>
             </label>
 
             <label>
-                Статус
-                <select id="status" name="status_id">
-                    <option value="">Выберите статус</option>
+                Основа
+                <select id="surface" name="surface_id">
+                    <option value="">Выберите основу</option>
                 </select>
             </label>
 
@@ -122,22 +122,22 @@
                     <option value="">Выберите владельца</option>
                 </select>
             </label>
-            
-            <label>
+
+            <label class="checkbox-label">
+                <input
+                    type="checkbox"
+                    id="is-featured"
+                >
+                Избранное (показывать на главной странице)
+            </label>
+
+            <label class="checkbox-label">
                 <input
                 type="checkbox"
                 id="is-copy"
                     name="is_copy"
                 >
                 Копия
-            </label>
-
-            <label>
-                <input
-                    type="checkbox"
-                    id="is-featured"
-                >
-                Избранное (показывать на главной странице)
             </label>
 
             <fieldset class="genres">

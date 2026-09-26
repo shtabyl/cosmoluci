@@ -47,6 +47,7 @@ function updatePublicationUI(isPublished) {
 function setupPageMode() {
 
     const pageTitle = document.querySelector(".admin__header .title");
+    const idSection = document.querySelector("#id-section");
     const idElement = document.querySelector("#id");
     const imagesSection = document.querySelector(".admin-images");
     const uploadSection = document.querySelector(".admin-image-upload");
@@ -62,11 +63,14 @@ function setupPageMode() {
         uploadSection.hidden = false;
         publicationStatus.hidden = false;
         publicationButton.hidden = false;
+        idSection.style.display = "grid";
+        idSection.hidden = false;
 
     } else {
 
         pageTitle.textContent = "Добавление картины";
-        idElement.textContent = "";
+        idSection.hidden = true;
+        idSection.style.display = "none";
         submitButton.textContent = "Создать картину";
         imagesSection.hidden = true;
         uploadSection.hidden = true;
@@ -526,7 +530,7 @@ function createImageCard(image) {
 
     const type = document.createElement("div");
     type.classList.add("admin-image-card__type");
-    type.textContent = image.type;
+    type.textContent = image.type.charAt(0).toUpperCase() + image.type.slice(1);
 
     const altLabel = document.createElement("label");
     altLabel.textContent = "Alt text";
@@ -567,12 +571,15 @@ function createImageCard(image) {
 
     });
 
+    const buttonWrapper = document.createElement('div');
+    buttonWrapper.classList.add('images__button-wrapper');
     card.appendChild(img);
     card.appendChild(type);
     card.appendChild(altLabel);
     card.appendChild(orderLabel);
-    card.appendChild(saveButton);
-    card.appendChild(deleteButton);
+    buttonWrapper.appendChild(saveButton);
+    buttonWrapper.appendChild(deleteButton);
+    card.appendChild(buttonWrapper);
 
     return card;
 }

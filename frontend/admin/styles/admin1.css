@@ -229,11 +229,39 @@ body {
     margin-bottom: 2em;
 }
 
+.admin-artwork__start-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-items: start;
+    gap: 1em;
+}
+
+.artwork__status {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.admin-artwork__solid {
+    border: 1px solid var(--border-button);
+    border-radius: var(--radius-small);
+    padding-block: .8em;
+    text-align: center;
+    padding-inline: 1em;
+}
+
+.admin-image-card__type {
+    font-size: 500;
+    font-weight: bold;
+    padding-block: .5em 1em;
+}
+
 /* =========================================================
     INPUTS
    ========================================================= */
 
-input,
+input:not([type="checkbox"]):not([type="radio"]),
 select,
 textarea {
     width: 100%;
@@ -277,6 +305,16 @@ textarea:focus {
 input::placeholder,
 textarea::placeholder {
     color: var(--text-muted);
+}
+
+input[type="file"]::file-selector-button {
+    width: 200px; 
+    padding: 0.65rem 1.2rem;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: var(--radius-small);
+    margin-right: 1em;
 }
 
 /* =========================================================
@@ -353,10 +391,14 @@ a {
 }
 
 .genres-list {
-    display: flex;
-    flex-wrap: wrap;
+    display: block;
+    & label {
+        display: block;
+    }
+}
 
-    gap: 0.5rem;
+label.checkbox-label {
+    display: block;
 }
 
 
@@ -366,27 +408,28 @@ a {
 
 .images-container {
     display: grid;
-
     grid-template-columns:
         repeat(
             auto-fit,
             minmax(180px, 1fr)
         );
-
     gap: 1rem;
+    width: fit-content;
 }
 
 .images-container img {
     display: block;
-
-    width: 100%;
+    width: 50%;
     height: auto;
-
     aspect-ratio: 1 / 1;
-
     object-fit: cover;
+}
 
-    border-radius: var(--radius-small);
+.images__button-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    padding-block: 1em;
 }
 
 
@@ -432,6 +475,12 @@ a {
 
         align-items: end;
     }
+    .admin-artwork__start-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    gap: 1em;
+}
 }
 
 
