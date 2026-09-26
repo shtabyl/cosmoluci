@@ -63,28 +63,32 @@ function renderArtworks(artworks) {
         const item = document.createElement('article');
         item.classList.add('admin-row');
         item.innerHTML = `
-            <div class="admin-artwork__id">
+            <div class="admin-artwork__id row-item">
                 ${artwork.id}
             </div>
 
-            <div class="admin-artwork__title">
+            <div class="admin-artwork__image row-item">
+                <img src="${artwork.thumbnail}" class="admin-row__image">
+            </div>
+
+            <div class="admin-artwork__title row-item">
                 ${artwork.title}
             </div>
 
-            <div class="admin-artwork__year">
+            <div class="admin-artwork__year row-item">
                 ${artwork.creation_year ?? ""}
             </div>
-
-            <div class="admin-artwork__status">
-                ${artwork.status ?? ""}
-            </div>
             
-            <div class="admin-artwork__publish">
+            <div class="admin-artwork__publish row-item">
                 ${artwork.is_published ? "✅" : "🟡"}
             </div>
 
-            <button class="js-edit-artwork button">
-                Редактировать
+            <div class="admin-artwork__featured row-item">
+                ${artwork.is_featured ? "⭐" : ""}
+            </div>
+
+            <button class="js-edit-artwork button row-item">
+                &#9998;
             </button>
         `;
 
@@ -96,3 +100,4 @@ function renderArtworks(artworks) {
         container.appendChild(item);
     });
 }
+

@@ -378,9 +378,17 @@ def get_admin_artworks():
             p.is_published,
             p.is_featured,
             p.is_copy,
-            s.name AS status
+            s.name AS status,
+            iv.file_path AS thumbnail
         FROM paintings p
         LEFT JOIN statuses s ON s.id = p.status_id
+        LEFT JOIN painting_images pi 
+            ON pi.painting_id = p.id
+            AND pi.image_type = 'main'
+        LEFT JOIN image_variants iv 
+            ON iv.image_id = pi.id 
+            AND iv.width = 400 
+            AND iv.format = 'webp'
         ORDER BY p.id DESC;
     """
 
@@ -398,6 +406,7 @@ def get_admin_artworks():
             "is_copy": row[4],
             "is_featured": row[5],
             "status": row[6],
+            "thumbnail": row[7],
         }
         for row in rows
     ]
