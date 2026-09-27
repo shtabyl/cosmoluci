@@ -63,7 +63,7 @@ function renderArtworks(artworks) {
         const item = document.createElement('article');
         item.classList.add('admin-row');
         item.innerHTML = `
-            <div class="admin-artwork__id row-item">
+            <div id="id-view" class="admin-artwork__id row-item">
                 ${artwork.id}
             </div>
 
@@ -71,7 +71,7 @@ function renderArtworks(artworks) {
                 <img src="${artwork.thumbnail}" class="admin-row__image">
             </div>
 
-            <div class="admin-artwork__title row-item">
+            <div id="title" class="admin-artwork__title row-item">
                 ${artwork.title}
             </div>
 
@@ -79,11 +79,11 @@ function renderArtworks(artworks) {
                 ${artwork.creation_year ?? ""}
             </div>
             
-            <div class="admin-artwork__publish row-item">
+            <div id="status" class="admin-artwork__publish row-item">
                 ${artwork.is_published ? "✅" : "🟡"}
             </div>
 
-            <div class="admin-artwork__featured row-item">
+            <div id="featured" class="admin-artwork__featured row-item">
                 ${artwork.is_featured ? "🧡" : ""}
             </div>
 
@@ -100,4 +100,39 @@ function renderArtworks(artworks) {
         container.appendChild(item);
     });
 }
+
+// const mediaQuery = window.matchMedia('(max-width: 600px)');
+
+// function handleTabletChange(e) {
+
+//     const row = document.querySelector('.admin-row');
+//     const textContainer = document.createElement('div');
+//     textContainer.classList.add('admin-row__text-container');
+
+//     const idView = document.querySelector('#id-view');
+//     const title = document.querySelector('#title');
+//     const status = document.querySelector('#status');
+//     const featured = document.querySelector('#featured');
+
+//     // e.matches вернет true, если экран мобильный/планшетный
+//     if (e.matches) {
+//         console.log('Переключено на мобильный вид!');
+//         textContainer.appendChild(idView);
+//         textContainer.appendChild(title);
+//         textContainer.appendChild(status);
+//         textContainer.appendChild(featured);
+
+//         row.appendChild(textContainer);
+//     // Здесь ваш код для мобильной версии (например, включить бургер-меню)
+//     } else {
+//         console.log('Переключено на десктопный вид!');
+//     // Здесь ваш код для десктопа (например, отключить бургер-меню)
+//     }
+// }
+
+// // 2. Запускаем функцию сразу при загрузке страницы
+// handleTabletChange(mediaQuery);
+
+// // 3. Вешаем слушатель событий на изменение ширины экрана
+// mediaQuery.addEventListener('change', handleTabletChange);
 
