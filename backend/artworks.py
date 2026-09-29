@@ -403,8 +403,8 @@ def get_admin_artworks():
             "title": row[1],
             "creation_year": row[2],
             "is_published": row[3],
-            "is_copy": row[4],
-            "is_featured": row[5],
+            "is_featured": row[4],
+            "is_copy": row[5],
             "status": row[6],
             "thumbnail": row[7],
         }
