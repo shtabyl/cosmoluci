@@ -25,16 +25,33 @@ function updatePublicationUI(isPublished) {
 
     if (isPublished) {
 
-        statusElement.textContent =
-            "✅ Опубликована";
+        statusElement.innerHTML =
+            `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 12L8.94975 16.9497L19.5572 6.34326" stroke="#34C759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>`;
 
         button.textContent =
             "Снять с публикации";
 
     } else {
 
-        statusElement.textContent =
-            "🟡 Не опубликована";
+        statusElement.innerHTML =
+            `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4Z" stroke="#D5AD5C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <g clip-path="url(#clip0_41_56)">
+                        <mask id="mask0_41_56" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="8" y="8" width="8" height="8">
+                        <path d="M15 9V15H9V9H15Z" fill="white" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </mask>
+                        <g mask="url(#mask0_41_56)">
+                        <path d="M9 9L15 15M9 15L15 9" stroke="#D5AD5C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </g>
+                        </g>
+                        <defs>
+                        <clipPath id="clip0_41_56">
+                        <rect width="8" height="8" fill="white" transform="translate(8 8)"/>
+                        </clipPath>
+                        </defs>
+                    </svg>`;
 
         button.textContent =
             "Опубликовать";
@@ -63,7 +80,7 @@ function setupPageMode() {
         uploadSection.hidden = false;
         publicationStatus.hidden = false;
         publicationButton.hidden = false;
-        idSection.style.display = "grid";
+        idSection.style.display = "flex";
         idSection.hidden = false;
 
     } else {
@@ -550,7 +567,7 @@ function createImageCard(image) {
     const saveButton = document.createElement("button");
     saveButton.type = "button";
     saveButton.classList.add('button');
-    saveButton.textContent = "Сохранить картинку";
+    saveButton.textContent = "Сохранить";
     saveButton.addEventListener("click", () => {
 
         updateImage(
@@ -564,7 +581,7 @@ function createImageCard(image) {
     const deleteButton = document.createElement("button");
     deleteButton.type = "button";
     deleteButton.classList.add('button');
-    deleteButton.textContent = "Удалить картинку";
+    deleteButton.textContent = "Удалить";
     deleteButton.addEventListener("click", () => {
         
         deleteImage(image.id);
