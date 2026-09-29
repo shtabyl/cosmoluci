@@ -338,8 +338,15 @@ a {
     BUTTONS
    ========================================================= */
 
+input[type="submit"], 
+button {
+  /* Отключает встроенные стили Safari/iOS и сбрасывает кнопку до обычного блока */
+    -webkit-appearance: none;
+    appearance: none; 
+}
+
 .button {
-    display: inline-flex;
+    display: grid;
 
     align-items: center;
     justify-content: center;
@@ -347,6 +354,7 @@ a {
     min-height: 44px;
 
     padding: 0.65rem 1.2rem;
+    padding-left: 1.3rem;
 
     /* background: var(--accent); */
 
@@ -367,6 +375,9 @@ a {
 .button:hover {
     background: var(--accent-hover);
     color: white;
+    & path {
+        stroke: white;
+    }
 }
 
 .button:active {
@@ -538,14 +549,6 @@ label.checkbox-label {
         display: flex;
         flex-wrap: wrap;
     }
-
-    /* .admin-row {
-        display: flex;
-        gap: .5rem;
-        flex-direction: column;
-        justify-content: start;
-        align-items: start;
-    } */
 
     .admin-row {
         grid-template-columns: 70px 1fr 1fr;
