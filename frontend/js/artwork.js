@@ -28,6 +28,7 @@ async function loadArtwork() {
 
         // Picture
         const picture = document.querySelector("#painting-image");
+        picture.classList.add('fade-in');
 
         picture.dataset.type = artwork.genres;
         picture.dataset.year = artwork.creation_year;
@@ -84,11 +85,21 @@ async function loadArtwork() {
 
         img.classList.add("main-image");
 
+        img.addEventListener("load", () => {
+            picture.classList.add('is-visible');
+        });
+
         // Очищаем picture перед добавлением
-        picture.innerHTML = "";
+        // picture.innerHTML = "";
 
         picture.appendChild(source);
         picture.appendChild(img);
+
+        if (img.complete && img.naturalWidth > 0) {
+                requestAnimationFrame(() => {
+                    picture.classList.add("is-visible");
+            });
+        }
 
         loadDetails(artwork);
     } catch (error) {

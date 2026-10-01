@@ -51,28 +51,15 @@
 
 
 .gallery__picture-link { 
-    transition: opacity 400ms ease-in-out; 
+    transition: opacity 1s ease-in-out; 
 }
 .gallery__picture-link.is-fading { 
     opacity: 0; 
-    pointer-events: none; 
+    pointer-events: none;
+    transition: opacity 1s ease-in-out;
 }
 
-.fade-in {
-    opacity: 0;
-    transition: opacity 1s ease;
-}
 
-.fade-in.is-visible {
-    opacity: 1;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .fade-in {
-        opacity: 1;
-        transition: none;
-    }
-}
 
 @media screen and (max-width: 768px) {
     .gallery__filters {
