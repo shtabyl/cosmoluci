@@ -615,6 +615,9 @@ label.checkbox-label {
         grid-row: 1;
 
     }
+    .admin-artwork__publish::before {
+        content: "Published:";
+    }
     .admin-artwork__featured {
         display: flex;
         justify-content: end;
