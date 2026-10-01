@@ -60,6 +60,10 @@ async function loadGallery() {
                 return;
             }
 
+            // Берем пропорции из любого варианта (они везде одинаковые, например из самого большого)
+            const primaryVariant = webpVariants[webpVariants.length - 1];
+            const aspectRatio = `${primaryVariant.width} / ${primaryVariant.height}`;
+
 
             // Создаём srcset
             const srcset = webpVariants
@@ -72,6 +76,8 @@ async function loadGallery() {
 
             // Создаём <img>
             const img = document.createElement("img");
+            
+            img.style.aspectRatio = aspectRatio;
 
             // Самая большая версия — базовый src
             img.src =
@@ -90,12 +96,11 @@ async function loadGallery() {
 
             img.loading = "lazy";
 
+            pictureLink.style.aspectRatio = aspectRatio;
 
             // Собираем DOM
             picture.appendChild(img);
-
             pictureLink.appendChild(picture);
-
             galleryContainer.appendChild(pictureLink);
 
         });
