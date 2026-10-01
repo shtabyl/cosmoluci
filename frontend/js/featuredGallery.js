@@ -16,7 +16,7 @@ async function loadFeaturedGallery() {
 
             pictureLink.href = `artwork.html?id=${artwork.id}`;
             pictureLink.classList.add("gallery__picture-link");
-
+            pictureLink.classList.add('fade-in');
 
             // Создаём <picture>
             const picture = document.createElement("picture");
@@ -59,6 +59,8 @@ async function loadFeaturedGallery() {
                 return;
             }
 
+            const primaryVariant = webpVariants[webpVariants.length - 1];
+            const aspectRatio = `${primaryVariant.width} / ${primaryVariant.height}`;
 
             // Создаём srcset
             const srcset = webpVariants
@@ -71,6 +73,8 @@ async function loadFeaturedGallery() {
 
             // Создаём <img>
             const img = document.createElement("img");
+
+            img.style.aspectRatio = aspectRatio;
 
             // Самая большая версия — базовый src
             img.src =
@@ -89,14 +93,22 @@ async function loadFeaturedGallery() {
 
             img.loading = "lazy";
 
+            pictureLink.style.aspectRatio = aspectRatio;
+
+            img.addEventListener("load", () => {
+                pictureLink.classList.add("is-visible");
+            }, {once: true});
 
             // Собираем DOM
             picture.appendChild(img);
-
             pictureLink.appendChild(picture);
-
             galleryContainer.appendChild(pictureLink);
 
+            if (img.complete && img.naturalWidth > 0) {
+                requestAnimationFrame(() => {
+                    pictureLink.classList.add("is-visible");
+            });
+        }
         });
 
     } catch (error) {

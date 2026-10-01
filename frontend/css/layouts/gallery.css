@@ -45,10 +45,10 @@
     display: block;
     width: 100%;
     margin-bottom: 1rem;
-
-    /* break-inside: avoid;
-    -webkit-column-break-inside: avoid; */
+    break-inside: avoid;
+    -webkit-column-break-inside: avoid;
 }
+
 
 .gallery__picture-link { 
     transition: opacity 400ms ease-in-out; 
@@ -56,6 +56,22 @@
 .gallery__picture-link.is-fading { 
     opacity: 0; 
     pointer-events: none; 
+}
+
+.fade-in {
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.fade-in.is-visible {
+    opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fade-in {
+        opacity: 1;
+        transition: none;
+    }
 }
 
 @media screen and (max-width: 768px) {
