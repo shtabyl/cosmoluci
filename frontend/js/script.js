@@ -3,6 +3,9 @@ const burger = document.querySelector('.burger');
 const navbar = document.querySelector('.navbar');
 const headerLogo = document.querySelector('.header__logo');
 const headerNavbar = document.querySelector('.header__navbar');
+const currentYear = document.querySelector('#current-year');
+
+currentYear.textContent = new Date().getFullYear();
 
 burger.addEventListener('click', (e) => {
         e.stopPropagation(); 

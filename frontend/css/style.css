@@ -48,6 +48,9 @@ video {
 
 :root {
     --font-family: "Nunito", sans-serif;
+
+    --fs-100: clamp(0.75rem, calc(0.7rem + 0.08vw), 0.81rem);
+    --fs-200: clamp(0.88rem, calc(0.85rem + 0.08vw), 0.94rem);
     --fs-300: clamp(0.94rem, calc(0.92rem + 0.08vw), 0.98rem);
     --fs-400: clamp(1.13rem, calc(1.06rem + 0.33vw), 1.31rem);
     --fs-500: clamp(1.35rem, calc(1.21rem + 0.69vw), 1.75rem);
@@ -66,6 +69,13 @@ body {
     font-size: var(--fs-400);
     background-color: #fff;
     color: var(--clr-text);
+
+    display: flex;
+    flex-direction: column;
+}
+
+html, body {
+    min-height: 100vh;
 }
 
 .logo {
@@ -76,8 +86,9 @@ body {
     text-transform: uppercase;
 }
 
-.main__container {
+.main {
     padding-block: 0;
+    flex-grow: 1;
 }
 
 .fade-in {

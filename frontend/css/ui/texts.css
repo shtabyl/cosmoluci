@@ -6,3 +6,7 @@
 .text_grey {
     color: var(--clr-text-grey);
 }
+
+.text_footer {
+    font-size: var(--fs-100);
+}

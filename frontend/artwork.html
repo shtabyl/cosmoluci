@@ -71,10 +71,7 @@
             <div class="main__wrapper">
                 <div class="painting__wrapper">
                     <figure class="painting__figure">
-                        <picture id="painting-image" class="painting__image">
-                            <!-- <source media="(min-width: 1200px)" srcset="img/landscape-2023.jpg">
-                            <img src="img/landscape-2023.jpg" alt="Landscape 2023"> -->
-                        </picture>
+                        <picture id="painting-image" class="painting__image"></picture>
                         <figcaption class="painting__info">
                             <h1 id="painting-title" class="painting__title title title_serif title_painting"></h1>
                             <p id="painting-status" class="painting__status text text_grey js-paintingStatus"></p>
@@ -105,9 +102,9 @@
     </main>
 
     <footer class="footer">
-        <!-- <div class="footer__container content-grid">
-            <p class="text">&copy; 2026 Svetlana Osipova. All rights reserved.</p>
-        </div> -->
+        <div class="footer__container content-grid">
+            <p class="text text_footer text_grey">&copy; <span id="current-year" class="footer__year"></span> Svetlana Osipova. All rights reserved.</p>
+        </div>
     </footer>
 </body>
 </html>
