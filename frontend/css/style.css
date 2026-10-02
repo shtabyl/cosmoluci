@@ -16,6 +16,7 @@
 @import url(layouts/about.css);
 @import url(layouts/gallery.css);
 @import url(layouts/artwork.css);
+@import url(layouts/index.css);
 
 *,
 *::before,
@@ -87,6 +88,7 @@ html, body {
 }
 
 .main {
+    position: relative;
     padding-block: 0;
     flex-grow: 1;
 }

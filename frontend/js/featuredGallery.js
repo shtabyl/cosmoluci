@@ -15,7 +15,7 @@ async function loadFeaturedGallery() {
             const pictureLink = document.createElement("a");
 
             pictureLink.href = `artwork.html?id=${artwork.id}`;
-            pictureLink.classList.add("gallery__picture-link");
+            pictureLink.classList.add("featured-gallery__picture-link");
             pictureLink.classList.add('fade-in');
 
             // Создаём <picture>
