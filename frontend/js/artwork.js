@@ -28,7 +28,7 @@ async function loadArtwork() {
 
         // Picture
         const picture = document.querySelector("#painting-image");
-        picture.classList.add('fade-in');
+        // picture.classList.add('fade-in');
 
         picture.dataset.type = artwork.genres;
         picture.dataset.year = artwork.creation_year;
@@ -53,6 +53,8 @@ async function loadArtwork() {
             return;
         }
 
+        const primaryVariant = webpVariants[webpVariants.length - 1];
+
         // srcset
         const srcset = webpVariants
             .map(variant => `${variant.file_path} ${variant.width}w`)
@@ -74,34 +76,37 @@ async function loadArtwork() {
         const img = document.createElement("img");
 
         // Самая большая WebP как fallback внутри img
-        img.src = webpVariants[webpVariants.length - 1].file_path;
-
+        
         img.srcset = srcset;
         img.sizes = source.sizes;
-
         img.alt = mainImage.alt_text || artwork.title;
-
-        img.loading = "lazy";
-
+        img.loading = "eager";
         img.classList.add("main-image");
+        img.classList.add('fade-in');
+
+        img.style.aspectRatio = `${primaryVariant.width} / ${primaryVariant.height}`;
+        
+        const showImage = () => {
+            requestAnimationFrame(() => {
+                img.classList.add("is-visible");
+            });
+        };
 
         img.addEventListener("load", () => {
-            picture.classList.add('is-visible');
-        });
-
-        // Очищаем picture перед добавлением
-        // picture.innerHTML = "";
-
+            showImage();
+        }, { once: true });
+                
         picture.appendChild(source);
         picture.appendChild(img);
-
+        
+        img.src = webpVariants[webpVariants.length - 1].file_path;
+        
         if (img.complete && img.naturalWidth > 0) {
-                requestAnimationFrame(() => {
-                    picture.classList.add("is-visible");
-            });
+            showImage();
         }
 
         loadDetails(artwork);
+
     } catch (error) {
         console.error("Failed to load artwork:", error);
     }
@@ -114,14 +119,9 @@ function loadDetails(artwork) {
         const detailsContainer =
             document.querySelector("#painting-details");
 
-
-            
-            
-            
-            
             // Find details
             const paintingDetails =
-            artwork.images?.filter(image => !image.is_main);
+                artwork.images?.filter(image => !image.is_main);
             
             if (!paintingDetails) {
                 console.error(
@@ -150,6 +150,8 @@ function loadDetails(artwork) {
                     return;
                 }
 
+                const primaryVariant = webpVariants[webpVariants.length - 1];
+
                 // Создаём srcset
                 const srcset = webpVariants
                     .map(
@@ -175,14 +177,28 @@ function loadDetails(artwork) {
                     50vw
                 `;
 
-                img.alt =
-                    detail.alt_text || artwork.title;
+                img.alt = detail.alt_text || artwork.title;
+                img.loading = "eager";
+                img.classList.add('fade-in');
+                img.style.aspectRatio = `${primaryVariant.width} / ${primaryVariant.height}`;
 
-                img.loading = "lazy";
+                const showImage = () => {
+                    requestAnimationFrame(() => {
+                        img.classList.add("is-visible");
+                    });
+                };
+
+                img.addEventListener("load", () => {
+                    showImage();
+                }, { once: true });
 
                 // Собираем DOM
                 picture.appendChild(img);
                 detailsContainer.appendChild(picture);
+
+                if (img.complete && img.naturalWidth > 0) {
+                    showImage();
+                }
         });
 
     } catch (error) {
