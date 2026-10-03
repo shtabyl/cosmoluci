@@ -13,65 +13,47 @@
     <link rel="stylesheet" href="styles/admin.css">
     <script type="module" src="scripts/auth.js" defer></script>
 
-    <title>Вход в админку</title>
+    <title>Login</title>
 
 </head>
 
 
 <body>
 
-    <main>
+    <main class="container login">
 
-        <h1 class="title">Вход в админку</h1>
-
-
-        <form id="login-form">
-
-            <div>
-
+        <div class="login__wrapper">
+            <h1 class="title">Вход в админку</h1>
+            <form id="login-form" class="login-form">
                 <label for="username">
                     Логин
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        autocomplete="username"
+                        required
+                    >
                 </label>
-
-                <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    autocomplete="username"
-                    required
-                >
-
-            </div>
-
-
-            <div>
-
                 <label for="password">
                     Пароль
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        autocomplete="current-password"
+                        required
+                    >
                 </label>
-
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    autocomplete="current-password"
-                    required
-                >
-
-            </div>
-
-
-            <button type="submit" class="button">
-                Войти
-            </button>
-
-
-            <div
-                id="login-message"
-                hidden
-            ></div>
-
-        </form>
+                <button type="submit" class="button">
+                    Войти
+                </button>
+                <div
+                    id="login-message"
+                    hidden
+                ></div>
+            </form>
+        </div>
 
     </main>
 
