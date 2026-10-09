@@ -62,6 +62,11 @@ function renderArtworks(artworks) {
         
         const item = document.createElement('article');
         item.classList.add('admin-row', 'js-admin-row');
+
+        item.dataset.year = artwork.creation_year;
+        item.dataset.status = artwork.is_published ? 'published' : 'draft';
+        item.dataset.featured = artwork.is_featured ? 'featured' : 'regular';
+
         item.innerHTML = `
             <div class="admin-artwork__id row-item">
                 ${artwork.id}

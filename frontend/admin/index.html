@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="styles/admin.css">
     <script type="module" src="scripts/auth.js" defer></script>
     <script type="module" src="scripts/admin.js" defer></script>
-    <script type="module" src="scripts/artwork-search.js" defer></script>
+    <script type="module" src="scripts/filters.js" defer></script>
 
 </head>
 
@@ -69,12 +69,43 @@
         </header>
 
         <div class="admin-list admin-row artwork-list-titles">
-            <div class="artwork-list-title">ID</div>
+            <div class="artwork-list-title">
+                <select id="js-sort-id" class="admin-table-filter">
+                    <option value="asc">ID (1 → 9)</option>
+                    <option value="desc">ID (9 → 1)</option>
+                </select>
+            </div>
+            
             <div class="artwork-list-title">Image</div>
             <div class="artwork-list-title">Title</div>
-            <div class="artwork-list-title">Year</div>
-            <div class="artwork-list-title">Public</div>
-            <div class="artwork-list-title">Best</div>
+            
+            <!-- Year filter -->
+            <div class="artwork-list-title">
+                <select id="js-filter-year" class="admin-table-filter">
+                    <option value="">Year (All)</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                    <option value="2026">2026</option>
+                </select>
+            </div>
+            
+            <!-- Published filter -->
+            <div class="artwork-list-title">
+                <select id="js-filter-status" class="admin-table-filter">
+                    <option value="">Public (All)</option>
+                    <option value="published">Published</option>
+                    <option value="draft">Draft</option>
+                </select>
+            </div>
+            
+            <!-- Featured filter -->
+            <div class="artwork-list-title">
+                <select id="js-filter-featured" class="admin-table-filter">
+                    <option value="">Best (All)</option>
+                    <option value="featured">Featured</option>
+                    <option value="regular">Regular</option>
+                </select>
+            </div>
             <div class="artwork-list-title">Edit</div>
         </div>
         <section id="artworks-list" class="admin-list">

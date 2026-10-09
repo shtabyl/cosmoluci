@@ -1,37 +1,42 @@
-const searchField = document.querySelector('#js-search-field');
-const clearSearchFieldBtn = document.querySelector('#js-clear-search');
+// Переменная для хранения текущего значения поиска
+let currentSearchQuery = '';
 
-function filterArticles(query) {
-    const rows = document.querySelectorAll('.js-admin-row');
-
-    rows.forEach(row => {
-        const title = row.querySelector('.admin-artwork__title')?.textContent?.toLowerCase().trim() || '';
-
-        if (title.includes(query)) {
-            row.hidden = false;
-        } else {
-            row.hidden = true;
-        }
-    });
+/**
+ * Получить текущее очищенное значение поиска
+ * @return {string}
+ */
+export function getSearchQuery() {
+    return currentSearchQuery;
 }
 
+/**
+ * Инициализация компонента поиска
+ * @param {Function} onSearchChangeCallback - функция, вызываемая при изменении текста
+ */
+export function initSearch(onSearchChangeCallback) {
+    const searchInput = document.getElementById('js-search-article');
+    const clearBtn = document.getElementById('js-clear-search');
 
-searchField.addEventListener('input', (e) => {
-    const query = e.target.value.toLowerCase().trim();
+    if (!searchInput || !clearBtn) return;
 
-    if (e.target.value.length > 0) {
-        clearSearchFieldBtn.hidden = false;
-    } else {
-        clearSearchFieldBtn.hidden = true;
+    // Внутренняя функция для переключения атрибута hidden у крестика
+    function toggleClearButton(value) {
+        clearBtn.hidden = value.length === 0;
     }
 
-    filterArticles(query);
-    
-});
+    // Обработчик ввода текста (работает мгновенно)
+    searchInput.addEventListener('input', function (e) {
+        currentSearchQuery = e.target.value.toLowerCase().trim();
+        toggleClearButton(e.target.value);
+        onSearchChangeCallback();
+    });
 
-clearSearchFieldBtn.addEventListener('click', (e) => {
-    searchField.value = '';
-    clearSearchFieldBtn.hidden = true;
-    filterArticles('');
-
-});
+    // Обработчик клика по кнопке очистки
+    clearBtn.addEventListener('click', function () {
+        searchInput.value = '';
+        currentSearchQuery = '';
+        toggleClearButton('');
+        onSearchChangeCallback();
+        searchInput.focus();
+    });
+}
