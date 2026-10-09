@@ -51,6 +51,10 @@
     box-sizing: border-box;
 }
 
+[hidden] { 
+    display: none !important; 
+}
+
 html {
     font-size: 16px;
 }
@@ -172,6 +176,9 @@ body {
 .admin__header {
     margin-top: 2rem;
     margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 /* =========================================================
@@ -292,22 +299,14 @@ input:not([type="checkbox"]):not([type="radio"]),
 select,
 textarea {
     width: 100%;
-
     min-height: 44px;
-
     padding: 0.65rem 0.75rem;
-
     background: var(--surface);
-
     color: var(--text);
-
     font: inherit;
-
     border: 1px solid var(--border);
     border-radius: var(--radius-small);
-
     outline: none;
-
     transition:
         border-color 0.15s ease,
         box-shadow 0.15s ease;
@@ -323,8 +322,8 @@ textarea:focus {
     border-color: var(--accent);
     outline: none;
     box-shadow:
-        0 0 0 3px
-        rgba(139, 111, 82, 0.12);
+        0 0 0 1px
+        rgba(238, 125, 3, 0.12);
 }
 
 input::placeholder,
@@ -340,6 +339,10 @@ input[type="file"]::file-selector-button {
     border: 1px solid #ccc;
     border-radius: var(--radius-small);
     margin-right: 1em;
+}
+
+input[type="text"].admin-search__input {
+    padding-right: 2.5em;
 }
 
 /* =========================================================
@@ -484,6 +487,25 @@ label.checkbox-label {
     grid-template-columns: 1fr;
 
     gap: 1rem;
+}
+
+/* =========================================================
+    SEARCH
+   ========================================================= */
+
+.admin-search-wrapper {
+    position: relative;
+}
+
+.clear-search {
+    position: absolute;
+    right: .75rem;
+    bottom: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 }
 
 
