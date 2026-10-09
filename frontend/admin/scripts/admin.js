@@ -2,6 +2,8 @@ import { requireAdmin } from "./auth.js";
 
 import { API_URL } from "../../js/config.js";
 
+import { getYears } from "../../js/api.js";
+
 async function load_artworks() {
     try {
         const response = await fetch(`${API_URL}/api/admin/artworks`,
@@ -139,3 +141,29 @@ function renderArtworks(artworks) {
     });
 }
 
+
+async function loadYearOptions() {
+
+    try {
+
+        const years = await getYears();
+
+        const yearFilterContainer = document.querySelector("#js-filter-year");
+
+        years.forEach(year => {
+
+            const option = document.createElement("option");
+            option.dataset.value = year;
+            option.textContent = year;
+
+            yearFilterContainer.appendChild(option);
+        });
+
+    } catch (error) {
+
+        console.error("Failed to load reference data:", error);
+
+    }
+}
+
+loadYearOptions();
