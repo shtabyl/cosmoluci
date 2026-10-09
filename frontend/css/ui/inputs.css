@@ -25,7 +25,7 @@ select {
     position: relative;
     cursor: pointer;
     display: flex;
-    width: 6ch;
+    width: 8ch;
 }
 
 .select-native-wrapper::after {
