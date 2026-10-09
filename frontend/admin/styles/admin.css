@@ -436,6 +436,12 @@ button.button_edit {
     font-weight: 400;
 }
 
+.button_logout {
+    background-color: transparent;
+    border: none;
+    min-height: 44px;
+}
+
 
 /* =========================================================
     GENRES
@@ -702,6 +708,6 @@ label.checkbox-label {
     }
     .admin__header {
         margin-top: 1rem;
-        margin-bottom: 1rem;
+        margin-bottom: 0;
     }
 }
