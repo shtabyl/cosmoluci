@@ -644,6 +644,7 @@ label.checkbox-label {
     .artwork-list-titles {
         display: flex;
         flex-wrap: wrap;
+        padding-top: 0;
     }
     .artwork-list-titles .not-filter {
         display: none;
@@ -708,7 +709,7 @@ label.checkbox-label {
     }
     .admin__header {
         margin-top: 1rem;
-        margin-bottom: 0;
+        margin-bottom: 1rem;
         justify-self: start;
     }
     .sort-id {
