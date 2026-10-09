@@ -43,7 +43,7 @@
 
     <main class="admin container">
 
-        <header class="admin__header">
+        <header id="js-admin-header" class="admin__header">
             <h1 class="title">Artworks</h1>
             <div class="admin-search-wrapper">
                 <input type="text" id="js-search-field" class="admin-search__input" placeholder="Search by title..." autocomplete="off">
@@ -68,9 +68,9 @@
             </div>
         </header>
 
-        <div class="admin-list admin-row artwork-list-titles">
-            <div class="artwork-list-title">
-                <select id="js-sort-id" class="admin-table-filter">
+        <div id="js-artwork-list-titles" class="admin-list admin-row artwork-list-titles">
+            <div id="js-sort-id" class="artwork-list-title sort-id">
+                <select class="admin-table-filter">
                     <option value="asc">ID &#8593</option>
                     <option value="desc">ID &#8595</option>
                 </select>

@@ -709,5 +709,9 @@ label.checkbox-label {
     .admin__header {
         margin-top: 1rem;
         margin-bottom: 0;
+        justify-self: start;
+    }
+    .sort-id {
+        width: 5em;
     }
 }

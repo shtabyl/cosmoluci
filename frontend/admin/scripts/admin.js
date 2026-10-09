@@ -167,3 +167,23 @@ async function loadYearOptions() {
 }
 
 loadYearOptions();
+
+const artworksListHeader = document.querySelector('#js-admin-header');
+const adminListTitlesContainer = document.querySelector('#js-artwork-list-titles');
+const idSortFilter = document.querySelector('#js-sort-id');
+
+// 1. Выносим логику в отдельную функцию
+function handleIdSortFilterPosition() {
+    const windowWidth = window.innerWidth;
+    if (windowWidth < 395) {
+        artworksListHeader.appendChild(idSortFilter);
+    } else {
+        adminListTitlesContainer.prepend(idSortFilter);
+    }
+}
+
+// 2. Запускаем функцию сразу при загрузке скрипта
+handleIdSortFilterPosition();
+
+// 3. Запускаем функцию при каждом изменении размера экрана
+window.addEventListener('resize', handleIdSortFilterPosition);
