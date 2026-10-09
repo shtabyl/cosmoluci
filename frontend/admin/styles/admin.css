@@ -92,7 +92,7 @@ body {
 
 .admin-row {
     display: grid;
-    grid-template-columns: 4em 60px 1fr 6em 6.8em 5ch 4ch;
+    grid-template-columns: 4em 60px 1fr 6em 6.8em 5.5em 4ch;
     align-items: center;
     gap: 1.5em;
     border-bottom: 1px solid var(--border);
@@ -111,10 +111,16 @@ body {
     height: fit-content;
 }
 
-.admin-artwork__publish, .admin-artwork__featured {
+.admin-artwork__publish,
+.admin-artwork__featured,
+.admin-artwork__year {
     display: flex;
     justify-content: center;
     gap: 1ch;
+}
+
+.admin-artwork__id {
+    padding-left: .5em;
 }
 
 /* =========================================================
@@ -191,6 +197,8 @@ select.admin-table-filter {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
 /* =========================================================
@@ -355,7 +363,10 @@ input[type="file"]::file-selector-button {
 
 input[type="text"].admin-search__input {
     padding-right: 2.5em;
+    padding-block: .3em; 
+    min-height: 30px !important;
 }
+
 
 /* =========================================================
     LINKS
@@ -565,7 +576,7 @@ label.checkbox-label {
     MOBILE
    ========================================================= */
 
-@media (max-width: 670px) {
+@media (max-width: 790px) {
 
     .container {
         width: min(
@@ -624,8 +635,11 @@ label.checkbox-label {
         row-gap: .3rem;
         align-items: start;
     }
-
     .artwork-list-titles {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .artwork-list-titles .not-filter {
         display: none;
     }
 
@@ -676,5 +690,18 @@ label.checkbox-label {
     }
     .admin-row__image {
         max-width: 70px;
+    }
+
+    .admin-artwork__id {
+        padding-left: 0;
+    }
+
+    .admin-artwork__publish,
+    .admin-artwork__year {
+        justify-content: flex-start;
+    }
+    .admin__header {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
     }
 }
