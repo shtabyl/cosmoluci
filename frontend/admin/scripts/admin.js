@@ -63,7 +63,7 @@ function renderArtworks(artworks) {
         const item = document.createElement('article');
         item.classList.add('admin-row');
         item.innerHTML = `
-            <div id="id-view" class="admin-artwork__id row-item">
+            <div class="admin-artwork__id row-item">
                 ${artwork.id}
             </div>
 
@@ -71,7 +71,7 @@ function renderArtworks(artworks) {
                 <img src="${artwork.thumbnail}" class="admin-row__image">
             </div>
 
-            <div id="title" class="admin-artwork__title row-item">
+            <div class="admin-artwork__title row-item">
                 ${artwork.title}
             </div>
 
@@ -79,7 +79,7 @@ function renderArtworks(artworks) {
                 ${artwork.creation_year ?? ""}
             </div>
             
-            <div id="status" class="admin-artwork__publish row-item">
+            <div class="admin-artwork__publish row-item">
                 ${artwork.is_published
                 ? `
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -107,7 +107,7 @@ function renderArtworks(artworks) {
                 }
             </div>
 
-            <div id="featured" class="admin-artwork__featured row-item">
+            <div class="admin-artwork__featured row-item">
                 ${artwork.is_featured 
                 ? `
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="#D5AD5C" xmlns="http://www.w3.org/2000/svg">
