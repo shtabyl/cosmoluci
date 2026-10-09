@@ -2,7 +2,7 @@ const searchField = document.querySelector('#js-search-field');
 const clearSearchFieldBtn = document.querySelector('#js-clear-search');
 
 function filterArticles(query) {
-    const rows = document.querySelectorAll('.admin-row');
+    const rows = document.querySelectorAll('.js-admin-row');
 
     rows.forEach(row => {
         const title = row.querySelector('.admin-artwork__title')?.textContent?.toLowerCase().trim() || '';

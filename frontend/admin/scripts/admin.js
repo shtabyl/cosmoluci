@@ -61,7 +61,7 @@ function renderArtworks(artworks) {
     artworks.forEach(artwork => {
         
         const item = document.createElement('article');
-        item.classList.add('admin-row');
+        item.classList.add('admin-row', 'js-admin-row');
         item.innerHTML = `
             <div class="admin-artwork__id row-item">
                 ${artwork.id}
