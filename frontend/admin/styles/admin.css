@@ -92,7 +92,7 @@ body {
 
 .admin-row {
     display: grid;
-    grid-template-columns: 3ch 60px 1fr 4ch 6ch 4ch 4ch;
+    grid-template-columns: 4em 60px 1fr 6em 6.8em 5ch 4ch;
     align-items: center;
     gap: 1.5em;
     border-bottom: 1px solid var(--border);
@@ -113,6 +113,7 @@ body {
 
 .admin-artwork__publish, .admin-artwork__featured {
     display: flex;
+    justify-content: center;
     gap: 1ch;
 }
 
@@ -155,6 +156,15 @@ body {
 .admin-nav__item:hover {
     background: var(--surface);
     color: var(--accent-hover);
+}
+
+/* =========================================================
+    FILTERS
+   ========================================================= */
+
+select.admin-table-filter {
+    min-height: 30px;
+    padding: 0.4em 0.2em;
 }
 
 
