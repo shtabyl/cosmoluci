@@ -19,19 +19,19 @@
     <nav class="admin-nav">
 
         <a class="admin-nav__item" href="index.html">
-            Картины
+            Artworks
         </a>
 
         <a id="create-artwork" class="admin-nav__item" href="artwork.html">
-            Добавить картину
+            Add artwork
         </a>
 
         <a class="admin-nav__item" href="reference-data.html">
-            Справочники
+            Reference data
         </a>
 
         <button id="logout-button" type="button" class="admin-nav__item button">
-            Выйти
+            Log out
         </button>
 
         </nav>
@@ -39,7 +39,7 @@
     <main class="container">
 
         <header class="admin__header">
-            <h1 class="title">Редактирование картины</h1>
+            <h1 class="title">Edit Artwork</h1>
         </header>
 
         <div class="admin-artwork__start-block" id="id-section">
@@ -54,7 +54,7 @@
 
 
             <label>
-                Название
+                Title
                 <input
                     type="text"
                     id="title"
@@ -64,7 +64,7 @@
             </label>
 
             <label>
-                Год
+                Year
                 <input
                     type="number"
                     id="creation-year"
@@ -74,7 +74,7 @@
             </label>
 
             <label>
-                Описание
+                Description
                 <textarea
                     id="description"
                     name="description"
@@ -82,7 +82,7 @@
             </label>
 
             <label>
-                Высота, см
+                Height, sm
                 <input
                     type="number"
                     step="0.1"
@@ -92,7 +92,7 @@
             </label>
 
             <label>
-                Ширина, см
+                Width, sm
                 <input
                     type="number"
                     step="0.1"
@@ -102,30 +102,30 @@
             </label>
 
             <label>
-                Материал
+                Medium
                 <select id="medium" name="medium_id">
-                    <option value="">Выберите материал</option>
+                    <option value="">Select medium</option>
                 </select>
             </label>
 
             <label>
-                Статус
+                Status
                 <select id="status" name="status_id">
-                    <option value="">Выберите статус</option>
+                    <option value="">Select status</option>
                 </select>
             </label>
 
             <label>
-                Основа
+                Surface
                 <select id="surface" name="surface_id">
-                    <option value="">Выберите основу</option>
+                    <option value="">Select surface</option>
                 </select>
             </label>
 
             <label>
-                Владелец
+                Owner
                 <select id="owner" name="owner_id">
-                    <option value="">Выберите владельца</option>
+                    <option value="">Select ownter</option>
                 </select>
             </label>
 
@@ -134,7 +134,7 @@
                     type="checkbox"
                     id="is-featured"
                 >
-                Избранное (показывать на главной странице)
+                Featured (main page)
             </label>
 
             <label class="checkbox-label">
@@ -143,16 +143,16 @@
                 id="is-copy"
                     name="is_copy"
                 >
-                Копия
+                Is a copy
             </label>
 
             <fieldset class="genres">
-                <legend>Жанры</legend>
+                <legend>Genres</legend>
                 <div id="genres" class="genres-list"></div>
             </fieldset>
 
             <button type="submit" class="button">
-                Сохранить
+                Save
             </button>
 
             <div id="form-message" class="form-message" hidden></div>
@@ -161,22 +161,22 @@
 
         <section class="admin-images">
 
-            <h2 class="subtitle">Изображения</h2>
+            <h2 class="subtitle">Images</h2>
 
             <div id="images-container" class="images-container">
-                <!-- изображения будут добавляться через JS -->
+                <!-- Dynamically rendered -->
             </div>
 
         </section>
 
         <section class="admin-image-upload">
 
-            <h2 class="subtitle">Добавить изображение</h2>
+            <h2 class="subtitle">Add image</h2>
 
             <form id="image-upload-form" class="img-upload-form">
 
                 <label>
-                    Файл
+                    File
 
                     <input
                         type="file"
@@ -187,21 +187,21 @@
                 </label>
 
                 <label>
-                    Тип изображения
+                    Image type
 
                     <select id="image-type">
                         <option value="main">
-                            Главное изображение
+                            Main image
                         </option>
 
                         <option value="detail">
-                            Деталь
+                            Detail
                         </option>
                     </select>
                 </label>
 
                 <button class="button" type="submit">
-                    Загрузить
+                    Save
                 </button>
 
             </form>

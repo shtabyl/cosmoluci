@@ -12,7 +12,7 @@
 
     <script type="module" src="./scripts/reference-data.js" defer></script>
     <link rel="stylesheet" href="./styles/admin.css">
-    <title>Справочники</title>
+    <title>Reference data</title>
 </head>
 
 <body>
@@ -20,30 +20,30 @@
     <nav class="admin-nav">
 
         <a class="admin-nav__item" href="index.html">
-            Картины
+            Artworks
         </a>
 
         <a id="create-artwork" class="admin-nav__item" href="artwork.html">
-            Добавить картину
+            Add artwork
         </a>
 
         <a class="admin-nav__item" href="reference-data.html">
-            Справочники
+            Reference data
         </a>
 
         <button id="logout-button" type="button" class="admin-nav__item button">
-            Выйти
+            Log out
         </button>
 
         </nav>
     </header>
     <main class="admin container reference">
 
-        <h1 class="title admin__header">Управление справочниками</h1>
+        <h1 class="title admin__header">Edit reference data</h1>
 
         <section class="reference-section">
 
-            <h2 class="subtitle">Материалы</h2>
+            <h2 class="subtitle">Mediums</h2>
 
             <form
                 class="reference-form"
@@ -53,12 +53,12 @@
                 <input
                     type="text"
                     name="name"
-                    placeholder="Название материала"
+                    placeholder="Medium"
                     required
                 >
 
                 <button type="submit" class="button">
-                    Добавить
+                    Add
                 </button>
 
             </form>
@@ -73,7 +73,7 @@
 
         <section class="reference-section">
 
-            <h2 class="subtitle">Основы</h2>
+            <h2 class="subtitle">Surfaces</h2>
 
             <form
                 class="reference-form"
@@ -83,12 +83,12 @@
                 <input
                     type="text"
                     name="name"
-                    placeholder="Название основы"
+                    placeholder="Surface"
                     required
                 >
 
                 <button type="submit" class="button">
-                    Добавить
+                    Add
                 </button>
 
             </form>
@@ -103,7 +103,7 @@
 
         <section class="reference-section">
 
-            <h2 class="subtitle">Статусы</h2>
+            <h2 class="subtitle">Statuses</h2>
 
             <form
                 class="reference-form"
@@ -113,12 +113,12 @@
                 <input
                     type="text"
                     name="name"
-                    placeholder="Название статуса"
+                    placeholder="Status"
                     required
                 >
 
                 <button type="submit" class="button">
-                    Добавить
+                    Add
                 </button>
 
             </form>
@@ -133,7 +133,7 @@
 
         <section class="reference-section">
 
-            <h2 class="subtitle">Жанры</h2>
+            <h2 class="subtitle">Genres</h2>
 
             <form
                 class="reference-form"
@@ -143,12 +143,12 @@
                 <input
                     type="text"
                     name="name"
-                    placeholder="Название жанра"
+                    placeholder="Genre"
                     required
                 >
 
                 <button type="submit" class="button">
-                    Добавить
+                    Add
                 </button>
 
             </form>
@@ -163,27 +163,27 @@
 
         <section class="reference-section">
 
-            <h2 class="subtitle">Владельцы</h2>
+            <h2 class="subtitle">Owners</h2>
 
             <form id="owner-form" class="owner-form">
 
                 <input
                     type="text"
                     name="country"
-                    placeholder="Страна"
+                    placeholder="Country"
                     required
                 >
 
                 <input
                     type="text"
                     name="owner_type"
-                    placeholder="Тип владельца"
-                    value="Частная коллекция"
+                    placeholder="Owner type"
+                    value="Private collection"
                     required
                 >
 
                 <button type="submit" class="button">
-                    Добавить
+                    Add
                 </button>
 
             </form>

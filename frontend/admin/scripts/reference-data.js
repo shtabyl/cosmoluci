@@ -42,7 +42,7 @@ async function loadReferenceItems(referenceType) {
             input.classList.add("reference-item__input");
 
             const saveButton = document.createElement("button");
-            saveButton.textContent = "Сохранить";
+            saveButton.textContent = "Save";
             saveButton.classList.add('button');
             let currentName = item.name;
 
@@ -55,7 +55,7 @@ async function loadReferenceItems(referenceType) {
                     if (!name) {
 
                         alert(
-                            "Название не может быть пустым"
+                            "Title could not be empty"
                         );
 
                         return;
@@ -71,7 +71,7 @@ async function loadReferenceItems(referenceType) {
                         saveButton.disabled = true;
 
                         saveButton.textContent =
-                            "Сохранение...";
+                            "Saving...";
 
                         const updatedItem =
                             await updateReferenceItem(
@@ -85,12 +85,12 @@ async function loadReferenceItems(referenceType) {
                         input.value = updatedItem.name;
 
                         saveButton.textContent =
-                            "Сохранено";
+                            "Saved";
 
                         setTimeout(() => {
 
                             saveButton.textContent =
-                                "Сохранить";
+                                "Save";
 
                             saveButton.disabled = false;
 
@@ -103,7 +103,7 @@ async function loadReferenceItems(referenceType) {
                         alert(error.message);
 
                         saveButton.textContent =
-                            "Сохранить";
+                            "Save";
 
                         saveButton.disabled = false;
 
@@ -113,7 +113,7 @@ async function loadReferenceItems(referenceType) {
             );
 
             const deleteButton = document.createElement("button");
-            deleteButton.textContent = "Удалить";
+            deleteButton.textContent = "Delete";
             deleteButton.classList.add('button');
 
             deleteButton.addEventListener(
@@ -121,7 +121,7 @@ async function loadReferenceItems(referenceType) {
                 async () => {
 
                     const confirmed = confirm(
-                        `Удалить "${item.name}"?`
+                        `Delete "${item.name}"?`
                     );
 
                     if (!confirmed) {
@@ -133,7 +133,7 @@ async function loadReferenceItems(referenceType) {
                         deleteButton.disabled = true;
 
                         deleteButton.textContent =
-                            "Удаление...";
+                            "Deleting...";
 
                         await deleteReferenceItem(
                             referenceType,
@@ -156,7 +156,7 @@ async function loadReferenceItems(referenceType) {
                         deleteButton.disabled = false;
 
                         deleteButton.textContent =
-                            "Удалить";
+                            "Delete";
 
                     }
 
@@ -174,7 +174,7 @@ async function loadReferenceItems(referenceType) {
         console.error(error);
 
         container.textContent =
-            "Ошибка загрузки данных";
+            "Error loading reference items";
 
     }
 }
@@ -215,7 +215,7 @@ function setupReferenceForms() {
                 if (!name) {
 
                     alert(
-                        "Введите название"
+                        "Enter a valid reference item"
                     );
 
                     return;
@@ -231,7 +231,7 @@ function setupReferenceForms() {
                     submitButton.disabled = true;
 
                     submitButton.textContent =
-                        "Добавление...";
+                        "Adding...";
 
                     await createReferenceItem(
                         referenceType,
@@ -259,7 +259,7 @@ function setupReferenceForms() {
                     submitButton.disabled = false;
 
                     submitButton.textContent =
-                        "Добавить";
+                        "Add";
 
                 }
 
@@ -301,7 +301,7 @@ async function loadOwners() {
 
             countryInput.value = owner.country || "";
 
-            countryInput.placeholder = "Страна";
+            countryInput.placeholder = "Country";
 
 
             // Тип владельца
@@ -315,7 +315,7 @@ async function loadOwners() {
                 owner.owner_type || "";
 
             ownerTypeInput.placeholder =
-                "Тип владельца";
+                "Owner type";
 
 
             // Сохранить
@@ -326,7 +326,7 @@ async function loadOwners() {
             saveButton.type = "button";
 
             saveButton.textContent =
-                "Сохранить";
+                "Save";
             saveButton.classList.add('button');
 
             let currentCountry = owner.country || "";
@@ -346,7 +346,7 @@ async function loadOwners() {
 
                     if (!country) {
 
-                        alert("Введите страну");
+                        alert("Enter country");
 
                         return;
 
@@ -355,7 +355,7 @@ async function loadOwners() {
                     if (!ownerType) {
 
                         alert(
-                            "Введите тип владельца"
+                            "Enter owner type"
                         );
 
                         return;
@@ -379,7 +379,7 @@ async function loadOwners() {
                         saveButton.disabled = true;
 
                         saveButton.textContent =
-                            "Сохранение...";
+                            "Saving...";
 
 
                         const updatedOwner =
@@ -409,13 +409,13 @@ async function loadOwners() {
 
 
                         saveButton.textContent =
-                            "Сохранено";
+                            "Saved";
 
 
                         setTimeout(() => {
 
                             saveButton.textContent =
-                                "Сохранить";
+                                "Save";
 
                             saveButton.disabled = false;
 
@@ -430,7 +430,7 @@ async function loadOwners() {
                         saveButton.disabled = false;
 
                         saveButton.textContent =
-                            "Сохранить";
+                            "Save";
 
                     }
 
@@ -444,7 +444,7 @@ async function loadOwners() {
             deleteButton.type = "button";
 
             deleteButton.textContent =
-                "Удалить";
+                "Delete";
             deleteButton.classList.add('button');
 
             deleteButton.addEventListener(
@@ -455,7 +455,7 @@ async function loadOwners() {
                         `${owner.country} — ${owner.owner_type}`;
 
                     const confirmed = confirm(
-                        `Удалить запись "${description}"?`
+                        `Delete owner"${description}"?`
                     );
 
                     if (!confirmed) {
@@ -467,13 +467,10 @@ async function loadOwners() {
                         deleteButton.disabled = true;
 
                         deleteButton.textContent =
-                            "Удаление...";
+                            "Deleting...";
 
 
                         await deleteOwner(owner.id);
-
-
-                        // Загружаем актуальный список
 
                         await loadOwners();
 
@@ -486,7 +483,7 @@ async function loadOwners() {
                         deleteButton.disabled = false;
 
                         deleteButton.textContent =
-                            "Удалить";
+                            "Delete";
 
                     }
 
@@ -512,7 +509,7 @@ async function loadOwners() {
         console.error(error);
 
         container.textContent =
-            "Ошибка загрузки владельцев";
+            "Error loading owners";
 
     }
 }
@@ -550,7 +547,7 @@ function setupOwnerForm() {
 
             if (!country) {
 
-                alert("Введите страну");
+                alert("Enter country");
 
                 return;
 
@@ -560,7 +557,7 @@ function setupOwnerForm() {
             if (!ownerType) {
 
                 alert(
-                    "Введите тип владельца"
+                    "Enter owner type"
                 );
 
                 return;
@@ -579,7 +576,7 @@ function setupOwnerForm() {
                 submitButton.disabled = true;
 
                 submitButton.textContent =
-                    "Добавление...";
+                    "Adding...";
 
 
                 await createOwner(
@@ -610,7 +607,7 @@ function setupOwnerForm() {
                 submitButton.disabled = false;
 
                 submitButton.textContent =
-                    "Добавить";
+                    "Add";
 
             }
 
