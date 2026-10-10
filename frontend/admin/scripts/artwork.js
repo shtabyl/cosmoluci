@@ -915,3 +915,23 @@ async function apiRequest(
 
     return data;
 }
+
+// Grey placeholders for artwork edition selects
+const selectElements = document.querySelectorAll('.js-artwork-select');
+
+selectElements.forEach(selectElement => {
+    selectElement.addEventListener('change', function() {
+        if (this.value === "") {
+            this.classList.add('placeholder');
+        } else {
+            this.classList.remove('placeholder');
+        }
+    });
+});
+
+// Запустить один раз при загрузке, чтобы проверить начальное состояние
+selectElements.forEach(selectElement => {
+    if (selectElement.value === "") {
+        selectElement.classList.add('placeholder');
+    }
+});

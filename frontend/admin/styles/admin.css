@@ -307,7 +307,7 @@ select.admin-table-filter {
 .admin-artwork__solid {
     border: 1px solid var(--border-button);
     border-radius: var(--radius-small);
-    padding-block: .6rem;
+    padding-block: .5rem;
     padding-inline: 1em;
     margin: 0;
 }
@@ -375,6 +375,12 @@ input[type="text"].admin-search__input {
     min-height: 30px !important;
 }
 
+.placeholder {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
 
 /* =========================================================
     LINKS
@@ -402,10 +408,8 @@ button {
     align-items: center;
     justify-content: center;
 
-    padding: 0.65rem 1.2rem;
+    padding: 0.5rem 1.2rem;
     padding-left: 1.3rem;
-
-    /* background: var(--accent); */
 
     color: var(--text-button);
 
