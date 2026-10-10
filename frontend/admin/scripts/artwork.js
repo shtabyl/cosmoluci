@@ -31,7 +31,7 @@ function updatePublicationUI(isPublished) {
             </svg>`;
 
         button.textContent =
-            "Снять с публикации";
+            "Unpublish";
 
     } else {
 
@@ -54,7 +54,7 @@ function updatePublicationUI(isPublished) {
                     </svg>`;
 
         button.textContent =
-            "Опубликовать";
+            "Publish";
 
     }
 
@@ -85,10 +85,10 @@ function setupPageMode() {
 
     } else {
 
-        pageTitle.textContent = "Добавление картины";
+        pageTitle.textContent = "Artwork creation";
         idSection.hidden = true;
         idSection.style.display = "none";
-        submitButton.textContent = "Создать картину";
+        submitButton.textContent = "Create artwork";
         imagesSection.hidden = true;
         uploadSection.hidden = true;
         publicationStatus.hidden = true;
