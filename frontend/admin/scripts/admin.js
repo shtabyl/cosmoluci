@@ -170,7 +170,7 @@ loadYearOptions();
 
 const artworksListHeader = document.querySelector('#js-admin-header');
 const adminListTitlesContainer = document.querySelector('#js-artwork-list-titles');
-const idSortFilter = document.querySelector('#js-sort-id');
+const idSortFilter = document.querySelector('#js-sort-id-container');
 
 // 1. Выносим логику в отдельную функцию
 function handleIdSortFilterPosition() {

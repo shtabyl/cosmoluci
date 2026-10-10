@@ -18,7 +18,14 @@ function getFilterValues() {
     FILTER_IDS.forEach(id => {
         const element = document.getElementById(id);
         if (element) {
+            const currentValue = element.value;
             values[id] = element.value;
+
+            if (currentValue !== '') {
+                element.classList.add('is-changed');
+            } else {
+                element.classList.remove('is-changed');
+            }
         }
     });
     return values;
@@ -79,6 +86,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Пересортировываем при смене направления пользователем
         sortSelect.addEventListener('change', function (e) {
             sortArticlesById(e.target.value);
+            if (e.target.value === 'desc') {
+                sortSelect.classList.add('is-changed');
+            } else {
+                sortSelect.classList.remove('is-changed');
+            }
         });
     }
 });
