@@ -14,7 +14,7 @@ export function getSearchQuery() {
  * @param {Function} onSearchChangeCallback - функция, вызываемая при изменении текста
  */
 export function initSearch(onSearchChangeCallback) {
-    const searchInput = document.getElementById('js-search-article');
+    const searchInput = document.getElementById('js-search-field');
     const clearBtn = document.getElementById('js-clear-search');
 
     if (!searchInput || !clearBtn) return;
