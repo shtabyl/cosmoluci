@@ -21,17 +21,20 @@
 <body>
     <header class="container">
     <nav class="admin-nav">
+        <a id="create-artwork" class="admin-nav__item" href="artwork.html">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="1" width="34" height="34" rx="7" stroke="#9E7B36" stroke-width="2"/>
+            <path d="M18 9V27M8.5 17.6087H27.5" stroke="#9E7B36" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </a>
 
         <a class="admin-nav__item" href="index.html">
             Artworks
         </a>
 
-        <a id="create-artwork" class="admin-nav__item" href="artwork.html">
-            Add artwork
-        </a>
 
         <a class="admin-nav__item" href="reference-data.html">
-            Reference data
+            Ref
         </a>
 
         <button id="logout-button" type="button" class="admin-nav__item button button_logout">
@@ -44,18 +47,23 @@
     <main class="admin container">
 
         <header id="js-admin-header" class="admin__header">
-            <h1 class="title">Artworks</h1>
-            <div class="admin-search-wrapper">
+            <h1 class="admin-header__title title">Artworks</h1>
+            <div id="js-reset-filters-wrapper" class="reset-filters__wrapper">
+                <button id="js-reset-all-filters" type="button" class="button" hidden>
+                    Clear filters
+                </button>
+            </div>
+            <div id="js-admin-search-wrapper" class="admin-search-wrapper">
                 <input type="text" id="js-search-field" class="admin-search__input" placeholder="Search by title..." autocomplete="off">
                 <div id="js-clear-search" class="clear-search" hidden>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4Z" stroke="#e0d9d1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path d="M12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4Z" stroke="#e0d9d1" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
                         <g clip-path="url(#clip0_41_56)">
                         <mask id="mask0_41_56" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="8" y="8" width="8" height="8">
-                        <path d="M15 9V15H9V9H15Z" fill="white" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path d="M15 9V15H9V9H15Z" fill="white" stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
                         </mask>
                         <g mask="url(#mask0_41_56)">
-                        <path d="M9 9L15 15M9 15L15 9" stroke="#e0d9d1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path d="M9 9L15 15M9 15L15 9" stroke="#e0d9d1" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
                         </g>
                         </g>
                         <defs>
@@ -71,8 +79,8 @@
         <div id="js-artwork-list-titles" class="admin-list admin-row artwork-list-titles">
             <div id="js-sort-id-container" class="artwork-list-title sort-id">
                 <select id="js-sort-id" class="admin-table-filter">
-                    <option value="asc">ID &#8593</option>
-                    <option value="desc">ID &#8595</option>
+                    <option value="asc">ID &#8595</option>
+                    <option value="desc">ID &#8593</option>
                 </select>
             </div>
             
