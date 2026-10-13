@@ -42,9 +42,9 @@
 }
 
 .gallery__picture-link {
-    display: block;
+    display: inline-block;
     width: 100%;
-    margin-bottom: 1rem;
+    margin-bottom: .5rem;
     break-inside: avoid;
     -webkit-column-break-inside: avoid;
 }
