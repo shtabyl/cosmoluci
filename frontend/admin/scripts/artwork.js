@@ -74,8 +74,8 @@ function setupPageMode() {
 
     if (isEditMode) {
 
-        pageTitle.textContent = "Редактирование картины";
-        submitButton.textContent = "Сохранить";
+        pageTitle.textContent = "Artwork editing";
+        submitButton.textContent = "Save";
         imagesSection.hidden = false;
         uploadSection.hidden = false;
         publicationStatus.hidden = false;
@@ -391,7 +391,7 @@ async function saveArtwork(event) {
 
 
         showMessage(
-            "Изменения сохранены.",
+            "Changes saved",
             "success"
         );
 
@@ -405,7 +405,7 @@ async function saveArtwork(event) {
 
 
         showMessage(
-            `Ошибка сохранения: ${error.message}`,
+            `Failed to save changes: ${error.message}`,
             "error"
         );
 
@@ -558,7 +558,7 @@ function createImageCard(image) {
     altLabel.appendChild(altInput);
 
     const orderLabel = document.createElement("label");
-    orderLabel.textContent = "Порядок";
+    orderLabel.textContent = "Order";
     const orderInput = document.createElement("input");
     orderInput.type = "number";
     orderInput.value = image.sort_order ?? 0;
@@ -566,8 +566,8 @@ function createImageCard(image) {
 
     const saveButton = document.createElement("button");
     saveButton.type = "button";
-    saveButton.classList.add('button');
-    saveButton.textContent = "Сохранить";
+    saveButton.classList.add('button', 'button_images');
+    saveButton.textContent = "Save";
     saveButton.addEventListener("click", () => {
 
         updateImage(
@@ -580,8 +580,8 @@ function createImageCard(image) {
 
     const deleteButton = document.createElement("button");
     deleteButton.type = "button";
-    deleteButton.classList.add('button');
-    deleteButton.textContent = "Удалить";
+    deleteButton.classList.add('button', 'button_images');
+    deleteButton.textContent = "Delete";
     deleteButton.addEventListener("click", () => {
         
         deleteImage(image.id);
@@ -772,8 +772,8 @@ async function togglePublication() {
 
         showMessage(
             isPublished
-                ? "Картина опубликована."
-                : "Картина снята с публикации.",
+                ? "Artwork published."
+                : "Artwork unpublished.",
             "success"
         );
 
@@ -814,7 +814,7 @@ function hideMessage() {
 function getApiErrorMessage(data) {
 
     if (!data) {
-        return "Неизвестная ошибка сервера.";
+        return "Unknown server error.";
     }
 
 
@@ -841,7 +841,7 @@ function getApiErrorMessage(data) {
     }
 
 
-    return "Произошла ошибка сервера.";
+    return "Unknown server error.";
 }
 
 

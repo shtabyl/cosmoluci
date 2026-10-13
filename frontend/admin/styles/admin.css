@@ -92,7 +92,8 @@ body {
 
 .admin-row {
     display: grid;
-    grid-template-columns: 3em 60px 1fr 6em 6.8em 5.5em 4ch;
+    grid-template-columns: 5em 60px 1fr 7em 8em 7em 4ch;
+    /* grid-template-columns: auto 60px 1fr auto auto auto 4ch; */
     align-items: center;
     gap: 1.5em;
     border-bottom: 1px solid var(--border);
@@ -129,7 +130,7 @@ body {
 }
 
 .admin-header__title {
-    padding-block: .1em;
+    padding-block: .3em;
 }
 
 
@@ -187,22 +188,11 @@ body {
     FILTERS
    ========================================================= */
 
-select.admin-table-filter {
-    min-height: 30px;
-    padding: 0.4em 0.2em;
-    background: transparent;
-}
 
 .admin-table-filter.is-changed {
-    background: var(--surface);
+    background-color: var(--surface);
 }
 
-.sort-id > select {
-    appearance: none;
-    -webkit-appearance: none;
-    background: transparent;
-    padding: 0.3em 0.4em;
-}
 
 
 /* =========================================================
@@ -354,7 +344,7 @@ select,
 textarea {
     width: 100%;
     min-height: 36px;
-    padding: 0.5rem 0.75rem;
+    padding: 0.4rem 0.75rem;
     background: var(--surface);
     color: var(--text);
     font: inherit;
@@ -364,6 +354,35 @@ textarea {
     transition:
         border-color 0.15s ease,
         box-shadow 0.15s ease;
+}
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 2em;
+    background-image: url("../../assets/icons/chevron-down.svg");
+    background-repeat: no-repeat;
+    background-position: right 6px center;
+    background-size: 16px;
+    background-color: transparent;
+    & option {
+        font: inherit;
+    }
+}
+
+select:focus,
+select:active {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    background-position: right 6px center;
+    background-image: url("../../assets/icons/chevron-down.svg");
+    background-repeat: no-repeat;
+    background-position: right 6px center;
+    background-size: 16px;
 }
 
 textarea {
@@ -394,7 +413,7 @@ input[type="file"]::file-selector-button {
 
 input[type="text"].admin-search__input {
     padding-right: 2.5em;
-    padding-block: .3em; 
+    padding-block: .5em; 
     min-height: 30px !important;
 }
 
@@ -418,11 +437,11 @@ a {
     BUTTONS
    ========================================================= */
 
-input[type="submit"], 
-button {
+button[type="submit"] {
   /* Отключает встроенные стили Safari/iOS и сбрасывает кнопку до обычного блока */
-    -webkit-appearance: none;
     appearance: none; 
+    -webkit-appearance: none;
+    /* background: var(--surface); */
 }
 
 .button {
@@ -431,11 +450,11 @@ button {
     align-items: center;
     justify-content: center;
 
-    padding: 0.3em 1.2em;
+    padding: 0.5em 1.2em;
     padding-left: 1.3rem;
 
     color: var(--text-button);
-
+    background: #efede8;
     font: inherit;
     font-weight: 400;
     font-size: var(--fs-300);
@@ -475,6 +494,14 @@ button.button_edit {
     background-color: transparent;
     border: none;
     min-height: 36px;
+}
+
+.button_images {
+    min-width: 6rem;
+}
+
+.button_add-image {
+    padding-block: 0.35rem;
 }
 
 
@@ -688,9 +715,10 @@ label.checkbox-label {
         flex: 1;
         flex-basis: content;
     }
-    .artwork-list-title:nth-child(6) {
+    /* .artwork-list-title:nth-child(6) {
         max-width: 85px;
-    }
+        min-width: 85px;
+    } */
     .artwork-list-titles .not-filter {
         display: none;
     }
