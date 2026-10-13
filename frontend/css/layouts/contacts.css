@@ -6,7 +6,8 @@
     margin-bottom: 3rem;
 }
 .footer__email {
-    font-family: 'Gruppo', sans-serif;
+    /* font-family: 'Gruppo', sans-serif; */
+    font-size: 1rem;
     margin-bottom: 0.75rem;
 }
 .contacts__title {
