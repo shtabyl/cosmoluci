@@ -173,20 +173,3 @@ const adminListTitlesContainer = document.querySelector('#js-artwork-list-titles
 const idSortFilter = document.querySelector('#js-sort-id-container');
 const filterResetButton = document.querySelector('#js-reset-filters-wrapper');
 const searchContainer = document.querySelector('#js-admin-search-wrapper');
-
-// 1. Выносим логику в отдельную функцию
-function handleFilterPosition() {
-    const windowWidth = window.innerWidth;
-    if (windowWidth < 412) {
-        adminListTitlesContainer.appendChild(filterResetButton);
-    } else {
-        adminListTitlesContainer.prepend(idSortFilter);
-        filterResetButton.insertBefore(searchContainer);
-    }
-}
-
-// 2. Запускаем функцию сразу при загрузке скрипта
-handleFilterPosition();
-
-// 3. Запускаем функцию при каждом изменении размера экрана
-window.addEventListener('resize', handleFilterPosition);
