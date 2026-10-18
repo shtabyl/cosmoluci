@@ -16,6 +16,11 @@
     /* min-width: 250px; */
 }
 
+#year-filter {
+    padding-right: 1.7em;
+    text-align: right;
+}
+
 /* .gallery__pictures {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
