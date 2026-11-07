@@ -29,9 +29,8 @@ async function loadFeaturedGallery() {
 
             pictureLink.dataset.type = artwork.genres;
             pictureLink.dataset.year = artwork.creation_year;
-            console.log(artwork.is_copy);
             if (artwork.is_copy) {
-                pictureLink.dataset.type = 'copies';
+                pictureLink.dataset.type = 'copy';
             }
 
 

@@ -9,8 +9,12 @@ const showFilteredImages = (type, year) => {
     ];
 
     const matchingCards = cards.filter(card => {
+        // Получаем массив типов карточки, разделяя строку по пробелу (или по запятой, если оставите её)
+        const cardTypes = card.dataset.type ? card.dataset.type.split(',') : [];
+        
+        // Проверяем, совпадает ли выбранный тип или входит ли он в массив типов карточки
         const isTypeMatch =
-            type === 'all' || type === card.dataset.type;
+            type === 'all' || cardTypes.includes(type);
 
         const isYearMatch =
             year === 'all' || year === card.dataset.year;
