@@ -549,7 +549,6 @@ label.checkbox-label {
             minmax(180px, 1fr)
         );
     gap: 1rem;
-    width: fit-content;
 }
 
 .images-container img {

@@ -384,10 +384,10 @@ async function saveArtwork(event) {
             );
 
 
-        console.log(
-            "Artwork updated:",
-            updatedArtwork
-        );
+        // console.log(
+        //     "Artwork updated:",
+        //     updatedArtwork
+        // );
 
 
         showMessage(
@@ -802,6 +802,9 @@ function showMessage(message, type = "error") {
     element.className =
         `form-message ${type}`;
     element.hidden = false;
+    setTimeout(() => {
+        element.hidden = true;
+    }, 3000);
 }
 
 function hideMessage() {
